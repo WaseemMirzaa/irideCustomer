@@ -12,10 +12,15 @@ public class User {
     public String phoneNumber;
     public String state;
     public String city;
-    public ArrayList<Double> ratings;
     public String token;
+
+    public ArrayList<Double> ratings;
+
     public double lat;
     public double lng;
+
+    public String role;
+
     public String zipcode;
     public String email;
 }

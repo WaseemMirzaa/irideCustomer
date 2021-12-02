@@ -405,7 +405,6 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
         searchedPlaceModel.address = reverseGeoCodeList.get(0).formatted_address;
         searchedPlaceModel.lat = reverseGeoCodeList.get(0).geometry.location.lat;
         searchedPlaceModel.lng = reverseGeoCodeList.get(0).geometry.location.lng;
-        searchedPlaceModel.name = reverseGeoCodeList.get(0).formatted_address;
 
         if (currentSelection == CurrentSelection.currentLocation) {
 

@@ -20,6 +20,7 @@ import com.buzzware.iride.databinding.FragmentConfirmPickupBinding;
 import com.buzzware.iride.databinding.PaymentDialogBinding;
 import com.buzzware.iride.models.RideModel;
 import com.buzzware.iride.models.SearchedPlaceModel;
+import com.buzzware.iride.models.TripDetail;
 import com.buzzware.iride.response.directions.DirectionsApiResponse;
 import com.buzzware.iride.response.directions.Leg;
 import com.buzzware.iride.response.directions.Route;
@@ -284,9 +285,17 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         rideModel.bookingDate = new Date().getTime();
 
-        rideModel.destination = destinationLocation;
+        rideModel.tripDetail = new TripDetail();
 
-        rideModel.pickUp = pickUpLocation;
+        rideModel.tripDetail.pickUp = pickUpLocation;
+
+        rideModel.rideType = "";
+
+        rideModel.tripDetail.destinations  = new ArrayList<>();
+
+        rideModel.tripDetail.destinations.add(destinationLocation);
+
+
 
         rideModel.userId = getUserId();
 
