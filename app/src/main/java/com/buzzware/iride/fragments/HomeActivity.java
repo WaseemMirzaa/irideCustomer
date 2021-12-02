@@ -20,6 +20,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.buzzware.iride.R;
 import com.buzzware.iride.RatingDialog;
 import com.buzzware.iride.models.RideModel;
+import com.buzzware.iride.models.SearchedPlaceModel;
 import com.buzzware.iride.models.User;
 import com.buzzware.iride.models.VehicleModel;
 import com.buzzware.iride.response.directions.DirectionsApiResponse;
@@ -46,6 +47,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -187,7 +189,13 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
         Query query = FirebaseFirestore.getInstance().collection("Bookings")
                 .whereEqualTo("userId", getUserId())
-                .whereIn("status", Arrays.asList("driverAccepted", "driverReached", "rideStarted", "booked", AppConstants.RideStatus.RIDE_COMPLETED));
+                .whereIn("status", Arrays.asList(
+                        "driverAccepted",
+                        "driverReached",
+                        "rideStarted",
+                        "booked",
+                        AppConstants.RideStatus.RIDE_COMPLETED
+                ));
 
         query.get()
                 .addOnCompleteListener(
@@ -249,6 +257,8 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
                         if (AppConstants.RideStatus.isRideInProgress(rideModel.status)) {
 
+                            //User is in car moving towards destination
+
                             showRideMarkers(rideModel);
 
                             mBinding.onTripLL.setVisibility(View.VISIBLE);
@@ -257,6 +267,8 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
                         } else if (AppConstants.RideStatus.isRideDriverArriving(rideModel.status)) {
 
+                            //Driver is Arriving
+
                             showRideMarkers(rideModel);
 
                             mBinding.onTripLL.setVisibility(View.GONE);
@@ -264,6 +276,8 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
                             mBinding.reachingLL.setVisibility(View.VISIBLE);
 
                         } else if (AppConstants.RideStatus.BOOKED.equalsIgnoreCase(rideModel.status)) {
+
+                            //Drive Booked But displaying Waiting for driver popup
 
                             this.rideModel = rideModel;
 
@@ -279,21 +293,29 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
                 });
     }
 
-    Marker bookedPickupMarker, bookedDestinationMarker;
+    Marker bookedPickupMarker, bookedDestinationMarker, lastDestinationMarker, destinationMarker2;
 
     private void setWaitingForDriver(RideModel rideModel) {
 
-        LatLng currentLatLng = new LatLng(rideModel.pickUp.lat, rideModel.pickUp.lng);
+        LatLng currentLatLng = new LatLng(rideModel.tripDetail.pickUp.lat, rideModel.tripDetail.pickUp.lng);
 
         bookedPickupMarker = mMap.addMarker(new MarkerOptions().position(currentLatLng).title("").icon(BitmapFromVector(context, R.drawable.destination)));
 
-        LatLng dest = new LatLng(rideModel.destination.lat, rideModel.destination.lng);
+        LatLng dest = new LatLng(rideModel.tripDetail.destinations.get(0).lat, rideModel.tripDetail.destinations.get(0).lng);
 
         bookedDestinationMarker = mMap.addMarker(new MarkerOptions().position(dest).title("").icon(BitmapFromVector(context, R.drawable.destination)));
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 18.0F));
 
-        getDirections(rideModel.pickUp.lat, rideModel.pickUp.lng, rideModel.destination.lat, rideModel.destination.lng);
+        getDirections(rideModel.tripDetail.pickUp.lat, rideModel.tripDetail.pickUp.lng, rideModel.tripDetail.destinations.get(0).lat, rideModel.tripDetail.destinations.get(0).lng, false);
+
+        if (rideModel.tripDetail.destinations.size() > 1) {
+
+            LatLng secondDest = new LatLng(rideModel.tripDetail.destinations.get(1).lat, rideModel.tripDetail.destinations.get(1).lng);
+
+            lastDestinationMarker = mMap.addMarker(new MarkerOptions().position(secondDest).title("").icon(BitmapFromVector(context, R.drawable.destination)));
+
+        }
 
         mBinding.searchingForDrivers.setText("Searching For Drivers");
 
@@ -309,6 +331,8 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
         if (rideModel.status.equalsIgnoreCase(AppConstants.RideStatus.RIDE_COMPLETED)) {
 
+            //ride completed show rating popup
+
             setDriverListener();
 
             return;
@@ -321,7 +345,11 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
                     .document(ride.id)
                     .update("status", AppConstants.RideStatus.CANCELLED);
 
-            // todo finish and start new activity
+
+            startActivity(new Intent(HomeActivity.this, BookARideActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+
+            finish();
 
         });
 
@@ -329,11 +357,15 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
             if (locationMarker != null) {
 
+                //Driver is arriving showing driver location on map
+
                 return;
 
             }
 
-            LatLng currentLatLng = new LatLng(ride.pickUp.lat, ride.pickUp.lng);
+            //driver is arriving adding driver location marker to map
+
+            LatLng currentLatLng = new LatLng(ride.tripDetail.pickUp.lat, ride.tripDetail.pickUp.lng);
 
             locationMarker = mMap.addMarker(new MarkerOptions().position(currentLatLng).title("").icon(BitmapFromVector(context, R.drawable.destination)));
 
@@ -342,6 +374,8 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
             setDriverListener();
 
         } else if (AppConstants.RideStatus.isRideInProgress(ride.status)) {
+
+            //ride is in progress show ride markers
 
             if (locationMarker != null) {
 
@@ -357,9 +391,19 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
             }
 
-            LatLng currentLatLng = new LatLng(ride.destination.lat, ride.destination.lng);
+            LatLng currentLatLng = new LatLng(ride.tripDetail.destinations.get(0).lat, ride.tripDetail.destinations.get(0).lng);
 
             destinationMarker = mMap.addMarker(new MarkerOptions().position(currentLatLng).title("").icon(BitmapFromVector(context, R.drawable.destination)));
+
+            if (ride.tripDetail.destinations.size() > 1) {
+
+                //For multiple DropOff
+
+                LatLng destination2 = new LatLng(ride.tripDetail.destinations.get(1).lat, ride.tripDetail.destinations.get(1).lng);
+
+                destinationMarker2 = mMap.addMarker(new MarkerOptions().position(destination2).title("").icon(BitmapFromVector(context, R.drawable.destination)));
+
+            }
 
             setDriverListener();
 
@@ -368,14 +412,17 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
     private void hideBookedMarkers() {
 
-        if(bookedPickupMarker != null) {
+        //todo check how to deal with booked markers
+
+        if (bookedPickupMarker != null) {
 
             bookedPickupMarker.remove();
+
             bookedPickupMarker = null;
 
         }
 
-        if(bookedDestinationMarker != null) {
+        if (bookedDestinationMarker != null) {
 
             bookedDestinationMarker.remove();
 
@@ -386,7 +433,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
     Call<String> reverseCall;
 
-    void getDirections(double originLat, double originLng, double destinationLat, double destinationLng) {
+    void getDirections(double originLat, double originLng, double destinationLat, double destinationLng, Boolean isSecondDropOff) {
 
         String url = "/maps/api/directions/json?origin=" + originLat + "," + originLng + "&destination=" + destinationLat + "," + destinationLng + "&key=" + AppConstants.GOOGLE_PLACES_API_KEY;
 
@@ -411,13 +458,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
                     DirectionsApiResponse resp = gson.fromJson(response.body(), DirectionsApiResponse.class);
 
-                    drawPaths(resp);
-
-                    if (AppConstants.RideStatus.isRideInProgress(rideModel.status)) {
-
-                        calculateDistance();
-
-                    }
+                    drawPaths(resp, isSecondDropOff);
                 }
             }
 
@@ -428,9 +469,56 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
         });
     }
 
-    private void drawPaths(DirectionsApiResponse res) {
+    Call<String> reverseCall1;
 
-        ArrayList<LatLng> path = new ArrayList<>();
+    void getDirectionsTowardsDropOff2(double originLat, double originLng, double destinationLat, double destinationLng, Boolean isSecondDropOff) {
+
+        String url = "/maps/api/directions/json?origin=" + originLat + "," + originLng + "&destination=" + destinationLat + "," + destinationLng + "&key=" + AppConstants.GOOGLE_PLACES_API_KEY;
+
+        if (reverseCall1 != null) {
+
+            reverseCall1.cancel();
+
+            reverseCall1 = null;
+        }
+
+        reverseCall1 = Controller.getApi().getPlaces(url, "asdasd");
+
+        reverseCall1.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+
+                reverseCall1 = null;
+
+                Gson gson = new Gson();
+
+                if (response.body() != null && response.isSuccessful()) {
+
+                    DirectionsApiResponse resp = gson.fromJson(response.body(), DirectionsApiResponse.class);
+
+                    drawPaths2(resp, isSecondDropOff);
+
+//                    if (AppConstants.RideStatus.isRideInProgress(rideModel.status)) {
+
+                        calculateDistance2();
+
+//                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
+                reverseCall = null;
+            }
+        });
+    }
+
+    ArrayList<LatLng> path = new ArrayList<>();
+
+    private void drawPaths(DirectionsApiResponse res, Boolean isSecondDropOff) {
+        path = new ArrayList<>();
+
+//        ArrayList<LatLng> path = new ArrayList<>();
 
         try {
 
@@ -470,6 +558,76 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
         } catch (Exception ex) {
 
+            ex.printStackTrace();
+
+        }
+
+        //Draw the polyline
+        if (path.size() > 0) {
+
+            if (secondDropOffPolyline != null)
+
+                secondDropOffPolyline.remove();
+
+            secondDropOffPolyline = null;
+
+            PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.BLACK).width(10);
+
+            secondDropOffPolyline = mMap.addPolyline(opts);
+
+        }
+
+//        if (AppConstants.RideStatus.isRideInProgress(rideModel.status)) {
+
+            calculateDistance();
+
+//        }
+    }
+
+    private void drawPaths2(DirectionsApiResponse res, Boolean isSecondDropOff) {
+
+//        ArrayList<LatLng> path = new ArrayList<>();
+
+        try {
+
+            if (res.routes != null && res.routes.size() > 0) {
+
+                Route route = res.routes.get(0);
+
+                if (route.legs != null) {
+
+                    for (int i = 0; i < route.legs.size(); i++) {
+
+                        Leg leg = route.legs.get(i);
+
+                        if (leg.steps != null) {
+
+                            for (int j = 0; j < leg.steps.size(); j++) {
+
+                                Step step1 = leg.steps.get(j);
+
+                                if (step1.polyline != null) {
+
+                                    List<LatLng> decoded = PolyUtil.decode(step1.polyline.points);
+
+                                    path.addAll(decoded);
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+
         }
 
         //Draw the polyline
@@ -485,13 +643,60 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
             polyline = mMap.addPolyline(opts);
 
+        }
+
+    }
+
+    private void checkPolyline2() {
+
+        if (AppConstants.RideStatus.BOOKED.equalsIgnoreCase(rideModel.status)) {
+
+            //draw polyline from dest1 to second drop off 2
+            drawSecondPolyline(rideModel);
+
+        } else if (AppConstants.RideStatus.RIDE_STARTED.equalsIgnoreCase(rideModel.status) && rideModel.tripDetail.destinations.get(0).status.equalsIgnoreCase(AppConstants.RideDetailStatus.NOT_REACHED)) {
+
+            //ride is started handle case for driver hasn't reached any location yet draw polyline draw from dest 1 to dest 2
+            //drawing polyline from dest1 to second drop off 2
+
+            drawSecondPolyline(rideModel);
+
+        } else {
+
+            hideSecondPolyline();
+
+        }
+
+    }
+
+    private void drawSecondPolyline(RideModel rideModel) {
+
+        SearchedPlaceModel pickUp = rideModel.tripDetail.destinations.get(0);
+        SearchedPlaceModel destination = rideModel.tripDetail.destinations.get(1);
+
+        getDirectionsTowardsDropOff2(pickUp.lat, pickUp.lng, destination.lat, destination.lng, false);
+    }
+
+    private void hideSecondPolyline() {
+
+        if (secondDropOffPolyline != null) {
+
+            secondDropOffPolyline.remove();
+
+            secondDropOffPolyline = null;
 
         }
     }
 
+    Polyline secondDropOffPolyline;
+
+    public ListenerRegistration listenerRegistration;
+
     private void setDriverListener() {
 
-        FirebaseFirestore.getInstance().collection("Users")
+        //For Driver Location Updates
+
+        listenerRegistration = FirebaseFirestore.getInstance().collection("Users")
                 .document(rideModel.driverId)
                 .addSnapshotListener((value, error) -> {
 
@@ -501,10 +706,14 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
                         if (rideModel.status.equalsIgnoreCase(AppConstants.RideStatus.RIDE_COMPLETED)) {
 
+                            //ride complete showing rating popup
+
                             if (ratingDialog != null && ratingDialog.isShowing()) {
 
                                 return;
                             }
+
+                            listenerRegistration = null;
 
                             ratingDialog = new RatingDialog(HomeActivity.this, rideModel, user);
 
@@ -514,6 +723,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
                         }
 
+                        //Update Driver Location On Map
                         updateDriverLocation(user);
 
                         setUserData(user);
@@ -531,10 +741,15 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
                 });
 
     }
+    
+    int distance = 0;
+    int minutes = 0;
 
     void calculateDistance() {
 
-        String url = "/maps/api/distancematrix/json?departure_time&origins=" + location.getLatitude() + "," + location.getLongitude() + "&destinations=" + rideModel.destination.lat + "," + rideModel.destination.lng + "&key=" + AppConstants.GOOGLE_PLACES_API_KEY;
+        //todo destination also calculate for destination 2
+
+        String url = "/maps/api/distancematrix/json?departure_time&origins=" + location.getLatitude() + "," + location.getLongitude() + "&destinations=" + rideModel.tripDetail.destinations.get(0).lat + "," + rideModel.tripDetail.destinations.get(0).lng + "&key=" + AppConstants.GOOGLE_PLACES_API_KEY;
 
         if (reverseCall != null) {
 
@@ -558,6 +773,51 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
                     DistanceMatrixResponse resp = gson.fromJson(response.body(), DistanceMatrixResponse.class);
 
                     setDistance(resp);
+
+                    checkPolyline2();
+
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
+                reverseCall = null;
+            }
+        });
+    }
+
+    void calculateDistance2()
+    {
+        SearchedPlaceModel pickUp = rideModel.tripDetail.destinations.get(0);
+        SearchedPlaceModel destination1 = rideModel.tripDetail.destinations.get(0);
+        SearchedPlaceModel destination2 = rideModel.tripDetail.destinations.get(1);
+
+        //todo destination also calculate for destination 2
+
+        String url = "/maps/api/distancematrix/json?departure_time&origins=" + destination1.lat + "," + destination1.lng + "&destinations=" + destination2.lat + "," + destination2.lng + "&key=" + AppConstants.GOOGLE_PLACES_API_KEY;
+
+        if (reverseCall != null) {
+
+            reverseCall.cancel();
+
+            reverseCall = null;
+        }
+
+        reverseCall = Controller.getApi().getPlaces(url, "asdasd");
+
+        reverseCall.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+
+                reverseCall = null;
+
+                Gson gson = new Gson();
+
+                if (response.body() != null && response.isSuccessful()) {
+
+                    DistanceMatrixResponse resp = gson.fromJson(response.body(), DistanceMatrixResponse.class);
+
+                    setDistance2(resp);
 
                 }
             }
@@ -589,20 +849,72 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
                 Element element = row.elements.get(0);
 
-                if (element.distance != null)
+                if (element.distance != null) {
 
                     distance = element.distance.text;
+                    this.distance = element.distance.value;
 
-                if (element.duration != null)
+                }
+
+                if (element.duration != null) {
 
                     time = element.duration.text;
+                    minutes = element.duration.value;
+
+                }
 
             }
 
         }
 
+
         mBinding.timeTV.setText(time);
         mBinding.kmTV.setText(distance);
+    }
+
+    private void setDistance2(DistanceMatrixResponse resp) {
+
+        String distance = "";
+        String time = "";
+        String currentAddress = "";
+
+        if (resp.origin_addresses != null && resp.origin_addresses.size() > 0) {
+
+            currentAddress = resp.origin_addresses.get(0);
+
+        }
+
+        if (resp.rows != null && resp.rows.size() > 0) {
+
+            Row row = resp.rows.get(0);
+
+            if (row.elements != null && row.elements.size() > 0) {
+
+                Element element = row.elements.get(0);
+
+                if (element.distance != null) {
+                    this.distance = this.distance + element.distance.value;
+
+                    distance = element.distance.text;
+
+                }
+
+                if (element.duration != null) {
+                    minutes = element.duration.value + minutes;
+                    time = element.duration.text;
+
+                }
+
+            }
+
+        }
+
+        
+        float min = minutes / (60);
+        float dis = this.distance / 1000;
+
+        mBinding.timeTV.setText(min + " minutes");
+        mBinding.kmTV.setText(dis + " km");
     }
 
 
@@ -674,6 +986,8 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
         LatLng currentLatLng = new LatLng(user.lat, user.lng);
 
+        //if already showing marker then move marker else add driver marker
+
         if (driverMarker == null)
 
             driverMarker = mMap
@@ -695,6 +1009,8 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
             }
 
+            //moving driver marker
+
             driverMarker.setPosition(currentLatLng);
 
 
@@ -708,9 +1024,13 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
             double bearing = 0;
 
             if (degree >= 0) {
+
                 bearing = degree;
+
             } else {
+
                 bearing = 360 + degree;
+
             }
 
             driverMarker.setRotation((float) bearing);
@@ -721,12 +1041,36 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
         if (AppConstants.RideStatus.isRideDriverArriving(rideModel.status)) {
 
-            getDirections(user.lat, user.lng, rideModel.pickUp.lat, rideModel.pickUp.lng);
+            //Rider is arriving show path from driver to pickup location
+
+            getDirections(user.lat, user.lng, rideModel.tripDetail.pickUp.lat, rideModel.tripDetail.pickUp.lng, false);
 
         } else {
 
-            getDirections(user.lat, user.lng, rideModel.destination.lat, rideModel.destination.lng);
+            if (rideModel.tripDetail.destinations.size() == 1) {
 
+                //Either or ride is active and signle dropoff
+
+                getDirections(user.lat, user.lng, rideModel.tripDetail.destinations.get(0).lat, rideModel.tripDetail.destinations.get(0).lng, false);
+
+            } else if (rideModel.tripDetail.destinations.size() > 1) {
+
+
+                if (AppConstants.RideDetailStatus.hasReached(rideModel.tripDetail.destinations.get(0).status)) {
+
+                    //rider is moving towards destination 2
+
+                    getDirections(user.lat, user.lng, rideModel.tripDetail.destinations.get(1).lat, rideModel.tripDetail.destinations.get(1).lng, true);
+
+
+                } else {
+
+                    //rider is moving towards destination 1 show path from destination 1 to 2
+
+                    getDirections(user.lat, user.lng, rideModel.tripDetail.destinations.get(0).lat, rideModel.tripDetail.destinations.get(0).lng, false);
+
+                }
+            }
         }
 
     }

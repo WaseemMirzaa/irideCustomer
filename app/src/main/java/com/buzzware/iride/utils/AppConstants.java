@@ -26,4 +26,30 @@ public class AppConstants {
 
         }
     }
+
+    public static class RideDetailStatus {
+
+        public static final String REACHED = "1";
+        public static final String NOT_REACHED = "0";
+
+        public static boolean hasReached(String status) {
+
+            return status.equalsIgnoreCase(REACHED);
+
+        }
+
+    }
+
+    public static class RideTypeStatus {
+
+        public static final String REACHED = "1";
+        public static final String NOT_REACHED = "0";
+
+        public static boolean hasReached(String status) {
+
+            return status.equalsIgnoreCase(REACHED);
+
+        }
+
+    }
 }

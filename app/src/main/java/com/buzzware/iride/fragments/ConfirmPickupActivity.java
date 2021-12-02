@@ -20,6 +20,7 @@ import com.buzzware.iride.databinding.FragmentConfirmPickupBinding;
 import com.buzzware.iride.databinding.PaymentDialogBinding;
 import com.buzzware.iride.models.RideModel;
 import com.buzzware.iride.models.SearchedPlaceModel;
+import com.buzzware.iride.models.TripDetail;
 import com.buzzware.iride.response.directions.DirectionsApiResponse;
 import com.buzzware.iride.response.directions.Leg;
 import com.buzzware.iride.response.directions.Route;
@@ -53,7 +54,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
     GoogleMap mMap;
 
-    SearchedPlaceModel pickUpLocation, destinationLocation;
+    SearchedPlaceModel pickUpLocation, destinationLocation, secondDropOff;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +113,10 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
             destinationLocation = b.getParcelable("destination");
 
+            if (b.getParcelable("secondDropOff") != null)
+
+                secondDropOff = b.getParcelable("secondDropOff");
+
         }
 
     }
@@ -138,6 +143,9 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 ///move to dummy location
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(pickUpLocation.lat, pickUpLocation.lng), 12.0F));
+
+        calledForSecondDropOff = false;
+
         getDirections();
     }
 
@@ -161,9 +169,21 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
     Call<String> reverseCall;
 
+    Boolean calledForSecondDropOff = false;
+
     void getDirections() {
 
-        String url = "/maps/api/directions/json?origin=" + pickUpLocation.lat + "," + pickUpLocation.lng + "&destination=" + destinationLocation.lat + "," + destinationLocation.lng + "&key=" + AppConstants.GOOGLE_PLACES_API_KEY;
+        String url = null;
+
+        if (!calledForSecondDropOff) {
+
+            url = "/maps/api/directions/json?origin=" + pickUpLocation.lat + "," + pickUpLocation.lng + "&destination=" + destinationLocation.lat + "," + destinationLocation.lng + "&key=" + AppConstants.GOOGLE_PLACES_API_KEY;
+
+        } else {
+
+            url = "/maps/api/directions/json?origin=" + destinationLocation.lat + "," + destinationLocation.lng + "&destination=" + secondDropOff.lat + "," + secondDropOff.lng + "&key=" + AppConstants.GOOGLE_PLACES_API_KEY;
+
+        }
 
         if (reverseCall != null) {
 
@@ -251,17 +271,31 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         }
 
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(pickUpLocation.lat, pickUpLocation.lng))
-                .title("Pickup Location")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+        if (!calledForSecondDropOff) {
+
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(pickUpLocation.lat, pickUpLocation.lng))
+                    .title("Pickup Location")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
 
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(destinationLocation.lat, destinationLocation.lng))
-                .title("Destination")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(destinationLocation.lat, destinationLocation.lng))
+                    .title("Destination")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
+            if (secondDropOff != null) {
+
+                mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(secondDropOff.lat, secondDropOff.lng))
+                        .title("Destination")
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+
+                calledForSecondDropOff = true;
+                getDirections();
+
+            }
+        }
     }
 
     @Override
@@ -284,9 +318,19 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         rideModel.bookingDate = new Date().getTime();
 
-        rideModel.destination = destinationLocation;
+        rideModel.tripDetail = new TripDetail();
 
-        rideModel.pickUp = pickUpLocation;
+        rideModel.tripDetail.destinations = new ArrayList<>();
+
+        rideModel.tripDetail.destinations.add(destinationLocation);
+
+        if (secondDropOff != null) {
+
+            rideModel.tripDetail.destinations.add(secondDropOff);
+
+        }
+
+        rideModel.tripDetail.pickUp = pickUpLocation;
 
         rideModel.userId = getUserId();
 
@@ -297,7 +341,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
         FirebaseFirestore.getInstance().collection("Bookings")
                 .document().set(rideModel);
 
-        Toast.makeText(this,"Successfully Booked",Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Successfully Booked", Toast.LENGTH_LONG).show();
 
         startActivity(new Intent(this, HomeActivity.class)
                 .addFlags(

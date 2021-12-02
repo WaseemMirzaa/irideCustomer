@@ -16,13 +16,17 @@ public class RideModel {
 
     public Double driverLng;
 
+    public String username;
+
+    public String rideType;
+
+    public TripDetail tripDetail;
+
     public String status;
 
     public String price;
 
-    public SearchedPlaceModel pickUp;
 
-    public SearchedPlaceModel destination;
 
     public RideModel() {
 
