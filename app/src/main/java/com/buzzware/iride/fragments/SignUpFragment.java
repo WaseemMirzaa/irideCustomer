@@ -136,11 +136,12 @@ public class SignUpFragment extends BaseFragment {
         if (task.isSuccessful()) {
 
             User user = new User();
-            user.address = mBinding.cityET.getText().toString();
+            user.address = mBinding.addressET.getText().toString();
             user.email = mBinding.emailET.getText().toString();
             user.firstName = mBinding.fNameET.getText().toString();
             user.lastName = mBinding.lNameET.getText().toString();
             user.phoneNumber = mBinding.phoneET.getText().toString();
+            user.city = mBinding.cityET.getText().toString();
             user.state = mBinding.stateET.getText().toString();
             user.zipcode = mBinding.zipET.getText().toString();
 

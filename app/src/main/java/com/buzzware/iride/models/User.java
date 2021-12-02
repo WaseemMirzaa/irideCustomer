@@ -18,4 +18,5 @@ public class User {
     public double lng;
     public String zipcode;
     public String email;
+    public String image;
 }
