@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/_20sdp"
+    android:background="@color/purple_200">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_gravity="center"
+            android:layout_width="60dp"
+            android:layout_height="60dp">
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/dummy_girl"
+                android:id="@+id/picRIV"
+                app:riv_corner_radius="@dimen/_10sdp"/>
+
+            <RelativeLayout
+                android:background="@drawable/rounded_corner_button_yellow_curve"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_width="25dp"
+                android:layout_height="25dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4.9"
+                    android:textSize="@dimen/_8sdp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="@font/gibson_semibd"/>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:id="@+id/nameTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Alexa"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold"
+            android:fontFamily="@font/gibson_semibd"/>
+
+        <TextView
+            android:layout_marginTop="4dp"
+            android:layout_gravity="center"
+            android:id="@+id/vehicleNoTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="XYZ-182"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp"
+            android:textStyle="normal"
+            android:fontFamily="@font/gibson_regular"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/gray"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/budgetTV"
+            android:text="$48.98"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sdp"
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:fontFamily="@font/gibson_semibd"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/gray"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rate Your Trip"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="normal"
+            android:fontFamily="@font/gibson_regular"/>
+
+        <me.zhanghai.android.materialratingbar.MaterialRatingBar
+            android:layout_below="@+id/ratingMRB"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="30dp"
+            android:layout_gravity="center"
+            android:maxHeight="30dp"
+            android:id="@+id/userRating"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:rating="3"
+            app:mrb_progressBackgroundTint="@color/purple_500_dark"
+            app:mrb_progressTint="@color/yellow"
+            app:mrb_secondaryProgressTint="@color/purple_500_dark"
+            style="@style/Widget.MaterialRatingBar.RatingBar"/>
+
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            android:id="@+id/submitBt"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/rounded_corner_button_dark_blue"
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+            <TextView
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textStyle="normal"
+                android:textAllCaps="true"
+                android:fontFamily="@font/gibson_regular"
+                android:textSize="@dimen/_10sdp"
+                android:textColor="@color/white"
+                android:text="SUBMIT RATING"/>
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

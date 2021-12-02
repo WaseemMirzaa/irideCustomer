@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".screens.OnTrip">
+        <com.google.android.gms.maps.MapView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/homeMapView">
+        </com.google.android.gms.maps.MapView>
+
+        <RelativeLayout
+            android:background="@drawable/gradient_bg"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_90sdp">
+            <RelativeLayout
+                android:elevation="@dimen/_10sdp"
+                android:background="@drawable/rounded_corner_button_white"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <RelativeLayout
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_gravity="center"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp">
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/back_icon"/>
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_width="0.5dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/gray_light"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"/>
+
+                    <TextView
+                        android:singleLine="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/gray_light"
+                        android:textSize="@dimen/_10sdp"
+                        android:text="Your location"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_10sdp"/>
+
+                    <ImageView
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/ic_right_arrow"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_marginRight="10dp"
+                        android:singleLine="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10sdp"
+                        android:text="Milan Chowk"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_10sdp"/>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/btnTripView"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@drawable/rounded_corner_button_light_blue_top_two"/>
+
+            <LinearLayout
+                android:padding="@dimen/_15sdp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/blue_arrow_up"/>
+
+                    <RelativeLayout
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_marginRight="10dp"
+                            android:layout_toLeftOf="@+id/topRightLay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:layout_gravity="start"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="On Trip"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_10sdp"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/gibson_semibd"/>
+
+                                <TextView
+                                    android:layout_centerVertical="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_gravity="start"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="9:51"
+                                    android:textColor="@color/purple_200"
+                                    android:textSize="@dimen/_8sdp"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/gibson_semibd"/>
+                            </RelativeLayout>
+
+                            <TextView
+                                android:layout_marginTop="4dp"
+                                android:layout_gravity="start"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Play music, read news..."
+                                android:textColor="@color/gray"
+                                android:textSize="@dimen/_8sdp"
+                                android:textStyle="normal"
+                                android:fontFamily="@font/gibson_regular"/>
+                        </LinearLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_above="@+id/btnTripView"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/rounded_corner_white"
+            android:layout_width="40dp"
+            android:layout_height="40dp">
+            <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/current_location"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>

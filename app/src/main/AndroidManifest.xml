@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.buzzware.iride">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+
+    <application
+        android:allowBackup="true"
+        android:name=".app.MyApplication"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Iride">
+        <activity android:name=".screens.Settings" />
+
+        <activity
+            android:name=".screens.Notifications"
+            android:theme="@style/Theme.white" />
+
+        <activity
+            android:name=".fragments.ConfirmPickupActivity"
+            android:theme="@style/Theme.white" />
+
+        <activity
+            android:name=".fragments.BookingsActivity"
+            android:theme="@style/Theme.white" />
+
+        <activity
+            android:name=".fragments.Chat"
+            android:theme="@style/Theme.white" />
+        <activity
+            android:name=".fragments.CustomerService"
+            android:theme="@style/Theme.white" />
+
+        <activity
+            android:name=".fragments.History"
+            android:theme="@style/Theme.white" />
+
+        <activity
+            android:name=".fragments.HomeActivity"
+            android:theme="@style/Theme.white" />
+
+        <activity
+            android:name=".fragments.Invitation"
+            android:theme="@style/Theme.white" />
+
+        <activity
+            android:name=".fragments.Messages"
+            android:theme="@style/Theme.white" />
+
+        <activity
+            android:name=".fragments.Profile"
+            android:theme="@style/Theme.white" />
+
+        <activity
+            android:name=".fragments.Wallet"
+            android:theme="@style/Theme.white" />
+
+        <activity
+            android:name=".screens.TripView"
+            android:theme="@style/Theme.white" />
+        <activity android:name=".screens.BookARideActivity"
+            android:theme="@style/Theme.white"/>
+        <activity
+            android:name=".screens.OnTrip"
+            android:theme="@style/Theme.white" />
+        <activity
+            android:name=".screens.Authentication"
+            android:theme="@style/Theme.white" />
+        <activity android:name=".screens.StartUp">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+    </application>
+
+</manifest>

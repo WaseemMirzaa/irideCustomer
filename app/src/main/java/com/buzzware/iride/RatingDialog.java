@@ -1,0 +1,125 @@
+package com.buzzware.iride;
+
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+
+import com.buzzware.iride.models.RideModel;
+import com.buzzware.iride.models.User;
+import com.buzzware.iride.models.VehicleModel;
+import com.buzzware.iride.utils.AppConstants;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.makeramen.roundedimageview.RoundedImageView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import me.zhanghai.android.materialratingbar.MaterialRatingBar;
+
+public class RatingDialog extends Dialog {
+
+    private RoundedImageView picRIV;
+    private TextView nameTV;
+    private TextView vehicleNoTV;
+    private TextView budgetTV;
+    private MaterialRatingBar userRating;
+    private RelativeLayout submitBt;
+
+    Activity c;
+
+    public RatingDialog(@NonNull Activity context, RideModel ride, User user) {
+
+        super(context);
+
+        c = context;
+
+        setContentView(R.layout.rating_dialog_lay);
+
+        initView();
+
+        setCancelable(false);
+
+        setData(ride, user);
+
+        setListeners(ride, user);
+
+        getVehicleDetails(ride);
+    }
+
+    private void setListeners(RideModel ride, User user) {
+
+        submitBt.setOnClickListener(v -> submitRating(user, ride));
+
+    }
+
+    private void submitRating(User user, RideModel ride) {
+
+        if (user.ratings == null) {
+
+            user.ratings = new ArrayList<>();
+
+        }
+
+        user.ratings.add(Float.valueOf(userRating.getRating()).doubleValue());
+
+        FirebaseFirestore.getInstance().collection("Users").document(ride.driverId)
+                .update("ratings", user.ratings);
+
+        FirebaseFirestore.getInstance().collection("Bookings").document(ride.id)
+                .update("status", AppConstants.RideStatus.RATED);
+
+        dismiss();
+
+        c.finish();
+
+    }
+
+    private void getVehicleDetails(RideModel rideModel) {
+
+        FirebaseFirestore.getInstance().collection("Vehicle")
+                .document(rideModel.vehicleId)
+                .get()
+                .addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()) {
+
+                        VehicleModel vehicleDetails = task.getResult().toObject(VehicleModel.class);
+
+                        if (vehicleDetails != null) {
+
+                            vehicleNoTV.setText(vehicleDetails.tagNumber);
+
+                        }
+
+                    }
+
+                });
+
+    }
+
+    private void setData(RideModel ride, User user) {
+
+        nameTV.setText(user.firstName + " " + user.lastName);
+
+        vehicleNoTV.setText(user.firstName + " " + user.lastName);
+
+        budgetTV.setText(ride.price + "$");
+
+        budgetTV.setText(ride.price + "$");
+
+    }
+
+    public void initView() {
+        picRIV = (RoundedImageView) findViewById(R.id.picRIV);
+        nameTV = (TextView) findViewById(R.id.nameTV);
+        vehicleNoTV = (TextView) findViewById(R.id.vehicleNoTV);
+        budgetTV = (TextView) findViewById(R.id.budgetTV);
+        userRating = (MaterialRatingBar) findViewById(R.id.userRating);
+        submitBt = (RelativeLayout) findViewById(R.id.submitBt);
+    }
+}

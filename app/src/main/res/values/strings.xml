@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Iride</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--    keys-->
+    <string name="google_maps_key">AIzaSyBgwhe1x1JsZIjgUeup5CRu5edWyJZoiak</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="long_press_marker">Long Press</string>
+    <string name="userpic">userpic</string>
+    <string name="profilePic">Profile Pic</string>
+</resources>

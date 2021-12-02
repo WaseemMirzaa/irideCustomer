@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".fragments.BookingsActivity">
+
+        <RelativeLayout
+            android:id="@+id/headerLay"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp">
+            <RelativeLayout
+                android:id="@+id/drawerIcon"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_centerVertical="true"
+                android:layout_width="40dp"
+                android:layout_height="40dp">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/menu_black"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_below="@+id/headerLay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bookings"
+                android:paddingBottom="@dimen/_15sdp"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:fontFamily="@font/gibson_regular"
+                android:textSize="18dp"/>
+
+            <RelativeLayout
+                android:id="@+id/customTabLay"
+                android:layout_below="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/blackOpacity_30"/>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:id="@+id/firstTabLay"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:id="@+id/firstTabTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_10sdp"
+                            android:text="History"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:layout_centerInParent="true"
+                            android:textAllCaps="true"
+                            android:fontFamily="@font/gibson_regular"/>
+
+                        <View
+                            android:id="@+id/firstTabLine"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_3sdp"
+                            android:background="@color/purple_200"
+                            android:layout_alignParentBottom="true"/>
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/blackOpacity_30"/>
+
+                    <RelativeLayout
+                        android:id="@+id/secondTabLay"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:id="@+id/seconfTabTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_10sdp"
+                            android:text="UPCOMMING"
+                            android:textStyle="bold"
+                            android:textColor="@color/gray_light"
+                            android:layout_centerInParent="true"
+                            android:textAllCaps="true"
+                            android:fontFamily="@font/gibson_regular"/>
+
+                        <View
+                            android:id="@+id/seccondTabLine"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_3sdp"
+                            android:layout_alignParentBottom="true"/>
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <androidx.viewpager.widget.ViewPager
+                android:layout_below="@+id/customTabLay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/viewPager"/>
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>

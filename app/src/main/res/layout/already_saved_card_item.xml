@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="55dp">
+    <LinearLayout
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/rightArrow"
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/visa_card"
+            android:adjustViewBounds="true"/>
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="****6754"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp"
+            android:singleLine="true"
+            android:fontFamily="@font/gibson_semibd"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/rightArrow"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@drawable/ic_right_arrow"/>
+</RelativeLayout>
