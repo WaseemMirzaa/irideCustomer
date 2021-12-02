@@ -1,32 +1,30 @@
 package com.buzzware.iride.screens;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.DataBindingUtil;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
-import com.buzzware.iride.databinding.FragmentExpandablePlacesListBinding;
-import com.buzzware.iride.fragments.ConfirmPickupActivity;
-import com.buzzware.iride.fragments.ExpandablePlacesListFragment;
-import com.buzzware.iride.response.geoCode.ReverseGeoCode;
-import com.buzzware.iride.response.geoCode.ReverseGeoCodeResponse;
-import com.buzzware.iride.models.SearchedPlaceModel;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.buzzware.iride.OnPredictedEvent;
 import com.buzzware.iride.OnTextChangedEvent;
 import com.buzzware.iride.R;
-import com.buzzware.iride.utils.AppConstants;
 import com.buzzware.iride.databinding.FragmentBookARideBinding;
+import com.buzzware.iride.fragments.ConfirmPickupActivity;
+import com.buzzware.iride.fragments.ExpandablePlacesListFragment;
+import com.buzzware.iride.models.SearchedPlaceModel;
+import com.buzzware.iride.response.geoCode.ReverseGeoCode;
+import com.buzzware.iride.response.geoCode.ReverseGeoCodeResponse;
 import com.buzzware.iride.retrofit.Controller;
+import com.buzzware.iride.utils.AppConstants;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -49,7 +47,7 @@ import retrofit2.Response;
 
 enum CurrentSelection {
 
-    whereTo, currentLocation
+    whereTo, currentLocation, secondDropOff
 
 }
 
@@ -61,13 +59,15 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
 
     public GoogleMap mMap;
 
+    Boolean isSecondDropOffEnabled = false;
+
     CurrentSelection currentSelection = CurrentSelection.whereTo;
 
     private SimpleLocation location;
 
     Boolean hasLocationPermissions;
 
-    SearchedPlaceModel placeWhereTo, placeCurrentLocation;
+    SearchedPlaceModel placeWhereTo, placeCurrentLocation, placeSecondDropOff;
 
     Boolean isChangedFromMap = false;
 
@@ -80,9 +80,17 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
 
         setContentView(mBinding.getRoot());
 
+        setVisibilities();
+
         checkPermissionsAndInit();
 
         mBinding.backIcon.setOnClickListener(v -> OpenCloseDrawer());
+
+    }
+
+    private void setVisibilities() {
+
+        mBinding.secondDropOffLL.setVisibility(View.GONE);
 
     }
 
@@ -188,6 +196,7 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setListeners() {
 
         mBinding.currentLocationET.setOnFocusChangeListener((v, hasFocus) -> {
@@ -211,11 +220,36 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
             }
         });
 
+        mBinding.destination2ET.setOnFocusChangeListener((v, hasFocus) -> {
+
+            if (hasFocus) {
+
+                EventBus.getDefault().post(new ExpandablePlacesListFragment.ShowBottomSheetMsg());
+
+                currentSelection = CurrentSelection.secondDropOff;
+
+            }
+        });
+
+        mBinding.addIV.setOnClickListener(v -> showSecondDropOff());
+
+        mBinding.crossIV.setOnClickListener(v -> disableSecondDropOff());
+
         mBinding.currentLocationET.setOnTouchListener((v, event) -> {
 
             EventBus.getDefault().post(new ExpandablePlacesListFragment.ShowBottomSheetMsg());
 
             currentSelection = CurrentSelection.currentLocation;
+
+            return false;
+
+        });
+
+        mBinding.destination2ET.setOnTouchListener((v, event) -> {
+
+            EventBus.getDefault().post(new ExpandablePlacesListFragment.ShowBottomSheetMsg());
+
+            currentSelection = CurrentSelection.secondDropOff;
 
             return false;
 
@@ -294,6 +328,57 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
 
             }
         });
+
+        mBinding.destination2ET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if (!isChangedFromMap) {
+
+                    currentSelection = CurrentSelection.secondDropOff;
+
+                    OnTextChangedEvent event = new OnTextChangedEvent();
+
+                    event.data = s.toString();
+
+                    EventBus.getDefault().post(event);
+                }
+
+                isChangedFromMap = false;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    private void disableSecondDropOff() {
+
+        mBinding.secondDropOffLL.setVisibility(View.GONE);
+
+        isSecondDropOffEnabled = false;
+
+        if (currentSelection == CurrentSelection.secondDropOff) {
+
+            currentSelection = CurrentSelection.whereTo;
+
+        }
+
+    }
+
+    private void showSecondDropOff() {
+
+        isSecondDropOffEnabled = true;
+
+        mBinding.secondDropOffLL.setVisibility(View.VISIBLE);
+
     }
 
 
@@ -326,6 +411,10 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
         i.putExtra("pickup", placeCurrentLocation);
 
         i.putExtra("destination", placeWhereTo);
+
+        if (placeSecondDropOff != null)
+
+            i.putExtra("secondDropOff", placeSecondDropOff);
 
         startActivity(i);
 
@@ -405,7 +494,7 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
         searchedPlaceModel.address = reverseGeoCodeList.get(0).formatted_address;
         searchedPlaceModel.lat = reverseGeoCodeList.get(0).geometry.location.lat;
         searchedPlaceModel.lng = reverseGeoCodeList.get(0).geometry.location.lng;
-        searchedPlaceModel.name = reverseGeoCodeList.get(0).formatted_address;
+        searchedPlaceModel.status = "0";
 
         if (currentSelection == CurrentSelection.currentLocation) {
 
@@ -421,11 +510,15 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
 
             mBinding.currentLocationET.setText(searchedPlaceModel.address);
 
+        } else if (currentSelection == CurrentSelection.secondDropOff) {
+
+            placeSecondDropOff = searchedPlaceModel;
+
+            mBinding.destination2ET.setText(searchedPlaceModel.address);
+
         } else {
 
             placeWhereTo = searchedPlaceModel;
-
-//            disableTextWatchers();
 
             mBinding.destinationET.setText(searchedPlaceModel.address);
 
@@ -465,6 +558,14 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 500, null);
 
+        mMap.setOnCameraMoveListener(() -> {
+
+            hideKeyboard();
+
+            EventBus.getDefault().post(new ExpandablePlacesListFragment.HideBottomSheet());
+
+        });
+
 //         mMap.addMarker(new MarkerOptions()
 //                .position(currentLatLng)
 //                .title("Select Location")
@@ -473,17 +574,10 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
 
         mMap.setOnCameraIdleListener(() -> {
 
-//            isChangedFromMap = true;
-
             LatLng midLatLng = mMap.getCameraPosition().target;
 
             reverseGeoCode(midLatLng.latitude, midLatLng.longitude);
 
-//            if (marker != null) {
-//
-//                marker.setPosition(midLatLng);
-
-//            }
         });
     }
 }

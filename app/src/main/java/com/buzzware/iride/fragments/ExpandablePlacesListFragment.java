@@ -116,6 +116,16 @@ public class ExpandablePlacesListFragment extends BottomSheetDialogFragment impl
     };
 
 
+    @org.greenrobot.eventbus.Subscribe(threadMode = ThreadMode.MAIN)
+    public void hideBottomSheet(HideBottomSheet showBottomSheet) {
+
+        BottomSheetBehavior sheetBehavior = BottomSheetBehavior.from(binding.bottomSheetLayout);
+
+        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+    };
+
+
     @Subscribe
 
     private void getData(String data) {
@@ -211,5 +221,8 @@ public class ExpandablePlacesListFragment extends BottomSheetDialogFragment impl
     }
 
     public static class ShowBottomSheetMsg {
+    }
+
+    public static class HideBottomSheet {
     }
 }

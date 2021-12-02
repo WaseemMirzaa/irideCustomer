@@ -10,7 +10,7 @@ public class SearchedPlaceModel implements Parcelable {
     public double lat;
     public double lng;
 
-    public String name;
+    public String status;
     public String address;
 
     public SearchedPlaceModel() {
@@ -21,7 +21,7 @@ public class SearchedPlaceModel implements Parcelable {
         id = in.readString();
         lat = in.readDouble();
         lng = in.readDouble();
-        name = in.readString();
+        status = in.readString();
         address = in.readString();
     }
 
@@ -47,7 +47,7 @@ public class SearchedPlaceModel implements Parcelable {
         dest.writeString(id);
         dest.writeDouble(lat);
         dest.writeDouble(lng);
-        dest.writeString(name);
+        dest.writeString(status);
         dest.writeString(address);
     }
 }

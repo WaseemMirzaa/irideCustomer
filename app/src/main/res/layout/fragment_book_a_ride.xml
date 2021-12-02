@@ -29,107 +29,146 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/locationLay"
             android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_5sdp"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:elevation="@dimen/_5sdp"
             app:layout_constraintTop_toBottomOf="@+id/headerLay">
 
-            <RelativeLayout
-                android:id="@+id/leftLay"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_90sdp"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp">
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/doted_line"
+                app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout2" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:adjustViewBounds="true"
-                    android:padding="@dimen/_5sdp"
-                    android:src="@drawable/doted_line" />
-            </RelativeLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="105dp"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/leftLay">
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_45sdp"
-                    android:orientation="vertical">
+                    android:layout_height="45dp"
+                    android:gravity="center"
+                    android:layout_marginBottom="5dp">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@color/gray_white">
+                    <EditText
+                        android:id="@+id/currentLocationET"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:fontFamily="@font/gibson_regular"
+                        android:hint="Current Location"
+                        android:scrollHorizontally="true"
+                        android:singleLine="true"
+                        android:background="@color/gray_white"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="normal" />
 
-                        <EditText
-                            android:id="@+id/currentLocationET"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:fontFamily="@font/gibson_regular"
-                            android:scrollHorizontally="true"
-                            android:singleLine="true"
-                            android:hint="Current Location"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_12sdp"
-                            android:textStyle="normal" />
-                    </RelativeLayout>
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:layout_marginTop="5dp"
-                        android:background="@color/gray_lightt">
-
-                        <EditText
-                            android:id="@+id/destinationET"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:backgroundTint="@android:color/transparent"
-                            android:fontFamily="@font/gibson_regular"
-                            android:hint="Where to?"
-                            android:scrollHorizontally="true"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_12sdp"
-                            android:textStyle="normal" />
-                    </RelativeLayout>
+                    <ImageView
+                        android:visibility="invisible"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/ic_baseline_add_24"
+                        app:layout_constraintEnd_toEndOf="parent" />
                 </LinearLayout>
 
-                <RelativeLayout
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:gravity="center"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_marginTop="5dp">
+
+                    <EditText
+                        android:id="@+id/destinationET"
+                        android:background="@color/gray_white"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:fontFamily="@font/gibson_regular"
+                        android:hint="Where to?"
+                        android:scrollHorizontally="true"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="normal" />
 
                     <ImageView
                         android:layout_width="25dp"
+                        android:id="@+id/addIV"
                         android:layout_height="25dp"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/ic_baseline_add_24" />
-                </RelativeLayout>
-            </RelativeLayout>
-        </RelativeLayout>
+                        android:src="@drawable/ic_baseline_add_24"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:gravity="center"
+                    android:id="@+id/secondDropOffLL"
+                    android:layout_marginBottom="@dimen/_10sdp">
+
+                    <EditText
+
+                        android:background="@color/gray_white"
+                        android:id="@+id/destination2ET"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:fontFamily="@font/gibson_regular"
+                        android:hint="Second Drop off"
+                        android:scrollHorizontally="true"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="normal" />
+
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:id="@+id/crossIV"
+                        android:layout_height="25dp"
+                        android:src="@drawable/ic_baseline_close_24"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinatorLayout"

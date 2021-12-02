@@ -65,10 +65,11 @@ public class BaseActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton("Open Settings", (dialog, which) -> {
 
+                    startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                            Uri.parse("package:com.buzzware.iride")));
+
                     dialog.dismiss();
 
-                    startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                            Uri.parse("package:" + BuildConfig.APPLICATION_ID)));
 
                 })
                 .create();
