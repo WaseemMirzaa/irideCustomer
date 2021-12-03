@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/drawable/ic_edit.xml" value="0.2846153846153846" />
+        <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/drawable/rounded_corner_gray_two_top.xml" value="0.2846153846153846" />
+        <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/activity_edit_profile.xml" value="0.27291666666666664" />
+        <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/activity_messages.xml" value="0.20364583333333333" />
+        <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/chat_item_lay.xml" value="0.20364583333333333" />
+        <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/fragment_messages.xml" value="0.20364583333333333" />
+        <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/fragment_profile.xml" value="0.27291666666666664" />
+        <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/fragment_sign_up.xml" value="0.27291666666666664" />
+        <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/messages_item_lay.xml" value="0.2974976830398517" />
+        <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/my_message_item_lay.xml" value="0.1734375" />
+        <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/other_message_item_lay.xml" value="0.25" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
+</project>
