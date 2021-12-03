@@ -35,11 +35,16 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.google.maps.android.PolyUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -62,6 +67,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
         super.onCreate(savedInstanceState);
 
         onCreateView();
+
     }
 
     private void onCreateView() {
@@ -75,6 +81,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
         init();
 
         setListeners();
+
     }
 
     private void setListeners() {
@@ -82,6 +89,8 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
         mBinding.btnConfirmPickup.setOnClickListener(this);
 
         mBinding.pricingRG.setOnCheckedChangeListener(this::onCheckedChanged);
+
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -129,11 +138,23 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         }
 
-
         if (destinationLocation != null) {
 
             mBinding.destinationTV.setText(destinationLocation.address);
 
+        }
+
+        if(secondDropOff != null) {
+
+            mBinding.dropOffLL.setVisibility(View.VISIBLE);
+            mBinding.dropOffVw.setVisibility(View.VISIBLE);
+
+            mBinding.dropOffTV.setText(secondDropOff.address);
+
+        } else {
+
+            mBinding.dropOffLL.setVisibility(View.GONE);
+            mBinding.dropOffVw.setVisibility(View.GONE);
         }
     }
 
@@ -308,8 +329,52 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
             //TODO Handle payment and then place order
 //            ShowPaymentDialog();
 
-            placeOrder();
+            getActiveRide();
         }
+    }
+
+    void getActiveRide() {
+
+        Query query = FirebaseFirestore.getInstance().collection("Bookings")
+                .whereEqualTo("userId", getUserId())
+                .whereIn("status", Arrays.asList("driverAccepted", "driverReached", "rideStarted", "booked", AppConstants.RideStatus.RIDE_COMPLETED));
+
+        query.get()
+                .addOnCompleteListener(
+                        this::parseSnapshot
+                );
+    }
+
+    void parseSnapshot(Task<QuerySnapshot> task) {
+
+        RideModel rideModel = null;
+
+        hideLoader();
+
+        if (task.getResult() != null) {
+
+            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                rideModel = document.toObject(RideModel.class);
+
+                rideModel.id = document.getId();
+
+                break;
+
+            }
+
+        }
+
+        if (rideModel != null) {
+
+            showErrorAlert("Already have an active ride");
+
+        } else {
+
+            placeOrder();
+
+        }
+
     }
 
     private void placeOrder() {

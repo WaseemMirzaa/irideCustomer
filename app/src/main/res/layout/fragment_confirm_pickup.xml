@@ -53,14 +53,14 @@
 
                     <RelativeLayout
                         android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_90sdp"
+                        android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginBottom="@dimen/_10sdp">
 
                         <ImageView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
                             android:adjustViewBounds="true"
@@ -70,7 +70,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:weightSum="2">
 
@@ -122,12 +122,69 @@
                         </RelativeLayout>
 
                         <View
+                            android:id="@+id/dropOffVw"
                             android:layout_width="match_parent"
                             android:layout_height="0.5dp"
                             android:layout_marginRight="@dimen/_20sdp"
                             android:background="@color/gray" />
 
                         <RelativeLayout
+                            android:id="@+id/dropOffLL"
+                            android:visibility="gone"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:layout_marginRight="@dimen/_45sdp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/gibson_regular"
+                                    android:text="Drop Off"
+                                    android:textSize="@dimen/_9sdp" />
+
+                                <TextView
+                                    android:id="@+id/dropOffTV"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/gibson_semibd"
+                                    android:singleLine="true"
+                                    android:text="Chabahil Bus Station"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_12sdp" />
+                            </LinearLayout>
+
+                            <RelativeLayout
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="@dimen/_10sdp">
+
+                                <ImageView
+                                    android:layout_width="@dimen/_15sdp"
+                                    android:layout_height="@dimen/_15sdp"
+                                    android:layout_centerInParent="true"
+                                    android:src="@drawable/cancel"
+                                    android:visibility="invisible" />
+                            </RelativeLayout>
+                        </RelativeLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:layout_marginRight="@dimen/_20sdp"
+                            android:background="@color/gray" />
+
+                        <RelativeLayout
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1">
