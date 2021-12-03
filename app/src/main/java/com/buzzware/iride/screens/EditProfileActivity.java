@@ -51,7 +51,6 @@ public class EditProfileActivity extends BaseActivity {
 
     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 
-
     Uri imageUri = null;
 
     final int ACCESS_Gallery = 102;
