@@ -7,10 +7,10 @@
 
     <include
         android:id="@+id/myMessageLay"
-        layout="@layout/my_message_item_lay"/>
+        layout="@layout/message_item_right"/>
 
     <include
         android:id="@+id/othersMessageLay"
-        layout="@layout/other_message_item_lay"/>
+        layout="@layout/message_item_left"/>
 </RelativeLayout>
 </layout>

@@ -34,6 +34,7 @@ import com.buzzware.iride.retrofit.Controller;
 import com.buzzware.iride.screens.BaseNavDrawer;
 import com.buzzware.iride.screens.BookARideActivity;
 import com.buzzware.iride.databinding.FragmentHomeBinding;
+import com.buzzware.iride.screens.MessagesActivity;
 import com.buzzware.iride.utils.AppConstants;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -183,6 +184,19 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
         mBinding.currentLocationIV.setOnClickListener(v -> onCurrentLocationClicked());
 
         mBinding.btnDrawer.setOnClickListener(v -> onDrawerClicked());
+
+
+    }
+
+    private void startChat(User user) {
+
+        Intent intent= new Intent(HomeActivity.this, MessagesActivity.class);
+        intent.putExtra("conversationID", "no id");
+        intent.putExtra("selectedUserID", user.id);
+        intent.putExtra("selectedUserName", user.firstName);
+        intent.putExtra("checkFrom", "true");
+        startActivity(intent);
+
     }
 
     void getActiveRide() {
@@ -787,7 +801,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
                     if (value != null) {
 
                         User user = value.toObject(User.class);
-
+                        user.id=value.getId();
                         if (rideModel.status.equalsIgnoreCase(AppConstants.RideStatus.RIDE_COMPLETED)) {
 
                             //ride complete showing rating popup
@@ -1048,6 +1062,9 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
         //Todo make rating hardcoded
         mBinding.ratingTV.setText("4.5");
+
+
+        mBinding.msgIV.setOnClickListener(v->startChat(user));
 
     }
 

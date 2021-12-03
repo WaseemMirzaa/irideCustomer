@@ -23,10 +23,6 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Sajeel on 12/24/2018.
- */
-
 public class FirebaseRequests {
     public static FirebaseRequests firebaseRequests;
     Context context;

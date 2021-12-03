@@ -125,7 +125,7 @@
 
 
             <LinearLayout
-                android:visibility="gone"
+                android:visibility="visible"
                 android:orientation="vertical"
                 android:id="@+id/reachingLL"
                 android:layout_width="match_parent"

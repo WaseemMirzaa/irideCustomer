@@ -28,12 +28,12 @@ public class Messages extends BaseNavDrawer {
         setContentView(R.layout.fragment_messages);
     }
 
-    private void Init() {
-        mBinding.firstItem.findViewById(R.id.btnProfile).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-    }
+//    private void Init() {
+//        mBinding.firstItem.findViewById(R.id.btnProfile).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+//    }
 }

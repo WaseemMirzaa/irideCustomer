@@ -49,9 +49,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
             viewHolder.binding.myMessageLay.getRoot().setVisibility(View.VISIBLE);
             if(messageModel.getType().equals("text"))
             {
-                viewHolder.binding.myMessageLay.textMessageLay.setVisibility(View.VISIBLE);
-                viewHolder.binding.myMessageLay.tvMessage.setText(messageModel.getContent());
-                viewHolder.binding.myMessageLay.messageTime.setText(convertFormat(String.valueOf(messageModel.getTimestamp())));
+                viewHolder.binding.myMessageLay.messageTV.setText(messageModel.getContent());
+                viewHolder.binding.myMessageLay.timeTV.setText(convertFormat(String.valueOf(messageModel.getTimestamp())));
             }
         }else{
             ///othe rmessage layout
@@ -59,9 +58,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
             viewHolder.binding.othersMessageLay.getRoot().setVisibility(View.VISIBLE);
             if(messageModel.getType().equals("text"))
             {
-                viewHolder.binding.othersMessageLay.textMessageLay.setVisibility(View.VISIBLE);
-                viewHolder.binding.othersMessageLay.tvMessage.setText(messageModel.getContent());
-                viewHolder.binding.othersMessageLay.messageTime.setText(convertFormat(String.valueOf(messageModel.getTimestamp())));
+                viewHolder.binding.othersMessageLay.messageTV.setText(messageModel.getContent());
+                viewHolder.binding.othersMessageLay.timeTV.setText(convertFormat(String.valueOf(messageModel.getTimestamp())));
             }
         }
     }
