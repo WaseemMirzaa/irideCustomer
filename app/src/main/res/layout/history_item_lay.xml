@@ -28,27 +28,24 @@
             android:layout_marginBottom="@dimen/_10sdp"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_width="@dimen/_30sdp"
-            android:layout_height="@dimen/_90sdp">
+            android:layout_height="match_parent">
             <ImageView
-                android:padding="@dimen/_5sdp"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/doted_line"
-                android:layout_centerHorizontal="true"
-                android:adjustViewBounds="true"/>
+                android:layout_height="match_parent"
+                android:src="@drawable/doted_line"/>
         </RelativeLayout>
 
         <LinearLayout
-            android:weightSum="2"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
             <RelativeLayout
-                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
                 <LinearLayout
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/_5sdp"
@@ -64,6 +61,7 @@
 
                     <TextView
                         android:singleLine="true"
+                        android:id="@+id/pickUpTV"
                         android:textSize="@dimen/_12sdp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -80,10 +78,48 @@
                 android:background="@color/gray"/>
 
             <RelativeLayout
-                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
                 <LinearLayout
+
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:textSize="@dimen/_9sdp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Drop Off"
+                        android:fontFamily="@font/gibson_regular"/>
+
+                    <TextView
+                        android:singleLine="true"
+                        android:id="@+id/dropOffTV"
+                        android:textSize="@dimen/_12sdp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:text="Chabahil Bus Station"
+                        android:fontFamily="@font/gibson_semibd"/>
+                </LinearLayout>
+            </RelativeLayout>  <View
+                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/gray"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/_5sdp"
@@ -98,6 +134,7 @@
                         android:fontFamily="@font/gibson_regular"/>
 
                     <TextView
+                        android:id="@+id/destinationTV"
                         android:singleLine="true"
                         android:textSize="@dimen/_12sdp"
                         android:layout_width="wrap_content"

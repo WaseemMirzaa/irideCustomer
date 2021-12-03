@@ -60,6 +60,7 @@
                         android:layout_height="wrap_content"
                         android:text="Where to?"
                         android:textSize="@dimen/_11sdp"
+                        android:id="@+id/whereToTV"
                         android:textStyle="bold"
                         android:fontFamily="@font/gibson_regular" />
                 </RelativeLayout>

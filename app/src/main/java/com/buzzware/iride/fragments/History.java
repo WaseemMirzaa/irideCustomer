@@ -12,12 +12,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.buzzware.iride.adapters.HistoryAddapter;
+import com.buzzware.iride.adapters.RideType;
+import com.buzzware.iride.adapters.UpcomingRidesAdapter;
 import com.buzzware.iride.databinding.FragmentHIstoryBinding;
 import com.buzzware.iride.models.HistoryModel;
 import com.buzzware.iride.R;
+import com.buzzware.iride.models.RideModel;
 import com.buzzware.iride.screens.BaseActivity;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class History extends BaseActivity {
@@ -33,30 +43,83 @@ public class History extends BaseActivity {
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mBinding = FragmentHIstoryBinding.inflate(getLayoutInflater());
+
         setContentView(mBinding.getRoot());
-        Init();
+
     }
 
-    private void Init() {
-        historyModelList= new ArrayList<>();
-        SetDummyList();
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        getRides();
+
+    }
+
+    private void getRides() {
+
+        showLoader();
+
+        Query query = FirebaseFirestore.getInstance().collection("Bookings")
+                .whereEqualTo("userId", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .whereIn("status", Arrays.asList("rated", "rideCompleted"));
+
+        query.get()
+                .addOnCompleteListener(
+                        this::parseSnapshot
+                );
+
+    }
+
+    ArrayList<RideModel> rides;
+
+    void parseSnapshot(Task<QuerySnapshot> task) {
+
+        hideLoader();
+
+        rides = new ArrayList<>();
+
+        if (task.getResult() != null) {
+
+            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                RideModel rideModel = document.toObject(RideModel.class);
+
+                rideModel.id = document.getId();
+
+                rides.add(rideModel);
+
+            }
+
+        }
+
+        setAdapter(rides);
+    }
+
+    private void setAdapter(ArrayList<RideModel> rides) {
+
         mBinding.rvHistory.setLayoutManager(new LinearLayoutManager(History.this));
-        historyAddapter= new HistoryAddapter(History.this, historyModelList);
-        mBinding.rvHistory.setAdapter(historyAddapter);
-        historyAddapter.notifyDataSetChanged();
-    }
 
-    private void SetDummyList() {
-        historyModelList.add(new HistoryModel());
-        historyModelList.add(new HistoryModel());
-        historyModelList.add(new HistoryModel());
-        historyModelList.add(new HistoryModel());
-        historyModelList.add(new HistoryModel());
-        historyModelList.add(new HistoryModel());
-        historyModelList.add(new HistoryModel());
-        historyModelList.add(new HistoryModel());
-        historyModelList.add(new HistoryModel());
-        historyModelList.add(new HistoryModel());
+        mBinding.rvHistory.setAdapter(new UpcomingRidesAdapter(History.this,
+                rides,
+                new UpcomingRidesAdapter.UpcomingRideActionListener() {
+                    @Override
+                    public void acceptRide(RideModel rideModel) {
+
+//                        accept(rideModel);
+
+                    }
+
+                    @Override
+                    public void moveToCompleteScreen(RideModel rideModel) {
+
+//                        moveToOnTrip(rideModel);
+
+                    }
+                },
+                RideType.completed));
+
     }
 }

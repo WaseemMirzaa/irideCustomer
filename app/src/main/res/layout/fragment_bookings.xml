@@ -115,11 +115,11 @@
                 </LinearLayout>
             </RelativeLayout>
 
-            <androidx.viewpager.widget.ViewPager
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_below="@+id/customTabLay"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/viewPager"/>
+                android:id="@+id/rv"/>
         </RelativeLayout>
     </RelativeLayout>
 </layout>

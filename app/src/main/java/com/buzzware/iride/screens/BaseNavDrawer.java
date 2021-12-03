@@ -83,21 +83,13 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
         if (rideModel != null) {
 
             startActivity(new Intent(BaseNavDrawer.this, HomeActivity.class));
-            finish();
-//            if (AppConstants.RideStatus.isRideInProgress(rideModel.status)) {
-//
-//                LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-//
-//                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 18.0F));
-//
-//            }
-//
-//            setEventListener(rideModel);
 
-        }
-        else {
+            finish();
+
+        } else {
 
             showErrorAlert("No Active Ride Found");
+
         }
 
     }
@@ -115,7 +107,7 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void setContentView(int layoutResID) {
-        if ( binding.stub != null) {
+        if (binding.stub != null) {
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -127,7 +119,7 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void setContentView(View view) {
-        if ( binding.stub != null) {
+        if (binding.stub != null) {
             ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT);
@@ -137,7 +129,7 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void setContentView(View view, ViewGroup.LayoutParams params) {
-        if ( binding.stub != null) {
+        if (binding.stub != null) {
             binding.stub.addView(view, params);
         }
     }
@@ -193,6 +185,7 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
     }
 
     public void OpenCloseDrawer() {
+
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
 
             binding.drawerLayout.closeDrawer(GravityCompat.START);

@@ -176,7 +176,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
     private void setListeners() {
 
-        mBinding.btnWhereGo.setOnClickListener(v -> onWhereToClicked());
+//        mBinding.btnWhereGo.setOnClickListener(v -> onWhereToClicked());
 
         mBinding.btnSettings.setOnClickListener(v -> onSettingsClicked());
 
@@ -232,18 +232,13 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 18.0F));
 
             }
-
-            if(AppConstants.RideStatus.isRideInProgress(rideModel.status)) {
-
-
-
-            }
-
             setEventListener(rideModel);
 
         }
 
     }
+
+    ListenerRegistration listenerRegistration;
 
     private void setEventListener(RideModel r) {
 
@@ -258,6 +253,13 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
                         if (rideModel != null) {
 
                             rideModel.id = r.id;
+                            mBinding.whereToTV.setText(rideModel.tripDetail.pickUp.address);
+
+                        }
+
+                        if (this.rideModel != null) {
+
+                            removePreviousPolyline(rideModel);
 
                         }
 
@@ -285,9 +287,33 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
                             //Drive Booked But displaying Waiting for driver popup
 
+
+                            if (driverMarker != null) {
+
+                                driverMarker.remove();
+
+                            }
+
+                            if (polyline != null)
+
+                                polyline.remove();
+
+                            hideSecondPolyline();
+
+                            if (listenerRegistration != null)
+
+                                listenerRegistration.remove();
+
+                            listenerRegistration = null;
+
                             this.rideModel = rideModel;
 
                             setWaitingForDriver(rideModel);
+
+                            mBinding.reachingLL.setVisibility(View.GONE);
+
+                            mBinding.onTripLL.setVisibility(View.VISIBLE);
+
 
                         } else {
 
@@ -297,6 +323,38 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
                     }
 
                 });
+    }
+
+    private void removePreviousPolyline(RideModel rideModel) {
+        int size = rideModel.tripDetail.destinations.size();
+
+
+        Boolean statusUpdated = false;
+
+        if (size > 2) {
+
+            String status1 = rideModel.tripDetail.destinations.get(0).status;
+            String status2 = this.rideModel.tripDetail.destinations.get(0).status;
+
+            statusUpdated = !status1.equalsIgnoreCase(status2);
+
+        }
+
+        if (!rideModel.status.equalsIgnoreCase(this.rideModel.status) || statusUpdated) {
+
+            if (polyline != null)
+
+                polyline.remove();
+
+            if (secondDropOffPolyline != null)
+
+                secondDropOffPolyline.remove();
+
+            if (statusUpdated) {
+
+                destinationMarker2.remove();
+            }
+        }
     }
 
     Marker bookedPickupMarker, bookedDestinationMarker, lastDestinationMarker, destinationMarker2;
@@ -345,12 +403,12 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
         }
 
+
         mBinding.actionTV.setOnClickListener(v -> {
 
             FirebaseFirestore.getInstance().collection("Bookings")
                     .document(ride.id)
                     .update("status", AppConstants.RideStatus.CANCELLED);
-
 
             startActivity(new Intent(HomeActivity.this, BookARideActivity.class)
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
@@ -397,17 +455,27 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
             }
 
-            LatLng currentLatLng = new LatLng(ride.tripDetail.destinations.get(0).lat, ride.tripDetail.destinations.get(0).lng);
-
-            destinationMarker = mMap.addMarker(new MarkerOptions().position(currentLatLng).title("").icon(BitmapFromVector(context, R.drawable.destination)));
-
             if (ride.tripDetail.destinations.size() > 1) {
 
                 //For multiple DropOff
 
+                if (rideModel.tripDetail.destinations.get(0).status.equalsIgnoreCase(AppConstants.RideDetailStatus.NOT_REACHED)) {
+
+
+                    LatLng currentLatLng = new LatLng(ride.tripDetail.destinations.get(0).lat, ride.tripDetail.destinations.get(0).lng);
+
+                    destinationMarker = mMap.addMarker(new MarkerOptions().position(currentLatLng).title("").icon(BitmapFromVector(context, R.drawable.destination)));
+                }
+
                 LatLng destination2 = new LatLng(ride.tripDetail.destinations.get(1).lat, ride.tripDetail.destinations.get(1).lng);
 
                 destinationMarker2 = mMap.addMarker(new MarkerOptions().position(destination2).title("").icon(BitmapFromVector(context, R.drawable.destination)));
+
+            } else {
+
+                LatLng currentLatLng = new LatLng(ride.tripDetail.destinations.get(0).lat, ride.tripDetail.destinations.get(0).lng);
+
+                destinationMarker = mMap.addMarker(new MarkerOptions().position(currentLatLng).title("").icon(BitmapFromVector(context, R.drawable.destination)));
 
             }
 
@@ -435,6 +503,17 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
             bookedDestinationMarker = null;
 
         }
+
+        if (destinationMarker2 != null)
+
+            destinationMarker2.remove();
+
+        destinationMarker2 = null;
+
+        if (polyline != null)
+            polyline.remove();
+        if (secondDropOffPolyline != null)
+            secondDropOffPolyline.remove();
     }
 
     Call<String> reverseCall;
@@ -506,7 +585,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
 //                    if (AppConstants.RideStatus.isRideInProgress(rideModel.status)) {
 
-                        calculateDistance2();
+                    calculateDistance2();
 
 //                    }
                 }
@@ -579,13 +658,13 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
             PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.BLACK).width(10);
 
-            secondDropOffPolyline = mMap.addPolyline(opts);
+            polyline = mMap.addPolyline(opts);
 
         }
 
 //        if (AppConstants.RideStatus.isRideInProgress(rideModel.status)) {
 
-            calculateDistance();
+        calculateDistance();
 
 //        }
     }
@@ -678,6 +757,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
     private void drawSecondPolyline(RideModel rideModel) {
 
         SearchedPlaceModel pickUp = rideModel.tripDetail.destinations.get(0);
+
         SearchedPlaceModel destination = rideModel.tripDetail.destinations.get(1);
 
         getDirectionsTowardsDropOff2(pickUp.lat, pickUp.lng, destination.lat, destination.lng, false);
@@ -695,8 +775,6 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
     }
 
     Polyline secondDropOffPolyline;
-
-    public ListenerRegistration listenerRegistration;
 
     private void setDriverListener() {
 
@@ -747,7 +825,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
                 });
 
     }
-    
+
     int distance = 0;
     int minutes = 0;
 
@@ -792,8 +870,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
         });
     }
 
-    void calculateDistance2()
-    {
+    void calculateDistance2() {
         SearchedPlaceModel pickUp = rideModel.tripDetail.destinations.get(0);
         SearchedPlaceModel destination1 = rideModel.tripDetail.destinations.get(0);
         SearchedPlaceModel destination2 = rideModel.tripDetail.destinations.get(1);
@@ -915,7 +992,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
         }
 
-        
+
         float min = minutes / (60);
         float dis = this.distance / 1000;
 
@@ -1048,9 +1125,11 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
         if (AppConstants.RideStatus.isRideDriverArriving(rideModel.status)) {
 
+
             //Rider is arriving show path from driver to pickup location
 
             getDirections(user.lat, user.lng, rideModel.tripDetail.pickUp.lat, rideModel.tripDetail.pickUp.lng, false);
+
 
         } else {
 
