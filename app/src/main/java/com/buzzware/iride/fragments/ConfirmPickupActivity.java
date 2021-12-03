@@ -62,6 +62,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
         super.onCreate(savedInstanceState);
 
         onCreateView();
+
     }
 
     private void onCreateView() {
@@ -75,6 +76,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
         init();
 
         setListeners();
+
     }
 
     private void setListeners() {
@@ -82,6 +84,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
         mBinding.btnConfirmPickup.setOnClickListener(this);
 
         mBinding.pricingRG.setOnCheckedChangeListener(this::onCheckedChanged);
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -128,7 +131,6 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
             mBinding.pickUpTV.setText(pickUpLocation.address);
 
         }
-
 
         if (destinationLocation != null) {
 

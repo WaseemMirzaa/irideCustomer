@@ -233,6 +233,12 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
             }
 
+            if(AppConstants.RideStatus.isRideInProgress(rideModel.status)) {
+
+
+
+            }
+
             setEventListener(rideModel);
 
         }
@@ -915,6 +921,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
         mBinding.timeTV.setText(min + " minutes");
         mBinding.kmTV.setText(dis + " km");
+
     }
 
 

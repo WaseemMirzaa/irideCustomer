@@ -82,6 +82,8 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
 
         if (rideModel != null) {
 
+            startActivity(new Intent(BaseNavDrawer.this, HomeActivity.class));
+            finish();
 //            if (AppConstants.RideStatus.isRideInProgress(rideModel.status)) {
 //
 //                LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
@@ -92,6 +94,10 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
 //
 //            setEventListener(rideModel);
 
+        }
+        else {
+
+            showErrorAlert("No Active Ride Found");
         }
 
     }
@@ -142,9 +148,8 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
         if (v == binding.navView.findViewById(R.id.homeLay)) {
 
             OpenCloseDrawer();
+            getActiveRide();
 
-            startActivity(new Intent(BaseNavDrawer.this, HomeActivity.class));
-            finish();
 
         } else if (v == binding.navView.findViewById(R.id.bookingsLay)) {
 
