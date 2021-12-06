@@ -24,8 +24,6 @@ public class Chat extends BaseActivity {
 
     FragmentChatBinding binding;
     
-    List<User> userList=new ArrayList<>();
-    
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
@@ -66,10 +64,10 @@ public class Chat extends BaseActivity {
             if(!isError){
 
                 SetConversationList(list);
-                Log.e("zcc", "NotEmpty");
+                Log.e("data", "NotEmpty");
             }else{
 
-                Log.e("zcc", "Empty");
+                Log.e("data", "Empty");
 
             }
         }
@@ -87,12 +85,16 @@ public class Chat extends BaseActivity {
     ConversationAdapter.OnClickListener listener= new ConversationAdapter.OnClickListener() {
         @Override
         public void onClick(ConversationModel conversationModel) {
+
             Intent intent= new Intent(Chat.this, MessagesActivity.class);
+
             intent.putExtra("conversationID", conversationModel.getConversationID());
             intent.putExtra("selectedUserID", conversationModel.getId());
             intent.putExtra("selectedUserName", conversationModel.getName());
             intent.putExtra("checkFrom", "false");
+
             startActivity(intent);
+
         }
     };
 

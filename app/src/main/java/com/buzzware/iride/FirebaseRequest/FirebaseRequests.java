@@ -89,7 +89,7 @@ public class FirebaseRequests {
                     User userModel = documentSnapshot.toObject(User.class);
                     String id= documentSnapshot.getId();
                     userModel.id=id;
-                    list.add(new ConversationModel(conversationID, userModel.id, userModel.firstName, userModel.image, lastMessageModel.getContent()));
+                    list.add(new ConversationModel(conversationID, userModel.id, userModel.firstName, userModel.image, lastMessageModel.getContent(),lastMessageModel.getToID()));
                     callback.onResponse(list, false, "Null");
                 }
             }

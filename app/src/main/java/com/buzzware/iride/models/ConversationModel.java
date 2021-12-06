@@ -1,17 +1,26 @@
 package com.buzzware.iride.models;
 
 public class ConversationModel {
-    String conversationID, id, name, image, lastMessage;
+    String conversationID, id, name, image, lastMessage,toID;
 
     public ConversationModel() {
     }
 
-    public ConversationModel(String conversationID, String id, String name, String image, String lastMessage) {
+    public ConversationModel(String conversationID, String id, String name, String image, String lastMessage,String toID) {
         this.conversationID = conversationID;
         this.id = id;
         this.name = name;
         this.image = image;
         this.lastMessage = lastMessage;
+        this.toID=toID;
+    }
+
+    public String getToID() {
+        return toID;
+    }
+
+    public void setToID(String toID) {
+        this.toID = toID;
     }
 
     public String getConversationID() {

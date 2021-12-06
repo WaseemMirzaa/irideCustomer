@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.buzzware.iride.FirebaseRequest.ConversationResponseCallback;
 import com.buzzware.iride.FirebaseRequest.FirebaseRequests;
 import com.buzzware.iride.FirebaseRequest.MessagesResponseCallback;
 import com.buzzware.iride.R;
@@ -17,6 +18,7 @@ import com.buzzware.iride.adapters.MessagesAdapter;
 import com.buzzware.iride.databinding.ActivityMessagesBinding;
 import com.buzzware.iride.fragments.Chat;
 import com.buzzware.iride.models.ChatModel;
+import com.buzzware.iride.models.ConversationModel;
 import com.buzzware.iride.models.MessageModel;
 import com.buzzware.iride.models.SendConversationModel;
 import com.buzzware.iride.models.SendLastMessageModel;
@@ -46,15 +48,15 @@ public class MessagesActivity extends AppCompatActivity {
 
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
-    String conversationID="";
+    String conversationID = "";
 
-    String selectedUserName="";
+    String selectedUserName = "";
 
     String selectedUserId = "";
 
     String currentUserId = "";
 
-    String isFromNew="false";
+    String isFromNew = "false";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,35 +88,71 @@ public class MessagesActivity extends AppCompatActivity {
 
         if (extras != null) {
 
-            isFromNew= getIntent().getStringExtra("checkFrom");
-            selectedUserId= getIntent().getStringExtra("selectedUserID");
-            selectedUserName= getIntent().getStringExtra("selectedUserName");
+            isFromNew = getIntent().getStringExtra("checkFrom");
+            selectedUserId = getIntent().getStringExtra("selectedUserID");
+            selectedUserName = getIntent().getStringExtra("selectedUserName");
 
             binding.tvTitle.setText(selectedUserName);
 
-            if(isFromNew.equals("false")) {
-                conversationID= getIntent().getStringExtra("conversationID");
-            }else {
-                conversationID= UUID.randomUUID().toString();
+            if (isFromNew.equals("false")) {
+                conversationID = getIntent().getStringExtra("conversationID");
+            } else {
+                conversationID = UUID.randomUUID().toString();
+                checkAlreadyHaveChatOrNot();
             }
 
         }
 
-        LoadMessages();
-
         currentUserId = mAuth.getCurrentUser().getUid();
+
+        loadMessages();
+
 
     }
 
-    private void LoadMessages() {
+    private void checkAlreadyHaveChatOrNot() {
+        getListToCheck();
+    }
+
+    private void getListToCheck() {
+
+        FirebaseRequests.GetFirebaseRequests(MessagesActivity.this).GetConversationList(callbackCheck, mAuth.getCurrentUser().getUid(), MessagesActivity.this);
+
+    }
+
+    ConversationResponseCallback callbackCheck = new ConversationResponseCallback() {
+        @Override
+        public void onResponse(List<ConversationModel> list, boolean isError, String message) {
+            if (!isError) {
+
+                if (list.size() > 0) {
+                    for (int i = 0; i < list.size(); i++) {
+                        if (list.get(i).getToID().equals(selectedUserId)) {
+                            conversationID = list.get(i).getConversationID();
+                            isFromNew = "false";
+                            return;
+                        }
+                    }
+                }
+                Log.e("data", "NotEmpty");
+            } else {
+
+                Log.e("data", "Empty");
+
+            }
+        }
+    };
+
+    private void loadMessages() {
 
         FirebaseRequests.GetFirebaseRequests(MessagesActivity.this).LoadMessages(callback, MessagesActivity.this, conversationID);
 
     }
-    MessagesResponseCallback callback= new MessagesResponseCallback() {
+
+    MessagesResponseCallback callback = new MessagesResponseCallback() {
         @Override
         public void onResponse(List<MessageModel> list, boolean isError, String message) {
-            if(!isError){
+            if (!isError) {
                 Sorting(list);
             }
         }
@@ -132,15 +170,13 @@ public class MessagesActivity extends AppCompatActivity {
         SetRecyclerView(list);
     }
 
-    public void SetRecyclerView(List<MessageModel> list){
+    public void SetRecyclerView(List<MessageModel> list) {
 
         binding.rvMessages.setLayoutManager(new LinearLayoutManager(MessagesActivity.this));
 
-        MessagesAdapter messagesAdapter= new MessagesAdapter(MessagesActivity.this, list,currentUserId);
+        MessagesAdapter messagesAdapter = new MessagesAdapter(MessagesActivity.this, list, currentUserId);
 
         binding.rvMessages.setAdapter(messagesAdapter);
-
-        messagesAdapter.notifyDataSetChanged();
 
         binding.rvMessages.scrollToPosition(list.size() - 1);
 
@@ -148,39 +184,48 @@ public class MessagesActivity extends AppCompatActivity {
 
 
     private void sendMessage() {
-        if(isFromNew.equals("true")) {
-            Log.e("cxzrrrrr", "Aya : Message");
+        if (isFromNew.equals("true")) {
+
             long currentTimeStamp = System.currentTimeMillis();
             SendLastMessageModel sendLastMessageModel = new SendLastMessageModel(binding.messageET.getText().toString(),
                     currentUserId, String.valueOf(currentTimeStamp), selectedUserId, "text", false, (int) currentTimeStamp);
 
-            HashMap<String, Boolean> participents= new HashMap<>();
+            HashMap<String, Boolean> participents = new HashMap<>();
             participents.put(currentUserId, true);
             participents.put(selectedUserId, true);
 
-            SendConversationModel sendConversationModel= new SendConversationModel(binding.messageET.getText().toString(),
-                   currentUserId, String.valueOf(currentTimeStamp), "text", false, currentTimeStamp);
+            SendConversationModel sendConversationModel = new SendConversationModel(binding.messageET.getText().toString(),
+                    currentUserId, String.valueOf(currentTimeStamp), "text", false, currentTimeStamp);
 
-            HashMap<String, Object> lasthashMap= new HashMap<>();
+            HashMap<String, Object> lasthashMap = new HashMap<>();
             lasthashMap.put("lastMessage", sendLastMessageModel);
             lasthashMap.put("participants", participents);
 
-            conversationID= UUID.randomUUID().toString();
-            firebaseFirestore.collection("Chat").document(conversationID).set(lasthashMap);
+            conversationID = UUID.randomUUID().toString();
+
             firebaseFirestore.collection("Chat").document(conversationID).collection("Conversations").document(String.valueOf(currentTimeStamp)).set(sendConversationModel);
-        }else{
-            Log.e("cxzrrrrr", "Already Aya : Message");
+            firebaseFirestore.collection("Chat").document(conversationID).set(lasthashMap);
+
+        } else {
             SendAlreadyExist();
         }
+
+        loadMessages();
+        checkAlreadyHaveChatOrNot();
     }
-    public void SendAlreadyExist(){
+
+    public void SendAlreadyExist() {
+
         long currentTimeStamp = System.currentTimeMillis();
-        SendConversationModel sendConversationModel= new SendConversationModel(binding.messageET.getText().toString(),
+
+        SendConversationModel sendConversationModel = new SendConversationModel(binding.messageET.getText().toString(),
                 currentUserId, String.valueOf(currentTimeStamp), "text", false, currentTimeStamp);
         SendLastMessageModel sendLastMessageModel = new SendLastMessageModel(binding.messageET.getText().toString(),
                 currentUserId, String.valueOf(currentTimeStamp), selectedUserId, "text", false, currentTimeStamp);
         firebaseFirestore.collection("Chat").document(conversationID).collection("Conversations").document(String.valueOf(currentTimeStamp)).set(sendConversationModel);
         firebaseFirestore.collection("Chat").document(conversationID).update("lastMessage", sendLastMessageModel);
+
+        loadMessages();
 
     }
 
