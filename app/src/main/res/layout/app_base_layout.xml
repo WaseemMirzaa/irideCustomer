@@ -24,7 +24,6 @@
             android:fitsSystemWindows="true"
             android:layout_marginTop="@dimen/_65sdp"
             android:layout_marginBottom="@dimen/_65sdp"
-            app:headerLayout="@layout/nav_header_home"
             app:itemIconTint="@color/white">
 
             <ScrollView

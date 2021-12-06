@@ -36,13 +36,16 @@
             android:layout_gravity="start"
             android:layout_width="60dp"
             android:layout_height="60dp">
+
             <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/picCIV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/dummy_girl"
-                app:riv_corner_radius="@dimen/_10sdp"/>
+                app:riv_corner_radius="@dimen/_10sdp" />
 
             <RelativeLayout
+                android:visibility="gone"
                 android:background="@drawable/rounded_corner_button_yellow_curve"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
@@ -61,25 +64,34 @@
         </RelativeLayout>
 
         <TextView
-            android:layout_marginTop="20dp"
-            android:layout_gravity="start"
+            android:id="@+id/nameTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="20dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+
+            android:fontFamily="@font/gibson_regular"
             android:text="Maria Snow"
             android:textColor="@color/white"
-            android:textSize="@dimen/_16sdp"
-            android:textStyle="normal"
-            android:fontFamily="@font/gibson_regular"/>
+            android:textSize="@dimen/_14ssp"
+            android:autoSizeMinTextSize="@dimen/_10ssp"
+            android:autoSizeMaxTextSize="@dimen/_14ssp"
+            android:autoSizeTextType="uniform"
+            android:textStyle="normal" />
 
         <TextView
-            android:layout_marginTop="5dp"
-            android:layout_gravity="start"
+            android:id="@+id/addressTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="5dp"
+            android:visibility="gone"
+            android:fontFamily="@font/gibson_regular"
             android:text="San Francisco, CA"
             android:textColor="@color/white"
             android:textSize="@dimen/_10sdp"
-            android:textStyle="normal"
-            android:fontFamily="@font/gibson_regular"/>
+            android:textStyle="normal" />
     </LinearLayout>
 </RelativeLayout>

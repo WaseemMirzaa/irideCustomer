@@ -6,22 +6,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.core.view.GravityCompat;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.buzzware.iride.R;
 import com.buzzware.iride.databinding.AppBaseLayoutBinding;
-import com.buzzware.iride.fragments.BookingsActivity;
 import com.buzzware.iride.fragments.CustomerService;
 import com.buzzware.iride.fragments.HomeActivity;
 import com.buzzware.iride.fragments.Invitation;
 import com.buzzware.iride.fragments.Profile;
 import com.buzzware.iride.fragments.Wallet;
 import com.buzzware.iride.models.RideModel;
+import com.buzzware.iride.models.User;
 import com.buzzware.iride.utils.AppConstants;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -31,7 +34,7 @@ import java.util.Arrays;
 
 public class BaseNavDrawer extends BaseActivity implements View.OnClickListener {
 
-    private FrameLayout view_stub; //This is the framelayout to keep your content view
+    private FrameLayout view_stub; //This is the frame layout to keep your content view
 
     AppBaseLayoutBinding binding;
 
@@ -45,6 +48,8 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
         super.setContentView(binding.getRoot());// The base layout that contains your navigation drawer.
 
         setBaseListeners();
+
+        getCurrentUserData();
 
     }
 
@@ -91,6 +96,38 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
             showErrorAlert("No Active Ride Found");
 
         }
+
+    }
+
+    private void getCurrentUserData() {
+
+        DocumentReference users = FirebaseFirestore.getInstance().collection("Users").document(getUserId());
+
+        users.addSnapshotListener((value, error) -> {
+
+            if (value != null) {
+
+                User user = value.toObject(User.class);
+
+                View headerLayout =
+                        binding.navView.inflateHeaderView(R.layout.nav_header_home);
+
+                if (user == null)
+
+                    return;
+
+                ImageView picIV = headerLayout.findViewById(R.id.picCIV);
+
+                TextView nameTV = headerLayout.findViewById(R.id.nameTV);
+
+                nameTV.setText(user.firstName + " " + user.lastName);
+
+                Glide.with(this).load(user.image).apply(new RequestOptions().centerCrop().placeholder(R.drawable.dummy_girl)).into(picIV);
+
+            }
+
+
+        });
 
     }
 

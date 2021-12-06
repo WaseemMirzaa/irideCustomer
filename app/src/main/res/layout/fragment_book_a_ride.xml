@@ -110,7 +110,6 @@
                         android:layout_height="match_parent"
                         android:paddingLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:backgroundTint="@android:color/transparent"
                         android:fontFamily="@font/gibson_regular"
                         android:hint="Where to?"
                         android:scrollHorizontally="true"

@@ -23,10 +23,8 @@ import java.util.List;
 public class Chat extends BaseActivity {
 
     FragmentChatBinding binding;
-    
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     public Chat() {
         // Required empty public constructor
@@ -58,44 +56,42 @@ public class Chat extends BaseActivity {
 
     }
 
-    ConversationResponseCallback callback= new ConversationResponseCallback() {
-        @Override
-        public void onResponse(List<ConversationModel> list, boolean isError, String message) {
-            if(!isError){
+    ConversationResponseCallback callback = (list, isError, message) -> {
 
-                SetConversationList(list);
-                Log.e("data", "NotEmpty");
-            }else{
+        if (!isError) {
 
-                Log.e("data", "Empty");
+            SetConversationList(list);
+            Log.e("data", "NotEmpty");
+        } else {
 
-            }
+            Log.e("data", "Empty");
+
         }
     };
 
-    public void SetConversationList(List<ConversationModel> list){
+    public void SetConversationList(List<ConversationModel> list) {
 
         binding.rvMessages.setLayoutManager(new LinearLayoutManager(Chat.this));
-        ConversationAdapter conversationAdapter= new ConversationAdapter(Chat.this, list, listener);
+
+        ConversationAdapter conversationAdapter = new ConversationAdapter(Chat.this, list, listener);
+
         binding.rvMessages.setAdapter(conversationAdapter);
+
         conversationAdapter.notifyDataSetChanged();
 
     }
 
-    ConversationAdapter.OnClickListener listener= new ConversationAdapter.OnClickListener() {
-        @Override
-        public void onClick(ConversationModel conversationModel) {
+    ConversationAdapter.OnClickListener listener = conversationModel -> {
 
-            Intent intent= new Intent(Chat.this, MessagesActivity.class);
+        Intent intent = new Intent(Chat.this, MessagesActivity.class);
 
-            intent.putExtra("conversationID", conversationModel.getConversationID());
-            intent.putExtra("selectedUserID", conversationModel.getId());
-            intent.putExtra("selectedUserName", conversationModel.getName());
-            intent.putExtra("checkFrom", "false");
+        intent.putExtra("conversationID", conversationModel.getConversationID());
+        intent.putExtra("selectedUserID", conversationModel.getId());
+        intent.putExtra("selectedUserName", conversationModel.getName());
+        intent.putExtra("checkFrom", "false");
 
-            startActivity(intent);
+        startActivity(intent);
 
-        }
     };
 
 }

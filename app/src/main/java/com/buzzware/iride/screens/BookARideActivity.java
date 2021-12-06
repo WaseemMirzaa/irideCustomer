@@ -418,7 +418,7 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
 
         startActivity(i);
 
-        finish();
+//        finish();
     }
 
     @Override
