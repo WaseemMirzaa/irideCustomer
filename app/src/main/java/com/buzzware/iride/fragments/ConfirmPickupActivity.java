@@ -90,7 +90,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         mBinding.pricingRG.setOnCheckedChangeListener(this::onCheckedChanged);
 
-
+        mBinding.backIcon.setOnClickListener(v -> finish());
     }
 
     @SuppressLint("SetTextI18n")

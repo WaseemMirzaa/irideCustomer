@@ -27,6 +27,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -39,6 +41,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+
 
 public class MessagesActivity extends AppCompatActivity {
 
@@ -58,6 +61,9 @@ public class MessagesActivity extends AppCompatActivity {
 
     String isFromNew = "false";
 
+    String myImageUrl;
+    String otherUserImageUrl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +76,61 @@ public class MessagesActivity extends AppCompatActivity {
         setListener();
 
 
+    }
+
+    public void getMyImage() {
+
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
+        DocumentReference reference = firebaseFirestore.collection("Users").document(currentUserId);
+
+        reference.addSnapshotListener((value, error) -> {
+
+
+            User user = null;
+
+            if (value != null) {
+
+                user = value.toObject(User.class);
+
+                myImageUrl = user.image;
+
+            } else {
+
+                myImageUrl = "";
+
+            }
+
+            getOtherUserImage();
+
+        });
+    }
+
+    public void getOtherUserImage() {
+
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        DocumentReference documentReferenceBuisnessUser = firebaseFirestore.collection("Users").document(selectedUserId);
+        documentReferenceBuisnessUser.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+
+
+                User user = null;
+                if (value != null) {
+
+                    user = value.toObject(User.class);
+
+                    otherUserImageUrl = user.image;
+                } else {
+
+                    otherUserImageUrl = "";
+
+                }
+
+                loadMessages();
+
+            }
+        });
     }
 
     private void setListener() {
@@ -89,29 +150,37 @@ public class MessagesActivity extends AppCompatActivity {
         if (extras != null) {
 
             isFromNew = getIntent().getStringExtra("checkFrom");
+
             selectedUserId = getIntent().getStringExtra("selectedUserID");
+
             selectedUserName = getIntent().getStringExtra("selectedUserName");
 
             binding.tvTitle.setText(selectedUserName);
 
+            currentUserId = mAuth.getCurrentUser().getUid();
+
             if (isFromNew.equals("false")) {
+
                 conversationID = getIntent().getStringExtra("conversationID");
+
+                getMyImage();
+
             } else {
+
                 conversationID = UUID.randomUUID().toString();
+
                 checkAlreadyHaveChatOrNot();
+
             }
 
         }
 
-        currentUserId = mAuth.getCurrentUser().getUid();
-
-        loadMessages();
-
-
     }
 
     private void checkAlreadyHaveChatOrNot() {
+
         getListToCheck();
+
     }
 
     private void getListToCheck() {
@@ -120,26 +189,33 @@ public class MessagesActivity extends AppCompatActivity {
 
     }
 
-    ConversationResponseCallback callbackCheck = new ConversationResponseCallback() {
-        @Override
-        public void onResponse(List<ConversationModel> list, boolean isError, String message) {
-            if (!isError) {
+    ConversationResponseCallback callbackCheck = (list, isError, message) -> {
 
-                if (list.size() > 0) {
-                    for (int i = 0; i < list.size(); i++) {
-                        if (list.get(i).getToID().equals(selectedUserId)) {
-                            conversationID = list.get(i).getConversationID();
-                            isFromNew = "false";
-                            return;
-                        }
+        if (!isError) {
+
+            if (list.size() > 0) {
+
+                for (int i = 0; i < list.size(); i++) {
+
+                    if (list.get(i).getToID().equals(selectedUserId)) {
+
+                        conversationID = list.get(i).getConversationID();
+
+                        isFromNew = "false";
+
+                        getMyImage();
+
+                        return;
                     }
                 }
-                Log.e("data", "NotEmpty");
-            } else {
-
-                Log.e("data", "Empty");
-
             }
+
+            Log.e("data", "NotEmpty");
+
+        } else {
+
+            Log.e("data", "Empty");
+
         }
     };
 
@@ -153,18 +229,16 @@ public class MessagesActivity extends AppCompatActivity {
         @Override
         public void onResponse(List<MessageModel> list, boolean isError, String message) {
             if (!isError) {
+
                 Sorting(list);
+
             }
         }
     };
 
     private void Sorting(List<MessageModel> list) {
-        Collections.sort(list, new Comparator<MessageModel>() {
-            @Override
-            public int compare(MessageModel o1, MessageModel o2) {
-                return Long.compare(o1.getTimestamp(), o2.getTimestamp());
-            }
-        });
+
+        Collections.sort(list, (o1, o2) -> Long.compare(o1.getTimestamp(), o2.getTimestamp()));
 
         ///set data
         SetRecyclerView(list);
@@ -174,7 +248,7 @@ public class MessagesActivity extends AppCompatActivity {
 
         binding.rvMessages.setLayoutManager(new LinearLayoutManager(MessagesActivity.this));
 
-        MessagesAdapter messagesAdapter = new MessagesAdapter(MessagesActivity.this, list, currentUserId);
+        MessagesAdapter messagesAdapter = new MessagesAdapter(MessagesActivity.this, list, currentUserId, myImageUrl, otherUserImageUrl);
 
         binding.rvMessages.setAdapter(messagesAdapter);
 
@@ -184,21 +258,28 @@ public class MessagesActivity extends AppCompatActivity {
 
 
     private void sendMessage() {
+
         if (isFromNew.equals("true")) {
 
             long currentTimeStamp = System.currentTimeMillis();
+
             SendLastMessageModel sendLastMessageModel = new SendLastMessageModel(binding.messageET.getText().toString(),
+
                     currentUserId, String.valueOf(currentTimeStamp), selectedUserId, "text", false, (int) currentTimeStamp);
 
             HashMap<String, Boolean> participents = new HashMap<>();
+
             participents.put(currentUserId, true);
+
             participents.put(selectedUserId, true);
 
             SendConversationModel sendConversationModel = new SendConversationModel(binding.messageET.getText().toString(),
                     currentUserId, String.valueOf(currentTimeStamp), "text", false, currentTimeStamp);
 
             HashMap<String, Object> lasthashMap = new HashMap<>();
+
             lasthashMap.put("lastMessage", sendLastMessageModel);
+
             lasthashMap.put("participants", participents);
 
             conversationID = UUID.randomUUID().toString();
@@ -212,6 +293,8 @@ public class MessagesActivity extends AppCompatActivity {
 
         loadMessages();
         checkAlreadyHaveChatOrNot();
+
+        binding.messageET.setText("");
     }
 
     public void SendAlreadyExist() {

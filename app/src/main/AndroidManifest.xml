@@ -33,7 +33,7 @@
             android:name=".fragments.ConfirmPickupActivity"
             android:theme="@style/Theme.white" />
         <activity
-            android:name=".fragments.BookingsActivity"
+            android:name=".screens.BookingsActivity"
             android:theme="@style/Theme.white" />
         <activity
             android:name=".fragments.Chat"

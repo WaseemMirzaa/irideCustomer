@@ -190,7 +190,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
     private void startChat(User user) {
 
-        Intent intent= new Intent(HomeActivity.this, MessagesActivity.class);
+        Intent intent = new Intent(HomeActivity.this, MessagesActivity.class);
         intent.putExtra("conversationID", "no id");
         intent.putExtra("selectedUserID", user.id);
         intent.putExtra("selectedUserName", user.firstName);
@@ -595,7 +595,15 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
                     DirectionsApiResponse resp = gson.fromJson(response.body(), DirectionsApiResponse.class);
 
-                    drawPaths2(resp, isSecondDropOff);
+                    try {
+
+                        drawPaths2(resp, isSecondDropOff);
+
+                    } catch (Exception e) {
+
+                        e.printStackTrace();
+
+                    }
 
 //                    if (AppConstants.RideStatus.isRideInProgress(rideModel.status)) {
 
@@ -772,9 +780,12 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
         SearchedPlaceModel pickUp = rideModel.tripDetail.destinations.get(0);
 
-        SearchedPlaceModel destination = rideModel.tripDetail.destinations.get(1);
+        if (rideModel.tripDetail.destinations.size() == 2) {
 
-        getDirectionsTowardsDropOff2(pickUp.lat, pickUp.lng, destination.lat, destination.lng, false);
+            SearchedPlaceModel destination = rideModel.tripDetail.destinations.get(1);
+
+            getDirectionsTowardsDropOff2(pickUp.lat, pickUp.lng, destination.lat, destination.lng, false);
+        }
     }
 
     private void hideSecondPolyline() {
@@ -801,7 +812,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
                     if (value != null) {
 
                         User user = value.toObject(User.class);
-                        user.id=value.getId();
+                        user.id = value.getId();
                         if (rideModel.status.equalsIgnoreCase(AppConstants.RideStatus.RIDE_COMPLETED)) {
 
                             //ride complete showing rating popup
@@ -966,6 +977,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
 
         mBinding.timeTV.setText(time);
+        mBinding.minsTV.setText(time);
         mBinding.kmTV.setText(distance);
     }
 
@@ -1010,8 +1022,9 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
         float min = minutes / (60);
         float dis = this.distance / 1000;
 
-        mBinding.timeTV.setText(min + " minutes");
-        mBinding.kmTV.setText(dis + " km");
+        mBinding.timeTV.setText(String.format("%.2f", min) + " minutes");
+        mBinding.minsTV.setText(String.format("%.2f", min) + " minutes");
+        mBinding.kmTV.setText(String.format("%.2f", dis) + " km");
 
     }
 
@@ -1064,7 +1077,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
         mBinding.ratingTV.setText("4.5");
 
 
-        mBinding.msgIV.setOnClickListener(v->startChat(user));
+        mBinding.msgIV.setOnClickListener(v -> startChat(user));
 
     }
 
