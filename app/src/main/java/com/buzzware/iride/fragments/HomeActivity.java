@@ -66,6 +66,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.buzzware.iride.retrofit.Controller.Base_Url;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
@@ -246,6 +247,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 18.0F));
 
             }
+
             setEventListener(rideModel);
 
         }
@@ -543,7 +545,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
             reverseCall = null;
         }
 
-        reverseCall = Controller.getApi().getPlaces(url, "asdasd");
+        reverseCall = Controller.getApi(Base_Url).getPlaces(url, "asdasd");
 
         reverseCall.enqueue(new Callback<String>() {
             @Override
@@ -581,7 +583,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
             reverseCall1 = null;
         }
 
-        reverseCall1 = Controller.getApi().getPlaces(url, "asdasd");
+        reverseCall1 = Controller.getApi(Base_Url).getPlaces(url, "asdasd");
 
         reverseCall1.enqueue(new Callback<String>() {
             @Override
@@ -678,6 +680,17 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
             secondDropOffPolyline = null;
 
+            if (AppConstants.RideStatus.isRideDriverArriving(rideModel.status)) {
+
+
+                //Rider is arriving show path from driver to pickup location
+
+                if (polyline != null) {
+
+                    polyline.remove();
+
+                }
+            }
             PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.BLACK).width(10);
 
             polyline = mMap.addPolyline(opts);
@@ -867,7 +880,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
             reverseCall = null;
         }
 
-        reverseCall = Controller.getApi().getPlaces(url, "asdasd");
+        reverseCall = Controller.getApi(Base_Url).getPlaces(url, "asdasd");
 
         reverseCall.enqueue(new Callback<String>() {
             @Override
@@ -911,7 +924,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
             reverseCall = null;
         }
 
-        reverseCall = Controller.getApi().getPlaces(url, "asdasd");
+        reverseCall = Controller.getApi(Base_Url).getPlaces(url, "asdasd");
 
         reverseCall.enqueue(new Callback<String>() {
             @Override
@@ -1157,6 +1170,12 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
 
             //Rider is arriving show path from driver to pickup location
+
+//            if (polyline != null) {
+
+//                polyline.remove();
+
+//            }
 
             getDirections(user.lat, user.lng, rideModel.tripDetail.pickUp.lat, rideModel.tripDetail.pickUp.lng, false);
 

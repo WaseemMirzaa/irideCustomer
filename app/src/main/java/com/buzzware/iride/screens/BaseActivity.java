@@ -105,6 +105,10 @@ public class BaseActivity extends AppCompatActivity {
 
     public void showLoader() {
 
+        if(BaseActivity.this.isFinishing() || BaseActivity.this.isDestroyed())
+
+            return;
+
         if (progressDialog != null && progressDialog.isShowing())
 
             progressDialog.dismiss();

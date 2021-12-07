@@ -35,7 +35,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Bookings"
-                android:paddingBottom="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
                 android:textStyle="bold"
@@ -56,6 +57,7 @@
                 <LinearLayout
                     android:orientation="horizontal"
                     android:weightSum="2"
+                    android:id="@+id/schedulesTabLL"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 

@@ -3,6 +3,7 @@ package com.buzzware.iride;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import com.buzzware.iride.models.RideModel;
 import com.buzzware.iride.models.User;
 import com.buzzware.iride.models.VehicleModel;
+import com.buzzware.iride.screens.BookARideActivity;
 import com.buzzware.iride.utils.AppConstants;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -75,7 +77,13 @@ public class RatingDialog extends Dialog {
 
         dismiss();
 
+        c.startActivity(new Intent(c, BookARideActivity.class)
+        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP));
+
+
         c.finish();
+
+
 
     }
 

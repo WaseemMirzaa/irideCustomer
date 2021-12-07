@@ -34,6 +34,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.buzzware.iride.retrofit.Controller.Base_Url;
+
 public class ExpandablePlacesListFragment extends BottomSheetDialogFragment implements SavedLocationAdapter.OnItemTappedListener {
 
     public static String TAG = ExpandablePlacesListFragment.class.getSimpleName();
@@ -137,7 +139,7 @@ public class ExpandablePlacesListFragment extends BottomSheetDialogFragment impl
             url = "/maps/api/place/autocomplete/json?input=" + data + "&key=" + AppConstants.GOOGLE_PLACES_API_KEY;
         }
 
-        Controller.getApi().getPlaces(url, "asdasd")
+        Controller.getApi(Base_Url).getPlaces(url, "asdasd")
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
@@ -196,7 +198,7 @@ public class ExpandablePlacesListFragment extends BottomSheetDialogFragment impl
 
         String url = "/maps/api/place/details/json?place_id=" + prediction.place_id + "&key=" + AppConstants.GOOGLE_PLACES_API_KEY;
 
-        Controller.getApi().getPlaces(url, "asdasd")
+        Controller.getApi(Base_Url).getPlaces(url, "asdasd")
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {

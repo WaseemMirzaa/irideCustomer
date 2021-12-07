@@ -54,6 +54,9 @@
             android:name=".fragments.Messages"
             android:theme="@style/Theme.white" />
         <activity
+            android:name=".screens.ScheduledRides"
+            android:theme="@style/Theme.white"/>
+        <activity
             android:name=".fragments.Profile"
             android:theme="@style/Theme.white" />
         <activity

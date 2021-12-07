@@ -110,7 +110,7 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
                 User user = value.toObject(User.class);
 
                 View headerLayout =
-                        binding.navView.inflateHeaderView(R.layout.nav_header_home);
+                        binding.navView.getHeaderView(0);
 
                 if (user == null)
 
@@ -140,6 +140,7 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
         binding.navView.findViewById(R.id.inviteLay).setOnClickListener(this);
         binding.navView.findViewById(R.id.csLay).setOnClickListener(this);
         binding.navView.findViewById(R.id.activeRide).setOnClickListener(this);
+        binding.navView.findViewById(R.id.schedulesLay).setOnClickListener(this);
     }
 
     @Override
@@ -217,6 +218,11 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
 
             OpenCloseDrawer();
             startActivity(new Intent(BaseNavDrawer.this, BookARideActivity.class));
+            finish();
+        } else if (v == binding.navView.findViewById(R.id.schedulesLay)) {
+
+            OpenCloseDrawer();
+            startActivity(new Intent(BaseNavDrawer.this, ScheduledRides.class));
             finish();
         }
     }

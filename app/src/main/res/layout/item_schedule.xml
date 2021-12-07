@@ -21,7 +21,10 @@
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_15sdp"
         android:background="@drawable/rounded_corner_white"
         android:elevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -176,30 +179,4 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/acceptNowBt"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_30sdp"
-        android:layout_alignParentRight="true"
-        android:layout_marginEnd="@dimen/_25sdp"
-        android:background="@drawable/rounded_corner_button_dark_blue"
-        android:elevation="5dp"
-        android:paddingLeft="@dimen/_10sdp"
-        android:paddingRight="@dimen/_10sdp"
-        app:layout_constraintBottom_toBottomOf="@+id/relativeLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
-
-        <TextView
-            android:id="@+id/acceptTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:fontFamily="@font/gibson_regular"
-            android:singleLine="true"
-            android:text="Accept Now"
-            android:textAllCaps="true"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_8sdp" />
-    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public class User {
 
     public String id;
+    public String cusId;
+    public String clientSecret;
     public String firstName;
     public String lastName;
     public String password;
@@ -19,7 +21,7 @@ public class User {
     public double lat;
     public double lng;
 
-    public String role;
+    public String userRole = "user";
 
     public String zipcode;
     public String email;

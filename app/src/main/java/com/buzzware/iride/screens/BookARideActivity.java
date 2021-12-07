@@ -45,6 +45,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.buzzware.iride.retrofit.Controller.Base_Url;
+
 enum CurrentSelection {
 
     whereTo, currentLocation, secondDropOff
@@ -455,7 +457,7 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
             reverseCall = null;
         }
 
-        reverseCall = Controller.getApi().getPlaces(url, "asdasd");
+        reverseCall = Controller.getApi(Base_Url).getPlaces(url, "asdasd");
 
         reverseCall.enqueue(new Callback<String>() {
             @Override

@@ -343,7 +343,7 @@
                     android:layout_height="@dimen/_45sdp"
                     android:layout_marginLeft="@dimen/_30sdp"
                     android:layout_marginRight="@dimen/_30sdp"
-                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
                     android:background="@drawable/rounded_corner_button_light_blue"
                     android:onClick="Continue">
 
@@ -353,6 +353,29 @@
                         android:layout_centerInParent="true"
                         android:fontFamily="@font/gibson_regular"
                         android:text="CONFIRM PICKUP"
+                        android:textAlignment="center"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_11sdp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/scheduleRideRL"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_marginLeft="@dimen/_30sdp"
+                    android:layout_marginRight="@dimen/_30sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:background="@drawable/rounded_corner_button_light_blue"
+                    android:onClick="Continue">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/gibson_regular"
+                        android:text="SCHEDULE RIDE"
                         android:textAlignment="center"
                         android:textAllCaps="true"
                         android:textColor="@color/white"

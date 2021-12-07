@@ -8,14 +8,21 @@ import androidx.databinding.DataBindingUtil;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.buzzware.iride.R;
 import com.buzzware.iride.databinding.FragmentSignInBinding;
+import com.buzzware.iride.models.User;
 import com.buzzware.iride.screens.BookARideActivity;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SignInFragment extends BaseFragment {
 
@@ -86,7 +93,7 @@ public class SignInFragment extends BaseFragment {
 
         if (task.isSuccessful()) {
 
-            startActivity(new Intent(getActivity(), BookARideActivity.class));
+            getCurrentUserData();
 
         } else {
 
@@ -96,5 +103,36 @@ public class SignInFragment extends BaseFragment {
 
             showErrorAlert(task.getException().getMessage());
         }
+    }
+
+    private void getCurrentUserData() {
+
+        DocumentReference users = FirebaseFirestore.getInstance().collection("Users").document(getUserId());
+
+        users.addSnapshotListener((value, error) -> {
+
+            if (value != null) {
+
+                User user = value.toObject(User.class);
+
+                if (user == null || user.userRole == null)
+                    return;
+
+                if (user.userRole.equalsIgnoreCase("user")) {
+
+                    startActivity(new Intent(getActivity(), BookARideActivity.class));
+
+                } else {
+
+                    FirebaseAuth.getInstance().signOut();
+
+                    showErrorAlert("Invalid Email. You have used this email as a driver. Can't use same email in customer app.");
+
+                }
+            }
+
+
+        });
+
     }
 }

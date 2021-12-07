@@ -17,6 +17,7 @@ import com.buzzware.iride.R;
 import com.buzzware.iride.adapters.MessagesAdapter;
 import com.buzzware.iride.databinding.ActivityMessagesBinding;
 import com.buzzware.iride.fragments.Chat;
+import com.buzzware.iride.fragments.HomeActivity;
 import com.buzzware.iride.models.ChatModel;
 import com.buzzware.iride.models.ConversationModel;
 import com.buzzware.iride.models.MessageModel;
@@ -140,6 +141,26 @@ public class MessagesActivity extends AppCompatActivity {
                 sendMessage();
             }
         });
+
+        binding.drawerIcon.setOnClickListener(v -> onBackPressed());
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (isFromNew.equalsIgnoreCase("false")) {
+
+            startActivity(new Intent(MessagesActivity.this, HomeActivity.class));
+
+            finish();
+
+        } else {
+
+            super.onBackPressed();
+
+        }
+
 
     }
 

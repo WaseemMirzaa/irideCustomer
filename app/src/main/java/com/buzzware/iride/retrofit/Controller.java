@@ -11,10 +11,11 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class Controller {
 
     public static final String Base_Url = "https://maps.googleapis.com";
+    public static final String Base_Url_Payments = "https://buzzwaretech.com";
 
     public static Retrofit retrofit = null;
 
-    public static Api getApi() {
+    public static Api getApi(String url) {
 
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -23,7 +24,7 @@ public class Controller {
         mOkHttpClient.connectTimeout(50, TimeUnit.SECONDS).writeTimeout(1, TimeUnit.MINUTES).readTimeout(50, TimeUnit.SECONDS);
         mOkHttpClient.hostnameVerifier((s, sslSession) -> true);
 
-        Retrofit.Builder mBuilder = new Retrofit.Builder().baseUrl(Base_Url).addConverterFactory(ScalarsConverterFactory.create()).addConverterFactory(GsonConverterFactory.create());
+        Retrofit.Builder mBuilder = new Retrofit.Builder().baseUrl(url).addConverterFactory(ScalarsConverterFactory.create()).addConverterFactory(GsonConverterFactory.create());
 
         Retrofit mRetrofit = mBuilder.client(mOkHttpClient.addInterceptor(httpLoggingInterceptor).build()).build();
 
@@ -31,4 +32,6 @@ public class Controller {
 
         return mClient;
     }
+
+
 }
