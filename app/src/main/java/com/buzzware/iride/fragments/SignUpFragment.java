@@ -121,6 +121,22 @@ public class SignUpFragment extends BaseFragment {
             return false;
         }
 
+
+        if (mBinding.homeAddressET.getText().toString().isEmpty()) {
+
+            showErrorAlert("Home Address Required");
+
+            return false;
+        }
+
+
+        if (mBinding.workAddressET.getText().toString().isEmpty()) {
+
+            showErrorAlert("Work Address Required");
+
+            return false;
+        }
+
         if (mBinding.passwordET.getText().toString().isEmpty()) {
 
             showErrorAlert("Password Required");
@@ -136,7 +152,8 @@ public class SignUpFragment extends BaseFragment {
         if (task.isSuccessful()) {
 
             User user = new User();
-            user.address = mBinding.addressET.getText().toString();
+            user.homeAddress = mBinding.homeAddressET.getText().toString();
+            user.workAddress = mBinding.workAddressET.getText().toString();
             user.email = mBinding.emailET.getText().toString();
             user.firstName = mBinding.fNameET.getText().toString();
             user.lastName = mBinding.lNameET.getText().toString();
