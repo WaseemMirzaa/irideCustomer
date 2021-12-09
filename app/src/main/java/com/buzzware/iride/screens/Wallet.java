@@ -54,7 +54,9 @@ public class Wallet extends BaseNavDrawer implements View.OnClickListener {
 
     private void getSchedulesListFromFirebase() {
 
-        FirebaseInstances.scheduledRidesCollection.addSnapshotListener((value, error) -> {
+        FirebaseInstances.scheduledRidesCollection
+                .whereEqualTo("userId",getUserId())
+                .addSnapshotListener((value, error) -> {
 
             if (error != null && error.getLocalizedMessage() != null)
 

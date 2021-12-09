@@ -206,7 +206,7 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
         } else if (v == binding.navView.findViewById(R.id.csLay)) {
 
             openCloseDrawer();
-            startActivity(new Intent(BaseNavDrawer.this, CustomerService.class));
+            startActivity(new Intent(BaseNavDrawer.this, CustomerRequestsActivity.class));
             finish();
 
         } else if (v == binding.navView.findViewById(R.id.activeRide)) {
