@@ -7,7 +7,7 @@ import android.net.Uri;
 
 import androidx.fragment.app.Fragment;
 
-import com.buzzware.iride.BuildConfig;
+import com.google.firebase.BuildConfig;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 

@@ -4,24 +4,25 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        tools:context=".screens.CustomerService">
+        android:background="@color/white">
 
         <RelativeLayout
             android:id="@+id/headerLay"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_45sdp">
+
             <RelativeLayout
                 android:id="@+id/drawerIcon"
-                android:layout_marginLeft="@dimen/_12sdp"
-                android:layout_centerVertical="true"
                 android:layout_width="40dp"
-                android:layout_height="40dp">
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_12sdp">
+
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/menu_black"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/back_icon" />
             </RelativeLayout>
         </RelativeLayout>
 
