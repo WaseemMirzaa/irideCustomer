@@ -6,11 +6,16 @@
         <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/drawable/ic_edit.xml" value="0.2846153846153846" />
         <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/drawable/rounded_corner_gray_two_top.xml" value="0.2846153846153846" />
         <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/activity_authentication.xml" value="0.23177083333333334" />
+        <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/activity_create_new_request.xml" value="0.2296875" />
+        <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/activity_customer_requests.xml" value="0.2296875" />
         <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/activity_edit_profile.xml" value="0.27291666666666664" />
         <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/activity_home.xml" value="0.18385416666666668" />
         <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/activity_messages.xml" value="0.20364583333333333" />
         <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/activity_notifications.xml" value="0.23177083333333334" />
+        <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/app_base_layout.xml" value="0.2296875" />
         <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/chat_item_lay.xml" value="0.20364583333333333" />
+        <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/fragment_customer_requests.xml" value="0.2" />
+        <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/fragment_customer_service.xml" value="0.2296875" />
         <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/fragment_home.xml" value="0.18385416666666668" />
         <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/fragment_messages.xml" value="0.20364583333333333" />
         <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/fragment_profile.xml" value="0.27291666666666664" />
@@ -24,6 +29,7 @@
         <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/my_message_item_lay.xml" value="0.1734375" />
         <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/nav_header_home.xml" value="0.23177083333333334" />
         <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/other_message_item_lay.xml" value="0.25" />
+        <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/request_item_desgin.xml" value="0.27291666666666664" />
         <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/saved_locations_item.xml" value="0.23177083333333334" />
         <entry key="..\:/Buzzware/irideCustomer/app/src/main/res/layout/upcomming_rides_item_lay.xml" value="0.23177083333333334" />
       </map>

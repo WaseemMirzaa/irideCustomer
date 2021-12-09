@@ -20,6 +20,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Iride">
         <activity
+            android:name=".screens.CustomerRequestsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".screens.CreateNewRequestActivity"
+            android:exported="true" />
+        <activity
             android:name=".screens.MessagesActivity"
             android:exported="true" />
         <activity
@@ -39,9 +45,6 @@
             android:name=".screens.Chat"
             android:theme="@style/Theme.white" />
         <activity
-            android:name=".screens.CustomerService"
-            android:theme="@style/Theme.white" />
-        <activity
             android:name=".screens.History"
             android:theme="@style/Theme.white" />
         <activity
@@ -55,7 +58,7 @@
             android:theme="@style/Theme.white" />
         <activity
             android:name=".screens.ScheduledRides"
-            android:theme="@style/Theme.white"/>
+            android:theme="@style/Theme.white" />
         <activity
             android:name=".screens.Profile"
             android:theme="@style/Theme.white" />
