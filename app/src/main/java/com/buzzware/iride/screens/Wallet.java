@@ -1,4 +1,4 @@
-package com.buzzware.iride.fragments;
+package com.buzzware.iride.screens;
 
 import android.app.Dialog;
 import android.graphics.Color;

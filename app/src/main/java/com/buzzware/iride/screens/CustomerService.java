@@ -1,4 +1,4 @@
-package com.buzzware.iride.fragments;
+package com.buzzware.iride.screens;
 
 import android.os.Bundle;
 
@@ -6,7 +6,6 @@ import android.widget.Toast;
 
 import com.buzzware.iride.databinding.FragmentCustomerServiceBinding;
 import com.buzzware.iride.models.MyRequests;
-import com.buzzware.iride.screens.BaseNavDrawer;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 

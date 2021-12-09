@@ -30,37 +30,37 @@
             android:name=".screens.Notifications"
             android:theme="@style/Theme.white" />
         <activity
-            android:name=".fragments.ConfirmPickupActivity"
+            android:name=".screens.ConfirmPickupActivity"
             android:theme="@style/Theme.white" />
         <activity
             android:name=".screens.BookingsActivity"
             android:theme="@style/Theme.white" />
         <activity
-            android:name=".fragments.Chat"
+            android:name=".screens.Chat"
             android:theme="@style/Theme.white" />
         <activity
-            android:name=".fragments.CustomerService"
+            android:name=".screens.CustomerService"
             android:theme="@style/Theme.white" />
         <activity
-            android:name=".fragments.History"
+            android:name=".screens.History"
             android:theme="@style/Theme.white" />
         <activity
-            android:name=".fragments.HomeActivity"
+            android:name=".screens.HomeActivity"
             android:theme="@style/Theme.white" />
         <activity
-            android:name=".fragments.Invitation"
+            android:name=".screens.Invitation"
             android:theme="@style/Theme.white" />
         <activity
-            android:name=".fragments.Messages"
+            android:name=".screens.Messages"
             android:theme="@style/Theme.white" />
         <activity
             android:name=".screens.ScheduledRides"
             android:theme="@style/Theme.white"/>
         <activity
-            android:name=".fragments.Profile"
+            android:name=".screens.Profile"
             android:theme="@style/Theme.white" />
         <activity
-            android:name=".fragments.Wallet"
+            android:name=".screens.Wallet"
             android:theme="@style/Theme.white" />
         <activity
             android:name=".screens.TripView"

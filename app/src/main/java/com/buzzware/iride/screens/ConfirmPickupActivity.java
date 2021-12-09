@@ -1,4 +1,4 @@
-package com.buzzware.iride.fragments;
+package com.buzzware.iride.screens;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -40,8 +40,6 @@ import com.buzzware.iride.response.distanceMatrix.DistanceMatrixResponse;
 import com.buzzware.iride.response.distanceMatrix.Element;
 import com.buzzware.iride.response.distanceMatrix.Row;
 import com.buzzware.iride.retrofit.Controller;
-import com.buzzware.iride.screens.BaseNavDrawer;
-import com.buzzware.iride.screens.BookARideActivity;
 import com.buzzware.iride.utils.AppConstants;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -50,10 +48,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -69,7 +64,6 @@ import com.stripe.android.Stripe;
 import com.stripe.android.model.ConfirmPaymentIntentParams;
 import com.stripe.android.model.PaymentMethod;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 

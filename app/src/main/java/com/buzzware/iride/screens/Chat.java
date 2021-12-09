@@ -1,4 +1,4 @@
-package com.buzzware.iride.fragments;
+package com.buzzware.iride.screens;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,13 +11,8 @@ import com.buzzware.iride.FirebaseRequest.FirebaseRequests;
 import com.buzzware.iride.adapters.ConversationAdapter;
 import com.buzzware.iride.databinding.FragmentChatBinding;
 import com.buzzware.iride.models.ConversationModel;
-import com.buzzware.iride.models.User;
-import com.buzzware.iride.screens.BaseActivity;
-import com.buzzware.iride.screens.MessagesActivity;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Chat extends BaseActivity {

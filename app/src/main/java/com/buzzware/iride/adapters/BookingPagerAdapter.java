@@ -5,8 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.buzzware.iride.fragments.History;
-import com.buzzware.iride.fragments.UpcommingFragment;
+import com.buzzware.iride.screens.UpcommingFragment;
 
 public class BookingPagerAdapter extends FragmentPagerAdapter {
     int tabCount;

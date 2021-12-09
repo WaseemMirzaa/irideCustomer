@@ -1,24 +1,16 @@
-package com.buzzware.iride.fragments;
+package com.buzzware.iride.screens;
 
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.buzzware.iride.adapters.HistoryAddapter;
 import com.buzzware.iride.adapters.RideType;
 import com.buzzware.iride.adapters.UpcomingRidesAdapter;
 import com.buzzware.iride.databinding.FragmentHIstoryBinding;
 import com.buzzware.iride.models.HistoryModel;
-import com.buzzware.iride.R;
 import com.buzzware.iride.models.RideModel;
-import com.buzzware.iride.screens.BaseActivity;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;

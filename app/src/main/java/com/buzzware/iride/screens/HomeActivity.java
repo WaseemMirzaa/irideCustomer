@@ -1,4 +1,4 @@
-package com.buzzware.iride.fragments;
+package com.buzzware.iride.screens;
 
 import android.Manifest;
 import android.content.Context;
@@ -31,10 +31,7 @@ import com.buzzware.iride.response.distanceMatrix.DistanceMatrixResponse;
 import com.buzzware.iride.response.distanceMatrix.Element;
 import com.buzzware.iride.response.distanceMatrix.Row;
 import com.buzzware.iride.retrofit.Controller;
-import com.buzzware.iride.screens.BaseNavDrawer;
-import com.buzzware.iride.screens.BookARideActivity;
 import com.buzzware.iride.databinding.FragmentHomeBinding;
-import com.buzzware.iride.screens.MessagesActivity;
 import com.buzzware.iride.utils.AppConstants;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

@@ -9,7 +9,6 @@ import android.view.WindowManager;
 
 import com.buzzware.iride.R;
 import com.buzzware.iride.databinding.ActivityStartupBinding;
-import com.buzzware.iride.fragments.HomeActivity;
 
 public class StartUp extends BaseActivity {
 

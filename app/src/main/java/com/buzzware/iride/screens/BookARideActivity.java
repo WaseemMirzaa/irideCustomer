@@ -18,7 +18,6 @@ import com.buzzware.iride.OnPredictedEvent;
 import com.buzzware.iride.OnTextChangedEvent;
 import com.buzzware.iride.R;
 import com.buzzware.iride.databinding.FragmentBookARideBinding;
-import com.buzzware.iride.fragments.ConfirmPickupActivity;
 import com.buzzware.iride.fragments.ExpandablePlacesListFragment;
 import com.buzzware.iride.models.SearchedPlaceModel;
 import com.buzzware.iride.response.geoCode.ReverseGeoCode;

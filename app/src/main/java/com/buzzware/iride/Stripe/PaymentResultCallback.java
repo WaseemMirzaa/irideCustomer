@@ -4,7 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.buzzware.iride.fragments.ConfirmPickupActivity;
+import com.buzzware.iride.screens.ConfirmPickupActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.stripe.android.ApiResultCallback;
