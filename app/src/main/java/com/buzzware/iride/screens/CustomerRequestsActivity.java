@@ -27,7 +27,7 @@ import org.bouncycastle.jcajce.provider.symmetric.ARC4;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerRequestsActivity extends BaseActivity implements RequestCallback {
+public class CustomerRequestsActivity extends BaseNavDrawer implements RequestCallback {
 
     ActivityCustomerRequestsBinding binding;
 
@@ -98,7 +98,7 @@ public class CustomerRequestsActivity extends BaseActivity implements RequestCal
 
     private void setListener() {
 
-        binding.drawerIcon.setOnClickListener(v -> finish());
+        binding.drawerIcon.setOnClickListener(v -> OpenCloseDrawer());
 
         binding.createNewRequestBtn.setOnClickListener(v -> startActivity(new Intent(CustomerRequestsActivity.this, CreateNewRequestActivity.class)));
 
