@@ -172,57 +172,57 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         if (v == binding.navView.findViewById(R.id.homeLay)) {
 
-            OpenCloseDrawer();
+            openCloseDrawer();
             getActiveRide();
 
 
         } else if (v == binding.navView.findViewById(R.id.bookingsLay)) {
 
-            OpenCloseDrawer();
+            openCloseDrawer();
 
             startActivity(new Intent(BaseNavDrawer.this, BookingsActivity.class));
             finish();
 
         } else if (v == binding.navView.findViewById(R.id.walletLay)) {
 
-            OpenCloseDrawer();
+            openCloseDrawer();
 
             startActivity(new Intent(BaseNavDrawer.this, Wallet.class));
             finish();
 
         } else if (v == binding.navView.findViewById(R.id.profileLay)) {
 
-            OpenCloseDrawer();
+            openCloseDrawer();
             startActivity(new Intent(BaseNavDrawer.this, Profile.class));
             finish();
 
         } else if (v == binding.navView.findViewById(R.id.inviteLay)) {
 
-            OpenCloseDrawer();
+            openCloseDrawer();
             startActivity(new Intent(BaseNavDrawer.this, Invitation.class));
             finish();
 
 
         } else if (v == binding.navView.findViewById(R.id.csLay)) {
 
-            OpenCloseDrawer();
+            openCloseDrawer();
             startActivity(new Intent(BaseNavDrawer.this, CustomerService.class));
             finish();
 
         } else if (v == binding.navView.findViewById(R.id.activeRide)) {
 
-            OpenCloseDrawer();
+            openCloseDrawer();
             startActivity(new Intent(BaseNavDrawer.this, BookARideActivity.class));
             finish();
         } else if (v == binding.navView.findViewById(R.id.schedulesLay)) {
 
-            OpenCloseDrawer();
+            openCloseDrawer();
             startActivity(new Intent(BaseNavDrawer.this, ScheduledRides.class));
             finish();
         }
     }
 
-    public void OpenCloseDrawer() {
+    public void openCloseDrawer() {
 
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
 

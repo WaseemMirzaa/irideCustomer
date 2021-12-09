@@ -5,12 +5,8 @@ import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.buzzware.iride.R;
-import com.buzzware.iride.adapters.RideType;
 import com.buzzware.iride.adapters.ScheduledRidesAdapter;
-import com.buzzware.iride.adapters.UpcomingRidesAdapter;
 import com.buzzware.iride.databinding.FragmentBookingsBinding;
-import com.buzzware.iride.models.ScheduleModel;
 import com.buzzware.iride.models.ScheduleModel;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -19,7 +15,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ScheduledRides extends BaseNavDrawer implements View.OnClickListener {
 
@@ -38,7 +33,7 @@ public class ScheduledRides extends BaseNavDrawer implements View.OnClickListene
 
         Init();
 
-        mBinding.drawerIcon.setOnClickListener(v -> OpenCloseDrawer());
+        mBinding.drawerIcon.setOnClickListener(v -> openCloseDrawer());
 
         setBaseListeners();
 

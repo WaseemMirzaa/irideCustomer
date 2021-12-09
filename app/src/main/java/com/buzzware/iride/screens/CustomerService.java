@@ -32,7 +32,7 @@ public class CustomerService extends BaseNavDrawer {
 
         binding.btnContinue.setOnClickListener(v -> validateAndCreateRequest());
 
-        binding.drawerIcon.setOnClickListener(v -> OpenCloseDrawer());
+        binding.drawerIcon.setOnClickListener(v -> openCloseDrawer());
 
     }
 

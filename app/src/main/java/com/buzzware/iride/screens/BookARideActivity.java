@@ -85,7 +85,7 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
 
         checkPermissionsAndInit();
 
-        mBinding.backIcon.setOnClickListener(v -> OpenCloseDrawer());
+        mBinding.backIcon.setOnClickListener(v -> openCloseDrawer());
 
     }
 
