@@ -87,7 +87,7 @@ public class Profile extends BaseNavDrawer implements View.OnClickListener {
 
         binding.userNameTV.setText(user.firstName + " " + user.lastName);
 
-        binding.userAddressTV.setText(user.address);
+        binding.userAddressTV.setText(user.homeAddress);
 
         binding.userPhoneNumberTV.setText(user.phoneNumber);
 

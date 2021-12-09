@@ -568,12 +568,6 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
 
         });
 
-//         mMap.addMarker(new MarkerOptions()
-//                .position(currentLatLng)
-//                .title("Select Location")
-//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-
-
         mMap.setOnCameraIdleListener(() -> {
 
             LatLng midLatLng = mMap.getCameraPosition().target;

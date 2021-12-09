@@ -64,6 +64,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:hint="Name"
+                        android:id="@+id/nameET"
                         android:fontFamily="@font/gibson_regular"
                         android:textSize="@dimen/_12sdp"
                         android:textColor="@color/black"
@@ -88,6 +89,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:hint="Email"
+                        android:id="@+id/emailET"
                         android:fontFamily="@font/gibson_regular"
                         android:textSize="@dimen/_12sdp"
                         android:textColor="@color/black"
@@ -112,6 +114,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:hint="Subject"
+                        android:id="@+id/subjectET"
                         android:fontFamily="@font/gibson_regular"
                         android:textSize="@dimen/_12sdp"
                         android:textColor="@color/black"
@@ -132,6 +135,7 @@
                     android:layout_height="@dimen/_200sdp">
                     <EditText
                         android:layout_marginTop="5dp"
+                        android:id="@+id/messageET"
                         android:gravity="start"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_10sdp"

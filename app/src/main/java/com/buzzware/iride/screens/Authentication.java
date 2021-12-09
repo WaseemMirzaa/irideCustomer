@@ -13,16 +13,20 @@ import com.google.android.material.tabs.TabLayout;
 public class Authentication extends AppCompatActivity {
 
     ActivityAuthenticationBinding mBinding;
+
     AuthPagerAdapter authPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding= DataBindingUtil.setContentView(this, R.layout.activity_authentication);
-        try{
+
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_authentication);
+
+        try {
+
             Init();
-        }catch (Exception e)
-        {
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -33,17 +37,21 @@ public class Authentication extends AppCompatActivity {
 
     private void InitViewPager() {
         authPagerAdapter = new AuthPagerAdapter(getSupportFragmentManager(), mBinding.tabLay.getTabCount());
+
         mBinding.viewPager.setAdapter(authPagerAdapter);
+
         mBinding.tabLay.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mBinding.viewPager.setCurrentItem(tab.getPosition());
-                if(tab.getPosition() == 0 || tab.getPosition() == 1)
+                if (tab.getPosition() == 0 || tab.getPosition() == 1)
                     authPagerAdapter.notifyDataSetChanged();
             }
+
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
             }
+
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
             }
