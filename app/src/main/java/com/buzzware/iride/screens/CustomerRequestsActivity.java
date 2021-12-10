@@ -1,19 +1,14 @@
 package com.buzzware.iride.screens;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.buzzware.iride.R;
+import androidx.annotation.NonNull;
+import androidx.core.view.GravityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.buzzware.iride.adapters.RequestAdapter;
 import com.buzzware.iride.databinding.ActivityCustomerRequestsBinding;
-import com.buzzware.iride.fragments.BaseFragment;
 import com.buzzware.iride.interfaces.RequestCallback;
 import com.buzzware.iride.models.MyRequests;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,8 +16,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import org.bouncycastle.jcajce.provider.symmetric.ARC4;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,5 +108,7 @@ public class CustomerRequestsActivity extends BaseNavDrawer implements RequestCa
 
         startActivity(intent);
     }
+
+
 
 }

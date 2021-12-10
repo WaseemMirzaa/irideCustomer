@@ -24,10 +24,13 @@ import java.util.Random;
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHolder> {
 
     List<MessageModel> list;
+
     Context mContext;
 
     String userId;
+
     String myImageUrl;
+
     String otherUserImageUrl;
 
     public MessagesAdapter(Context mContext, List<MessageModel> list, String userId, String myImageUrl, String otherUserImageUrl) {
@@ -37,8 +40,11 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
         this.mContext = mContext;
 
         this.userId = userId;
+
         this.myImageUrl = myImageUrl;
+
         this.otherUserImageUrl = otherUserImageUrl;
+
     }
 
     @NonNull
