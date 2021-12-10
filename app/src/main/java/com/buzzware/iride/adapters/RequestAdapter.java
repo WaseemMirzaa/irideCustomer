@@ -1,4 +1,4 @@
-package com.buzzware.iride.adapters;
+ package com.buzzware.iride.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -72,7 +72,6 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         RequestItemDesginBinding binding;
-
 
         public ViewHolder(@NonNull RequestItemDesginBinding binding) {
             super(binding.getRoot());
