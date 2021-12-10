@@ -22,6 +22,8 @@ public class Notifications extends AppCompatActivity {
 
         setListeners();
 
+
+
     }
 
     private void setListeners() {
@@ -29,6 +31,5 @@ public class Notifications extends AppCompatActivity {
         binding.drawerIcon.setOnClickListener(v -> onBackPressed());
 
     }
-
 
 }

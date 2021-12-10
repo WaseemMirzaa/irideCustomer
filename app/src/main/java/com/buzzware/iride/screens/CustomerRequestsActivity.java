@@ -91,7 +91,7 @@ public class CustomerRequestsActivity extends BaseNavDrawer implements RequestCa
 
     private void setListener() {
 
-        binding.drawerIcon.setOnClickListener(v -> OpenCloseDrawer());
+        binding.drawerIcon.setOnClickListener(v -> openCloseDrawer());
 
         binding.createNewRequestBtn.setOnClickListener(v -> startActivity(new Intent(CustomerRequestsActivity.this, CreateNewRequestActivity.class)));
 

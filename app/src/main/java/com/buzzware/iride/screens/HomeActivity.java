@@ -1232,7 +1232,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
         SetStatusBarColor();
 
-        OpenCloseDrawer();
+        openCloseDrawer();
     }
 
     private void onSettingsClicked() {

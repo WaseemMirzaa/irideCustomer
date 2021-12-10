@@ -93,7 +93,7 @@ public class Profile extends BaseNavDrawer implements View.OnClickListener {
 
     private void Init() {
 
-        binding.drawerIcon.setOnClickListener(v -> OpenCloseDrawer());
+        binding.drawerIcon.setOnClickListener(v -> openCloseDrawer());
 
         binding.btnNotifications.setOnClickListener(this);
 

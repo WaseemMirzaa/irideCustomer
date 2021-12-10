@@ -36,7 +36,7 @@ public class BookingsActivity extends BaseNavDrawer implements View.OnClickListe
 
         Init();
 
-        mBinding.drawerIcon.setOnClickListener(v -> OpenCloseDrawer());
+        mBinding.drawerIcon.setOnClickListener(v -> openCloseDrawer());
 
         setBaseListeners();
 

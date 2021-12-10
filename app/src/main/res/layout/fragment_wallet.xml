@@ -1,101 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".screens.Wallet">
 
-        <RelativeLayout
+        <View
             android:background="@color/purple_200"
             android:id="@+id/image"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_200sdp"
+            android:layout_height="match_parent"
             android:src="@drawable/dummy_two"
-            android:adjustViewBounds="true">
-            <LinearLayout
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/_25sdp"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:text="$150"
-                    android:fontFamily="@font/gibson_semibd"/>
-
-                <TextView
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/_12sdp"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:text="Balance"
-                    android:fontFamily="@font/gibson_semibd"/>
-            </LinearLayout>
-        </RelativeLayout>
+            android:adjustViewBounds="true"/>
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_marginTop="-20dp"
-            android:background="@drawable/rounded_corner_white_two_top"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/image">
+            android:id="@+id/ll"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@drawable/rounded_corner_white_two_top"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/menuAppBar">
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_marginLeft="@dimen/_20sdp"
-                android:layout_marginRight="@dimen/_20sdp"
-                android:elevation="@dimen/_8sdp"
-                android:background="@drawable/rounded_corner_white"
-                android:layout_marginTop="@dimen/_20sdp"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/paymentsRV"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_10sdp">
-                <include
-                    layout="@layout/saved_card_item"/>
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_10sdp" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/gray_light"
-                    android:layout_alignParentBottom="true"/>
-
-                <include
-                    layout="@layout/saved_card_item"/>
-
-                <TextView
-                    android:id="@+id/btnAddPayment"
-                    android:layout_marginBottom="@dimen/_5sdp"
-                    android:layout_gravity="start"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add Payment Methord"
-                    android:textStyle="bold"
-                    android:textColor="@color/purple_200"
-                    android:textSize="@dimen/_11sdp"
-                    android:singleLine="true"
-                    android:fontFamily="@font/gibson_regular"/>
-            </LinearLayout>
         </LinearLayout>
 
-        <RelativeLayout
-            android:layout_marginTop="@dimen/_25sdp"
-            android:id="@+id/drawerIcon"
-            android:layout_marginLeft="@dimen/_12sdp"
-            android:layout_width="40dp"
-            android:layout_height="40dp">
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/drawer_white"
-                android:layout_centerVertical="true" />
-        </RelativeLayout>
-    </RelativeLayout>
+        <include layout="@layout/menu_app_bar"
+            android:id="@+id/menuAppBar"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
