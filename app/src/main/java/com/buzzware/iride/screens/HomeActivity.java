@@ -376,11 +376,11 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
         LatLng currentLatLng = new LatLng(rideModel.tripDetail.pickUp.lat, rideModel.tripDetail.pickUp.lng);
 
-        bookedPickupMarker = mMap.addMarker(new MarkerOptions().position(currentLatLng).title("").icon(BitmapFromVector(context, R.drawable.destination)));
+        bookedPickupMarker = mMap.addMarker(new MarkerOptions().position(currentLatLng).title(""));
 
         LatLng dest = new LatLng(rideModel.tripDetail.destinations.get(0).lat, rideModel.tripDetail.destinations.get(0).lng);
 
-        bookedDestinationMarker = mMap.addMarker(new MarkerOptions().position(dest).title("").icon(BitmapFromVector(context, R.drawable.destination)));
+        bookedDestinationMarker = mMap.addMarker(new MarkerOptions().position(dest).title(""));
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 18.0F));
 
@@ -390,7 +390,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
             LatLng secondDest = new LatLng(rideModel.tripDetail.destinations.get(1).lat, rideModel.tripDetail.destinations.get(1).lng);
 
-            lastDestinationMarker = mMap.addMarker(new MarkerOptions().position(secondDest).title("").icon(BitmapFromVector(context, R.drawable.destination)));
+            lastDestinationMarker = mMap.addMarker(new MarkerOptions().position(secondDest).title(""));
 
         }
 
@@ -444,7 +444,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
             LatLng currentLatLng = new LatLng(ride.tripDetail.pickUp.lat, ride.tripDetail.pickUp.lng);
 
-            locationMarker = mMap.addMarker(new MarkerOptions().position(currentLatLng).title("").icon(BitmapFromVector(context, R.drawable.destination)));
+            locationMarker = mMap.addMarker(new MarkerOptions().position(currentLatLng).title(""));
 
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 18.0F));
 
@@ -477,18 +477,18 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
                     LatLng currentLatLng = new LatLng(ride.tripDetail.destinations.get(0).lat, ride.tripDetail.destinations.get(0).lng);
 
-                    destinationMarker = mMap.addMarker(new MarkerOptions().position(currentLatLng).title("").icon(BitmapFromVector(context, R.drawable.destination)));
+                    destinationMarker = mMap.addMarker(new MarkerOptions().position(currentLatLng).title(""));
                 }
 
                 LatLng destination2 = new LatLng(ride.tripDetail.destinations.get(1).lat, ride.tripDetail.destinations.get(1).lng);
 
-                destinationMarker2 = mMap.addMarker(new MarkerOptions().position(destination2).title("").icon(BitmapFromVector(context, R.drawable.destination)));
+                destinationMarker2 = mMap.addMarker(new MarkerOptions().position(destination2).title(""));
 
             } else {
 
                 LatLng currentLatLng = new LatLng(ride.tripDetail.destinations.get(0).lat, ride.tripDetail.destinations.get(0).lng);
 
-                destinationMarker = mMap.addMarker(new MarkerOptions().position(currentLatLng).title("").icon(BitmapFromVector(context, R.drawable.destination)));
+                destinationMarker = mMap.addMarker(new MarkerOptions().position(currentLatLng).title(""));
 
             }
 

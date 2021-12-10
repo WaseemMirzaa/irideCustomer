@@ -94,15 +94,16 @@
                     android:background="@drawable/rounded_corner_white"
                     android:elevation="@dimen/_5sdp">
 
-                    <EditText
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_10sdp"
                         android:backgroundTint="@android:color/transparent"
                         android:fontFamily="@font/gibson_regular"
-                        android:hint="vhoWhi"
+                        android:text="a125SG"
                         android:imeOptions="actionNext"
+                        android:gravity="center"
                         android:inputType="text"
                         android:maxLines="1"
                         android:singleLine="true"

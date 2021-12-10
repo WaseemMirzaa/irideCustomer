@@ -40,6 +40,7 @@ public class ScheduledRides extends BaseNavDrawer implements View.OnClickListene
         setAdapter(new ArrayList<>());
 
         showLoader();
+
         getRides();
 
 //        setListeners();
