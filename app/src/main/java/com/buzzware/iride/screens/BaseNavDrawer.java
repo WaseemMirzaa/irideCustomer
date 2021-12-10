@@ -174,6 +174,7 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
         if (v == binding.navView.findViewById(R.id.homeLay)) {
 
             openCloseDrawer();
+
             getActiveRide();
 
 

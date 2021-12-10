@@ -20,8 +20,6 @@ public class ScheduledRides extends BaseNavDrawer implements View.OnClickListene
 
     FragmentBookingsBinding mBinding;
 
-//    BookingPagerAdapter bookingPagerAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -35,15 +33,12 @@ public class ScheduledRides extends BaseNavDrawer implements View.OnClickListene
 
         mBinding.drawerIcon.setOnClickListener(v -> openCloseDrawer());
 
-        setBaseListeners();
-
         setAdapter(new ArrayList<>());
 
         showLoader();
 
         getRides();
 
-//        setListeners();
     }
 
 
@@ -52,6 +47,7 @@ public class ScheduledRides extends BaseNavDrawer implements View.OnClickListene
         mBinding.customTabLay.setVisibility(View.GONE);
     
         mBinding.tvTitle.setText("Scheduled Rides");
+
     }
 
     private void getRides() {
