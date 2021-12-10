@@ -50,7 +50,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
 
         viewHolder.binding.nameTV.setText("Name: "+request.name);
         viewHolder.binding.subjectTV.setText("Subject: "+request.subject);
-        viewHolder.binding.messageTV.setText("Messsage: "+request.message);
+        viewHolder.binding.messageTV.setText("Message: "+request.message);
 
         viewHolder.binding.mainLL.setOnClickListener(v->{
 

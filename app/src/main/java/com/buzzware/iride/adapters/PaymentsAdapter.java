@@ -73,7 +73,7 @@ public class PaymentsAdapter extends RecyclerView.Adapter<PaymentsAdapter.Paymen
 
             if (ride.status != null)
 
-                binding.statusTV.setText(ride.status);
+                binding.statusTV.setText(ride.status.toUpperCase());
 
             if (ride.price != null)
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.buzzware.iride.adapters.RequestAdapter;
@@ -103,9 +104,14 @@ public class CustomerRequestsActivity extends BaseNavDrawer implements RequestCa
         intent.putExtra("conversationID",ConversationId);
         intent.putExtra("selectedUserID",adminId );
         intent.putExtra("selectedUserName", adminName);
-        intent.putExtra("checkFrom", "false");
+        intent.putExtra("checkFrom", "admin");
 
         startActivity(intent);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showRequest();
+    }
 }

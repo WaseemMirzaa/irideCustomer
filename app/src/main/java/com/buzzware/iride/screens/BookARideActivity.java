@@ -8,7 +8,9 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -28,6 +30,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.nabinbhandari.android.permissions.PermissionHandler;
 import com.nabinbhandari.android.permissions.Permissions;
@@ -37,7 +43,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import im.delight.android.location.SimpleLocation;
 import retrofit2.Call;
@@ -55,8 +63,6 @@ enum CurrentSelection {
 public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
     FragmentBookARideBinding mBinding;
-
-    Context context;
 
     public GoogleMap mMap;
 
@@ -85,6 +91,8 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
 
         checkPermissionsAndInit();
 
+        setFireBaseToken();
+
         mBinding.backIcon.setOnClickListener(v -> openCloseDrawer());
 
     }
@@ -93,6 +101,37 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
 
         mBinding.secondDropOffLL.setVisibility(View.GONE);
 
+    }
+
+    private void setFireBaseToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+
+                        if (!task.isSuccessful()) {
+
+                            Log.w("FireBase Token", "Fetching FCM registration token failed", task.getException());
+                            return;
+
+                        }
+
+                        String token = task.getResult();
+
+                        addTokenToDB(token);
+
+                    }
+                });
+    }
+
+    private void addTokenToDB(String token) {
+
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("token", token);
+
+        FirebaseFirestore.getInstance().collection("Users")
+                .document(getUserId())
+                .update(userData);
     }
 
     @Override
