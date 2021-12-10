@@ -104,11 +104,14 @@ public class CustomerRequestsActivity extends BaseNavDrawer implements RequestCa
         intent.putExtra("conversationID",ConversationId);
         intent.putExtra("selectedUserID",adminId );
         intent.putExtra("selectedUserName", adminName);
-        intent.putExtra("checkFrom", "false");
+        intent.putExtra("checkFrom", "admin");
 
         startActivity(intent);
     }
 
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showRequest();
+    }
 }

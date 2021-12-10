@@ -16,26 +16,29 @@
                 android:layout_centerVertical="true"
                 android:layout_width="40dp"
                 android:layout_height="40dp">
+
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/back_icon"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/menu_black" />
             </RelativeLayout>
 
             <RelativeLayout
+                android:visibility="invisible"
                 android:layout_alignParentRight="true"
                 android:id="@+id/searchIcon"
                 android:layout_marginRight="@dimen/_12sdp"
                 android:layout_centerVertical="true"
                 android:layout_width="40dp"
                 android:layout_height="40dp">
+
                 <ImageView
-                    android:layout_alignParentRight="true"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/search"
-                    android:layout_centerVertical="true" />
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/search" />
             </RelativeLayout>
         </RelativeLayout>
 
@@ -60,34 +63,13 @@
                 android:layout_below="@+id/tvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/notificationRV"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/rv_notifcations"/>
+                    android:layout_height="match_parent" />
 
 <!--                these are dummy items you have to use recyclerview-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <include
-                        layout="@layout/notification_unread_item_top"/>
-
-                    <include
-                        layout="@layout/notification_unread_item_mid"/>
-
-                    <include
-                        layout="@layout/notification_unread_item_bottom"/>
-
-                    <include
-                        layout="@layout/notification_read_item"/>
-
-                    <include
-                        layout="@layout/notification_read_item"/>
-
-                    <include
-                        layout="@layout/notification_read_item"/>
-                </LinearLayout>
             </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
