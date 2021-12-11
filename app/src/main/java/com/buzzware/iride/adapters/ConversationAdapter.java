@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.buzzware.iride.R;
 import com.buzzware.iride.databinding.ChatItemLayBinding;
 import com.buzzware.iride.models.ConversationModel;
@@ -40,21 +42,9 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         final ConversationModel conversationModel= list.get(i);
         viewHolder.binding.userNameTV.setText(conversationModel.getName());
         viewHolder.binding.lastMessageTV.setText(conversationModel.getLastMessage());
-//        if(!conversationModel.getImage().equals("null") && !conversationModel.getImage().equals("NULL") && !conversationModel.getImage().equals("")) {
-//            Picasso.with(context).load(conversationModel.getImage()).fit().into(viewHolder.binding.userImageIV, new Callback() {
-//                @Override
-//                public void onSuccess() {
-//                }
-//
-//                @Override
-//                public void onError() {
-//                    viewHolder.binding.userImageIV.setImageResource(R.drawable.dummy_girl);
-//                }
-//            });
-//        }else{
-//            viewHolder.binding.userImageIV.setImageResource(R.drawable.dummy_girl);
-//        }
 
+        Glide.with(context).load(conversationModel.getImage()).apply(new RequestOptions().centerCrop())
+                .into(viewHolder.binding.userImageIV);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

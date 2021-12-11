@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.buzzware.iride.models.RideModel;
 import com.buzzware.iride.models.User;
 import com.buzzware.iride.models.VehicleModel;
@@ -29,6 +31,7 @@ public class RatingDialog extends Dialog {
     private TextView nameTV;
     private TextView vehicleNoTV;
     private TextView budgetTV;
+    private TextView ratingTV;
     private MaterialRatingBar userRating;
     private RelativeLayout submitBt;
 
@@ -120,11 +123,27 @@ public class RatingDialog extends Dialog {
 
         budgetTV.setText(ride.price + "$");
 
+        Glide.with(c).load(user.image).apply(new RequestOptions().placeholder(R.drawable.dummy_girl))
+                .into(picRIV);
+
+        double rating = 0;
+
+        for (double r: user.ratings) {
+
+            rating = rating + r;
+
+        }
+
+        rating = rating / Double.valueOf(user.ratings.size());
+
+        ratingTV.setText(Math.round(rating)+"");
+
     }
 
     public void initView() {
         picRIV = (RoundedImageView) findViewById(R.id.picRIV);
         nameTV = (TextView) findViewById(R.id.nameTV);
+        ratingTV = (TextView) findViewById(R.id.ratingTV);
         vehicleNoTV = (TextView) findViewById(R.id.vehicleNoTV);
         budgetTV = (TextView) findViewById(R.id.budgetTV);
         userRating = (MaterialRatingBar) findViewById(R.id.userRating);

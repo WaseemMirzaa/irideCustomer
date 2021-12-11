@@ -29,8 +29,6 @@ import java.util.Arrays;
 
 public class BaseNavDrawer extends BaseActivity implements View.OnClickListener {
 
-    private FrameLayout view_stub; //This is the frame layout to keep your content view
-
     AppBaseLayoutBinding binding;
 
     @Override
@@ -66,6 +64,15 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
 
         hideLoader();
 
+        if (!task.isSuccessful()) {
+
+            openCloseDrawer();
+
+            showErrorAlert(task.getException().getLocalizedMessage());
+
+            return;
+        }
+
         if (task.getResult() != null) {
 
             for (QueryDocumentSnapshot document : task.getResult()) {
@@ -74,23 +81,22 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
 
                 rideModel.id = document.getId();
 
-                break;
+
+                startActivity(new Intent(BaseNavDrawer.this, HomeActivity.class));
+
+                finish();
+
+                return;
 
             }
 
         }
 
-        if (rideModel != null) {
+        hideLoader();
 
-            startActivity(new Intent(BaseNavDrawer.this, HomeActivity.class));
+        openCloseDrawer();
 
-            finish();
-
-        } else {
-
-            showErrorAlert("No Active Ride Found");
-
-        }
+        showErrorAlert("No Active Ride Found");
 
     }
 
@@ -100,7 +106,7 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
 
         users.addSnapshotListener((value, error) -> {
 
-            if (value != null) {
+            if (BaseNavDrawer.this != null && value != null) {
 
                 User user = value.toObject(User.class);
 
@@ -117,7 +123,16 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
 
                 nameTV.setText(user.firstName + " " + user.lastName);
 
-                Glide.with(this).load(user.image).apply(new RequestOptions().centerCrop().placeholder(R.drawable.dummy_girl)).into(picIV);
+                if (BaseNavDrawer.this != null)
+
+                    try {
+
+                        Glide.with(this).load(user.image).apply(new RequestOptions().centerCrop().placeholder(R.drawable.dummy_girl)).into(picIV);
+
+                    }catch (Exception e) {
+
+
+                    }
 
             }
 
@@ -137,6 +152,7 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
         binding.navView.findViewById(R.id.notificationLay).setOnClickListener(this);
         binding.navView.findViewById(R.id.activeRide).setOnClickListener(this);
         binding.navView.findViewById(R.id.schedulesLay).setOnClickListener(this);
+
     }
 
     @Override
@@ -163,9 +179,9 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void setContentView(View view, ViewGroup.LayoutParams params) {
-        if (binding.stub != null) {
-            binding.stub.addView(view, params);
-        }
+
+        binding.stub.addView(view, params);
+
     }
 
 
@@ -173,8 +189,7 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         if (v == binding.navView.findViewById(R.id.homeLay)) {
 
-            openCloseDrawer();
-
+            showLoader();
             getActiveRide();
 
 

@@ -26,12 +26,13 @@ import com.buzzware.iride.Stripe.PaymentResultCallback;
 import com.buzzware.iride.databinding.AddCardDialogBinding;
 import com.buzzware.iride.databinding.FragmentConfirmPickupBinding;
 import com.buzzware.iride.databinding.PaymentDialogBinding;
-import com.buzzware.iride.models.PricePerKm;
 import com.buzzware.iride.models.RideModel;
 import com.buzzware.iride.models.ScheduleModel;
 import com.buzzware.iride.models.SearchedPlaceModel;
 import com.buzzware.iride.models.TripDetail;
 import com.buzzware.iride.models.User;
+import com.buzzware.iride.models.settings.Price;
+import com.buzzware.iride.models.settings.SettingsObj;
 import com.buzzware.iride.response.directions.DirectionsApiResponse;
 import com.buzzware.iride.response.directions.Leg;
 import com.buzzware.iride.response.directions.Route;
@@ -151,6 +152,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         distance = 0;
         amount = 0;
+        min = 0;
 
         showLoader();
         //todo destination also calculate for destination 2
@@ -204,6 +206,8 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
         });
     }
 
+    double min = 0;
+
     private void getDistanceTillSecondDropOff() {
 
         //todo destination also calculate for destination 2
@@ -254,19 +258,21 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
     private void getPrices() {
 
         FirebaseFirestore.getInstance().collection("Settings")
-                .document("PricePerKm")
+                .document()
                 .get()
                 .addOnCompleteListener(task -> {
                     hideLoader();
                     if (task.isSuccessful()) {
 
-                        PricePerKm pricePerKm = task.getResult().toObject(PricePerKm.class);
+                        SettingsObj settings = task.getResult().toObject(SettingsObj.class);
 
-                        distance = distance / 1000;
+                        distance = convertKmsToMiles(distance / 1000);
 
-                        iRideLuxPrice = pricePerKm.iRideLux * distance;
-                        iRidePlusPrice = pricePerKm.iRidePlus * distance;
-                        iRidePrice = pricePerKm.iRide * distance;
+                        calculateLuxPrice(settings);
+
+                        calculateIRidePrice(settings);
+
+                        calculatePlusPrice(settings);
 
                         mBinding.estimateTV.setText("$" + String.format("%.2f", iRidePrice));
 
@@ -285,6 +291,35 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
     }
 
+    private void calculateLuxPrice(SettingsObj settings) {
+
+        Price price = settings.prices.iRideLux;
+
+        double total = price.initialFee + (price.pricePerMile * distance) + (price.pricePerMin * min) + price.costOfVehicle;
+
+        iRideLuxPrice = total;
+
+    }
+
+    private void calculateIRidePrice(SettingsObj settings) {
+
+        Price price = settings.prices.iRide;
+
+        double total = price.initialFee + (price.pricePerMile * distance) + (price.pricePerMin * min) + price.costOfVehicle;
+
+        iRidePrice = total;
+
+    }
+
+    private void calculatePlusPrice(SettingsObj settings) {
+
+        Price price = settings.prices.iRidePlus;
+
+        double total = price.initialFee + (price.pricePerMile * distance) + (price.pricePerMin * min) + price.costOfVehicle;
+
+        iRidePlusPrice = total;
+    }
+
     private void setDistance(DistanceMatrixResponse resp) {
 
         if (resp.rows != null && resp.rows.size() > 0) {
@@ -300,9 +335,20 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
                     distance = distance + element.distance.value;
 
                 }
+
+                if (element.duration != null) {
+
+                    min = element.duration.value;
+
+                }
             }
 
         }
+    }
+
+    public double convertKmsToMiles(double kms) {
+        double miles = 0.621371 * kms;
+        return miles;
     }
 
     String dateString = "";

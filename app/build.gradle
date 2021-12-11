@@ -35,14 +35,13 @@ android {
 
 dependencies {
 
-    implementation 'com.google.firebase:firebase-messaging:23.0.0'
     def lottieVersion = "3.4.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"
+
     //event bus
     implementation 'org.greenrobot:eventbus:3.2.0'
 
     //directions
-//    implementation 'org.slf4j:slf4j-nop:1.7.25'
     implementation 'com.google.maps.android:android-maps-utils:2.3.0'
 
     //Glide
@@ -70,6 +69,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-firestore'
+    implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.google.firebase:firebase-storage:20.0.0'
 
 

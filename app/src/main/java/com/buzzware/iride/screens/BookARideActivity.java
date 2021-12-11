@@ -10,7 +10,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -31,7 +30,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
@@ -105,22 +103,19 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
 
     private void setFireBaseToken() {
         FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
+                .addOnCompleteListener(task -> {
 
-                        if (!task.isSuccessful()) {
+                    if (!task.isSuccessful()) {
 
-                            Log.w("FireBase Token", "Fetching FCM registration token failed", task.getException());
-                            return;
-
-                        }
-
-                        String token = task.getResult();
-
-                        addTokenToDB(token);
+                        Log.w("FireBase Token", "Fetching FCM registration token failed", task.getException());
+                        return;
 
                     }
+
+                    String token = task.getResult();
+
+                    addTokenToDB(token);
+
                 });
     }
 
@@ -424,14 +419,11 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
 
     private void init() {
 
-        if (mBinding.homeMapView != null) {
+        mBinding.homeMapView.onCreate(null);
 
-            mBinding.homeMapView.onCreate(null);
+        mBinding.homeMapView.onResume();
 
-            mBinding.homeMapView.onResume();
-
-            mBinding.homeMapView.getMapAsync(this);
-        }
+        mBinding.homeMapView.getMapAsync(this);
         ///init click
         mBinding.btnNext.setOnClickListener(v -> moveToConfirmPickup());
     }

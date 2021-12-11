@@ -33,12 +33,15 @@ public class ScheduledRides extends BaseNavDrawer implements View.OnClickListene
 
         mBinding.drawerIcon.setOnClickListener(v -> openCloseDrawer());
 
+        setBaseListeners();
+
         setAdapter(new ArrayList<>());
 
         showLoader();
 
         getRides();
 
+//        setListeners();
     }
 
 
@@ -50,23 +53,25 @@ public class ScheduledRides extends BaseNavDrawer implements View.OnClickListene
 
     }
 
+    Query query;
+
     private void getRides() {
 
-        Query query;
-        
             query = FirebaseFirestore.getInstance().collection("ScheduledRides")
                     .whereEqualTo("userId", getUserId());
        
         query.get()
                 .addOnCompleteListener(
-                        this::parseSnapshot
+                        this::parseSchedules
                 );
 
     }
 
     ArrayList<ScheduleModel> rides;
 
-    void parseSnapshot(Task<QuerySnapshot> task) {
+    void parseSchedules(Task<QuerySnapshot> task) {
+
+        query = null;
 
         hideLoader();
 

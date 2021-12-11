@@ -196,6 +196,7 @@ public class MessagesActivity extends AppCompatActivity {
 
     }
 
+
     ConversationResponseCallback callbackCheck = (list, isError, message) -> {
 
         if (!isError) {
@@ -228,10 +229,10 @@ public class MessagesActivity extends AppCompatActivity {
 
     private void loadMessages() {
 
-        if(isFromNew.equals("admin")){
+        if (isFromNew.equals("admin")) {
             FirebaseRequests.GetFirebaseRequests(MessagesActivity.this).LoadAdminMessages(callback, MessagesActivity.this, conversationID);
 
-        }else{
+        } else {
             FirebaseRequests.GetFirebaseRequests(MessagesActivity.this).LoadMessages(callback, MessagesActivity.this, conversationID);
 
         }
