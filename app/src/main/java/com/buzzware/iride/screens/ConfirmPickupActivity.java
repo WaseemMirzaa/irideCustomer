@@ -32,6 +32,7 @@ import com.buzzware.iride.models.SearchedPlaceModel;
 import com.buzzware.iride.models.TripDetail;
 import com.buzzware.iride.models.User;
 import com.buzzware.iride.models.settings.Price;
+import com.buzzware.iride.models.settings.Prices;
 import com.buzzware.iride.models.settings.SettingsObj;
 import com.buzzware.iride.response.directions.DirectionsApiResponse;
 import com.buzzware.iride.response.directions.Leg;
@@ -258,13 +259,13 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
     private void getPrices() {
 
         FirebaseFirestore.getInstance().collection("Settings")
-                .document()
+                .document("Prices")
                 .get()
                 .addOnCompleteListener(task -> {
                     hideLoader();
                     if (task.isSuccessful()) {
 
-                        SettingsObj settings = task.getResult().toObject(SettingsObj.class);
+                        Prices settings = task.getResult().toObject(Prices.class);
 
                         distance = convertKmsToMiles(distance / 1000);
 
@@ -291,9 +292,9 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
     }
 
-    private void calculateLuxPrice(SettingsObj settings) {
+    private void calculateLuxPrice(Prices settings) {
 
-        Price price = settings.prices.iRideLux;
+        Price price = settings.iRideLux;
 
         double total = price.initialFee + (price.pricePerMile * distance) + (price.pricePerMin * min) + price.costOfVehicle;
 
@@ -301,9 +302,9 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
     }
 
-    private void calculateIRidePrice(SettingsObj settings) {
+    private void calculateIRidePrice(Prices settings) {
 
-        Price price = settings.prices.iRide;
+        Price price = settings.iRide;
 
         double total = price.initialFee + (price.pricePerMile * distance) + (price.pricePerMin * min) + price.costOfVehicle;
 
@@ -311,9 +312,9 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
     }
 
-    private void calculatePlusPrice(SettingsObj settings) {
+    private void calculatePlusPrice(Prices settings) {
 
-        Price price = settings.prices.iRidePlus;
+        Price price = settings.iRidePlus;
 
         double total = price.initialFee + (price.pricePerMile * distance) + (price.pricePerMin * min) + price.costOfVehicle;
 
