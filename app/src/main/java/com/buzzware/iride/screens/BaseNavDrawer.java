@@ -19,6 +19,7 @@ import com.buzzware.iride.models.RideModel;
 import com.buzzware.iride.models.User;
 import com.buzzware.iride.utils.AppConstants;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -54,11 +55,11 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
 
         query.get()
                 .addOnCompleteListener(
-                        this::parseSnapshot
+                        this::parseBaseSnapshot
                 );
     }
 
-    void parseSnapshot(Task<QuerySnapshot> task) {
+    void parseBaseSnapshot(Task<QuerySnapshot> task) {
 
         RideModel rideModel = null;
 
@@ -82,7 +83,8 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
                 rideModel.id = document.getId();
 
 
-                startActivity(new Intent(BaseNavDrawer.this, HomeActivity.class));
+                startActivity(new Intent(BaseNavDrawer.this, HomeActivity.class)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
                 finish();
 
@@ -146,12 +148,24 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
         binding.navView.findViewById(R.id.homeLay).setOnClickListener(this);
         binding.navView.findViewById(R.id.bookingsLay).setOnClickListener(this);
         binding.navView.findViewById(R.id.walletLay).setOnClickListener(this);
+        binding.navView.findViewById(R.id.logoutLay).setOnClickListener(v -> logout());
         binding.navView.findViewById(R.id.profileLay).setOnClickListener(this);
         binding.navView.findViewById(R.id.inviteLay).setOnClickListener(this);
         binding.navView.findViewById(R.id.csLay).setOnClickListener(this);
         binding.navView.findViewById(R.id.notificationLay).setOnClickListener(this);
         binding.navView.findViewById(R.id.activeRide).setOnClickListener(this);
         binding.navView.findViewById(R.id.schedulesLay).setOnClickListener(this);
+
+    }
+
+    private void logout() {
+
+        FirebaseAuth.getInstance().signOut();
+
+        startActivity(new Intent(BaseNavDrawer.this, Authentication.class)
+        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+
+        finish();
 
     }
 

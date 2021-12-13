@@ -77,7 +77,7 @@ public class PaymentsAdapter extends RecyclerView.Adapter<PaymentsAdapter.Paymen
 
             if (ride.price != null)
 
-                binding.priceTV.setText("Price $" + ride.price);
+                binding.priceTV.setText("Price $" + String.format("%.2f", Double.parseDouble(ride.price)));
 
             String pickupAddress = getPickUpAddress(ride);
             String destinationAddress = getDestinationAddress(ride);

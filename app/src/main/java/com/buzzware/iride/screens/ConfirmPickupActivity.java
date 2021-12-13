@@ -121,6 +121,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
     String customerId;
     String orderClientSecret;
 
+    double price;
 
     private int mYear, mMonth, mDay, mHour, mMinute;
 
@@ -152,7 +153,6 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
     private void getTotalDistanceTillPoint1() {
 
         distance = 0;
-        amount = 0;
         min = 0;
 
         showLoader();
@@ -826,7 +826,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
         map.put("scheduledTime", timeString);
         map.put("scheduleTimeStamp", time);
         map.put("userId", getUserId());
-        map.put("price", "100");
+        map.put("price", ""+amount);
         map.put("status", "booked");
 
         FirebaseFirestore.getInstance().collection("ScheduledRides")
@@ -866,7 +866,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         rideModel.userId = getUserId();
 
-        rideModel.price = "100";
+        rideModel.price = ""+amount;
 
         rideModel.status = "booked";
 
@@ -1049,6 +1049,13 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
                     public void onCommunicatingStateChanged(
                             boolean isCommunicating
                     ) {
+
+
+                        if(isCommunicating)
+                            hideLoader();
+                        else
+                            showLoader();
+                        Log.d("TAG", "onCommunicatingStateChanged: "+isCommunicating);
                     }
 
                     @Override
@@ -1069,12 +1076,17 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
                         readyToCharge = false;
 
+
                         if (data.isPaymentReadyToCharge()) {
+
+                            showLoader();
 
                             readyToCharge = true;
 
                             callPaymentApi(paymentMethod);
                         } else {
+
+                            hideLoader();
 
                             paymentSession.presentPaymentMethodSelection(MyEphemeralKeyProvider.cusId);
 
@@ -1109,7 +1121,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
 
-                        hideLoader();
+//                        hideLoader();
 
                         if (response.body() != null) {
 
@@ -1133,11 +1145,15 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
                                 } else {
 
+                                    hideLoader();
+
                                     showErrorAlert("Transaction failed, please contact service provider or admin!");
 
                                 }
 
                             } catch (JSONException e) {
+
+                                hideLoader();
 
                                 e.printStackTrace();
 
@@ -1162,11 +1178,15 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         }
 
-        if (readyToCharge)
+        if (readyToCharge) {
+
+            showLoader();
 
             stripe.onPaymentResult(requestCode,
                     data,
                     new PaymentResultCallback(ConfirmPickupActivity.this));
+
+        }
     }
 
     public void showSuccessMessage() {

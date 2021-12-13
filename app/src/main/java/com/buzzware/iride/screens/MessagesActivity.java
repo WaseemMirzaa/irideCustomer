@@ -32,6 +32,7 @@ import java.util.UUID;
 
 public class MessagesActivity extends AppCompatActivity {
 
+
     ActivityMessagesBinding binding;
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -51,17 +52,28 @@ public class MessagesActivity extends AppCompatActivity {
     String myImageUrl;
     String otherUserImageUrl;
 
+    FirebaseRequests firebaseRequests;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityMessagesBinding.inflate(getLayoutInflater());
+
         setContentView(binding.getRoot());
+
+        init();
 
         getDataFromExtra();
 
         setListener();
 
+
+    }
+
+    private void init() {
+
+        firebaseRequests = new FirebaseRequests();
 
     }
 
@@ -71,84 +83,76 @@ public class MessagesActivity extends AppCompatActivity {
 
         DocumentReference reference = firebaseFirestore.collection("Users").document(currentUserId);
 
-        reference.addSnapshotListener((value, error) -> {
+        reference
+                .get()
+                .addOnCompleteListener(task -> {
+
+                    myImageUrl = "";
+
+                    if (task.isSuccessful()) {
+
+                        User user = task.getResult().toObject(User.class);
+
+                        if (user != null) {
+
+                            myImageUrl = user.image;
+
+                        }
+
+                    }
+
+                    getOtherUserImage();
 
 
-            User user = null;
-
-            if (value != null) {
-
-                user = value.toObject(User.class);
-
-                myImageUrl = user.image;
-
-            } else {
-
-                myImageUrl = "";
-
-            }
-
-            getOtherUserImage();
-
-        });
+                });
     }
 
     public void getOtherUserImage() {
 
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-        DocumentReference documentReferenceBuisnessUser = firebaseFirestore.collection("Users").document(selectedUserId);
-        documentReferenceBuisnessUser.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
 
+        DocumentReference reference = firebaseFirestore.collection("Users").document(selectedUserId);
 
-                User user = null;
-                if (value != null) {
-
-                    user = value.toObject(User.class);
-
-                    otherUserImageUrl = user.image;
-                } else {
+        reference
+                .get()
+                .addOnCompleteListener(task -> {
 
                     otherUserImageUrl = "";
 
-                }
+                    if (task.isSuccessful()) {
 
-                loadMessages();
+                        User user = task.getResult().toObject(User.class);
 
-            }
-        });
+                        if (user != null) {
+
+                            otherUserImageUrl = user.image;
+
+                        }
+
+                    }
+
+                    loadMessages();
+
+
+                });
+
     }
 
     private void setListener() {
 
         binding.sendBtn.setOnClickListener(v -> {
+
             if (!binding.messageET.getText().toString().isEmpty()) {
+
                 sendMessage();
+
             }
         });
 
-        binding.drawerIcon.setOnClickListener(v -> onBackPressed());
+        binding.drawerIcon.setOnClickListener(v -> finish());
 
     }
 
-    @Override
-    public void onBackPressed() {
-
-        if (isFromNew.equalsIgnoreCase("false")) {
-
-            startActivity(new Intent(MessagesActivity.this, HomeActivity.class));
-
-            finish();
-
-        } else {
-
-            super.onBackPressed();
-
-        }
-
-
-    }
 
     private void getDataFromExtra() {
 
@@ -192,10 +196,9 @@ public class MessagesActivity extends AppCompatActivity {
 
     private void getListToCheck() {
 
-        FirebaseRequests.GetFirebaseRequests(MessagesActivity.this).GetConversationList(callbackCheck, mAuth.getCurrentUser().getUid(), MessagesActivity.this);
+        firebaseRequests.GetConversationList(callbackCheck, mAuth.getCurrentUser().getUid(), MessagesActivity.this);
 
     }
-
 
     ConversationResponseCallback callbackCheck = (list, isError, message) -> {
 
@@ -205,9 +208,9 @@ public class MessagesActivity extends AppCompatActivity {
 
                 for (int i = 0; i < list.size(); i++) {
 
-                    if (list.get(i).getToID().equals(selectedUserId)) {
+                    if (list.get(i).getToID().equals(selectedUserId) || list.get(i).getFromID().equals(selectedUserId)) {
 
-                        conversationID = list.get(i).getConversationID();
+                        conversationID = list.get(i).conversationId;
 
                         isFromNew = "false";
 
@@ -230,23 +233,22 @@ public class MessagesActivity extends AppCompatActivity {
     private void loadMessages() {
 
         if (isFromNew.equals("admin")) {
-            FirebaseRequests.GetFirebaseRequests(MessagesActivity.this).LoadAdminMessages(callback, MessagesActivity.this, conversationID);
+
+            firebaseRequests.LoadAdminMessages(callback, MessagesActivity.this, conversationID);
 
         } else {
-            FirebaseRequests.GetFirebaseRequests(MessagesActivity.this).LoadMessages(callback, MessagesActivity.this, conversationID);
+
+            firebaseRequests.LoadMessages(callback, MessagesActivity.this, conversationID);
 
         }
 
     }
 
-    MessagesResponseCallback callback = new MessagesResponseCallback() {
-        @Override
-        public void onResponse(List<MessageModel> list, boolean isError, String message) {
-            if (!isError) {
+    MessagesResponseCallback callback = (list, isError, message) -> {
+        if (!isError) {
 
-                Sorting(list);
+            Sorting(list);
 
-            }
         }
     };
 
@@ -330,9 +332,13 @@ public class MessagesActivity extends AppCompatActivity {
             firebaseFirestore.collection("Chat").document(conversationID).update("lastMessage", sendLastMessageModel);
 
         }
-
-        loadMessages();
-
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        firebaseRequests.deInit();
+
+    }
 }

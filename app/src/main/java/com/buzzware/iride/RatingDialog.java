@@ -78,11 +78,11 @@ public class RatingDialog extends Dialog {
         FirebaseFirestore.getInstance().collection("Bookings").document(ride.id)
                 .update("status", AppConstants.RideStatus.RATED);
 
-        dismiss();
 
         c.startActivity(new Intent(c, BookARideActivity.class)
         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
+        dismiss();
 
         c.finish();
 
@@ -119,9 +119,9 @@ public class RatingDialog extends Dialog {
 
         vehicleNoTV.setText(user.firstName + " " + user.lastName);
 
-        budgetTV.setText(ride.price + "$");
+        budgetTV.setText(String.format("%.2f",Double.parseDouble(ride.price)) + "$");
 
-        budgetTV.setText(ride.price + "$");
+//        budgetTV.setText(ride.price + "$");
 
         Glide.with(c).load(user.image).apply(new RequestOptions().placeholder(R.drawable.dummy_girl))
                 .into(picRIV);

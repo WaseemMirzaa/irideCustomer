@@ -123,6 +123,10 @@ public class BaseActivity extends AppCompatActivity {
 
     public void hideLoader() {
 
+        if(BaseActivity.this.isDestroyed() || BaseActivity.this.isFinishing())
+
+            return;
+
         if (progressDialog != null && progressDialog.isShowing())
 
             progressDialog.dismiss();

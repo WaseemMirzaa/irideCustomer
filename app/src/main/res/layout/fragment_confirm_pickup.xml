@@ -319,7 +319,7 @@
                         android:layout_centerInParent="true"
                         android:layout_gravity="center"
                         android:fontFamily="@font/gibson_semibd"
-                        android:text="NPR 89"
+                        android:text=""
                         android:textColor="@color/black"
                         android:textSize="@dimen/_15sdp"
                         android:textStyle="bold" />

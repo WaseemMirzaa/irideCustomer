@@ -278,6 +278,8 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
                         if (AppConstants.RideStatus.isRideInProgress(rideModel.status)) {
 
+                            mBinding.searchingForDrivers.setText("Have safe trip");
+
                             //User is in car moving towards destination
 
                             showRideMarkers(rideModel);
@@ -409,6 +411,9 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
         if (rideModel.status.equalsIgnoreCase(AppConstants.RideStatus.RIDE_COMPLETED)) {
 
             //ride completed show rating popup
+
+            mBinding.searchingForDrivers.setText("Have safe trip");
+
 
             setDriverListener();
 
@@ -1069,14 +1074,17 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
     private void setVehicleData() {
 
-        mBinding.numberTV.setText(vehicleDetails.tagNumber);
+        if(!HomeActivity.this.isDestroyed()) {
 
-        mBinding.carTitleTV.setText(vehicleDetails.name);
+            mBinding.numberTV.setText(vehicleDetails.tagNumber);
 
-        mBinding.colorTV.setText(vehicleDetails.make);
+            mBinding.carTitleTV.setText(vehicleDetails.name);
 
-        Glide.with(HomeActivity.this).load(vehicleDetails.frontCarUrl).apply(new RequestOptions().centerCrop()).into(mBinding.carPic);
+            mBinding.colorTV.setText(vehicleDetails.make);
 
+            Glide.with(HomeActivity.this).load(vehicleDetails.frontCarUrl).apply(new RequestOptions().centerCrop()).into(mBinding.carPic);
+
+        }
     }
 
     private void setUserData(User user) {
