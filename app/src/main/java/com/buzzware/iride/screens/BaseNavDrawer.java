@@ -51,7 +51,7 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
 
         Query query = FirebaseFirestore.getInstance().collection("Bookings")
                 .whereEqualTo("userId", getUserId())
-                .whereIn("status", Arrays.asList("driverAccepted", "driverReached", "rideStarted", "booked", AppConstants.RideStatus.RIDE_COMPLETED));
+                .whereIn("status", Arrays.asList("driverAccepted", "driverReached", "rideStarted", "booked", "reBooked", AppConstants.RideStatus.RIDE_COMPLETED));
 
         query.get()
                 .addOnCompleteListener(

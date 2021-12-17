@@ -437,7 +437,6 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
             return;
         }
 
-
         Intent i = new Intent(BookARideActivity.this, ConfirmPickupActivity.class);
 
         i.putExtra("pickup", placeCurrentLocation);
@@ -450,7 +449,6 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
 
         startActivity(i);
 
-//        finish();
     }
 
     @Override
@@ -508,7 +506,9 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
+
                 reverseCall = null;
+
             }
         });
     }

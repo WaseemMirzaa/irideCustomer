@@ -92,6 +92,10 @@ public class RatingDialog extends Dialog {
 
     private void getVehicleDetails(RideModel rideModel) {
 
+        if(rideModel.vehicleId == null)
+
+            return;
+
         FirebaseFirestore.getInstance().collection("Vehicle")
                 .document(rideModel.vehicleId)
                 .get()
@@ -125,6 +129,14 @@ public class RatingDialog extends Dialog {
 
         Glide.with(c).load(user.image).apply(new RequestOptions().placeholder(R.drawable.dummy_girl))
                 .into(picRIV);
+
+        if(user.ratings == null || user.ratings.size() == 0) {
+
+            user.ratings = new ArrayList<>();
+
+            ratingTV.setText("N/A");
+
+        }
 
         double rating = 0;
 

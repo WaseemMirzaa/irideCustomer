@@ -14,6 +14,7 @@ public class AppConstants {
         public static final String RIDE_COMPLETED = "rideCompleted";
         public static final String RATED = "rated";
         public static final String CANCELLED = "cancelled";
+        public static final String RE_BOOKED = "reBooked";
 
         public static boolean isRideInProgress(String status) {
 

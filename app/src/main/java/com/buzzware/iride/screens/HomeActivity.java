@@ -17,6 +17,7 @@ import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.buzzware.iride.Firebase.FirebaseInstances;
 import com.buzzware.iride.R;
 import com.buzzware.iride.RatingDialog;
 import com.buzzware.iride.models.RideModel;
@@ -205,7 +206,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
                         "driverAccepted",
                         "driverReached",
                         "rideStarted",
-                        "booked",
+                        "booked", "reBooked",
                         AppConstants.RideStatus.RIDE_COMPLETED
                 ));
 
@@ -298,7 +299,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
                             mBinding.reachingLL.setVisibility(View.VISIBLE);
 
-                        } else if (AppConstants.RideStatus.BOOKED.equalsIgnoreCase(rideModel.status)) {
+                        } else if (AppConstants.RideStatus.BOOKED.equalsIgnoreCase(rideModel.status) || AppConstants.RideStatus.RE_BOOKED.equalsIgnoreCase(rideModel.status)) {
 
                             //Drive Booked But displaying Waiting for driver popup
 
@@ -427,6 +428,11 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
             FirebaseFirestore.getInstance().collection("Bookings")
                     .document(ride.id)
                     .update("status", AppConstants.RideStatus.CANCELLED);
+
+            if (ride.driverId != null)
+                
+                FirebaseInstances.usersCollection.document(ride.driverId)
+                        .update("isActive", true);
 
             startActivity(new Intent(HomeActivity.this, BookARideActivity.class)
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
@@ -771,7 +777,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
     private void checkPolyline2() {
 
-        if (AppConstants.RideStatus.BOOKED.equalsIgnoreCase(rideModel.status)) {
+        if (AppConstants.RideStatus.BOOKED.equalsIgnoreCase(rideModel.status) || AppConstants.RideStatus.RE_BOOKED.equalsIgnoreCase(rideModel.status)) {
 
             //draw polyline from dest1 to second drop off 2
             drawSecondPolyline(rideModel);
@@ -1074,7 +1080,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
     private void setVehicleData() {
 
-        if(!HomeActivity.this.isDestroyed()) {
+        if (!HomeActivity.this.isDestroyed()) {
 
             mBinding.numberTV.setText(vehicleDetails.tagNumber);
 

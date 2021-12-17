@@ -33,7 +33,6 @@ import com.buzzware.iride.models.TripDetail;
 import com.buzzware.iride.models.User;
 import com.buzzware.iride.models.settings.Price;
 import com.buzzware.iride.models.settings.Prices;
-import com.buzzware.iride.models.settings.SettingsObj;
 import com.buzzware.iride.response.directions.DirectionsApiResponse;
 import com.buzzware.iride.response.directions.Leg;
 import com.buzzware.iride.response.directions.Route;
@@ -106,8 +105,6 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
     GoogleMap mMap;
 
     SearchedPlaceModel pickUpLocation, destinationLocation, secondDropOff;
-
-    EditText txtDate, txtTime;
 
     double amount = 0;
 
@@ -207,6 +204,14 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
         });
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        hideLoader();
+
+    }
+
     double min = 0;
 
     private void getDistanceTillSecondDropOff() {
@@ -269,6 +274,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
                         distance = convertKmsToMiles(distance / 1000);
 
+                        min = min / 60;
                         calculateLuxPrice(settings);
 
                         calculateIRidePrice(settings);
@@ -296,7 +302,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         Price price = settings.iRideLux;
 
-        double total = price.initialFee + (price.pricePerMile * distance) + (price.pricePerMin * min) + price.costOfVehicle;
+        double total = price.getInitialFee() + (price.getPricePerMile() * distance) + (price.getPricePerMin() * min) + price.getCostOfVehicle();
 
         iRideLuxPrice = total;
 
@@ -306,7 +312,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         Price price = settings.iRide;
 
-        double total = price.initialFee + (price.pricePerMile * distance) + (price.pricePerMin * min) + price.costOfVehicle;
+        double total = price.getInitialFee() + (price.getPricePerMile() * distance) + (price.getPricePerMin() * min) + price.getCostOfVehicle();
 
         iRidePrice = total;
 
@@ -316,7 +322,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         Price price = settings.iRidePlus;
 
-        double total = price.initialFee + (price.pricePerMile * distance) + (price.pricePerMin * min) + price.costOfVehicle;
+        double total = price.getInitialFee() + (price.getPricePerMile() * distance) + (price.getPricePerMin() * min) + price.getCostOfVehicle();
 
         iRidePlusPrice = total;
     }
@@ -449,7 +455,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         if (selection == CurrentSelection.NORMAL_RIDE) {
 
-            getActiveRide();
+            getScheduledRides(new Date().getTime());
 
         } else {
 
@@ -708,7 +714,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         Query query = FirebaseFirestore.getInstance().collection("Bookings")
                 .whereEqualTo("userId", getUserId())
-                .whereIn("status", Arrays.asList("driverAccepted", "driverReached", "rideStarted", "booked", AppConstants.RideStatus.RIDE_COMPLETED));
+                .whereIn("status", Arrays.asList("driverAccepted", "driverReached", "rideStarted", "booked", AppConstants.RideStatus.RE_BOOKED, AppConstants.RideStatus.RIDE_COMPLETED));
 
         query.get()
                 .addOnCompleteListener(
@@ -763,7 +769,12 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         } else {
 
-            getCurrentUserData();
+            if (currentSelection == CurrentSelection.SCHEDULED_RIDE)
+
+                getCurrentUserData();
+            else
+                getActiveRide();
+
 
         }
 
@@ -805,7 +816,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         Map<String, Object> map = new HashMap<>();
 
-        map.put("bookingDate", new Date().getTime());
+        map.put("bookingDate", time);
 
         TripDetail tripDetail = new TripDetail();
 
@@ -826,7 +837,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
         map.put("scheduledTime", timeString);
         map.put("scheduleTimeStamp", time);
         map.put("userId", getUserId());
-        map.put("price", ""+amount);
+        map.put("price", "" + amount);
         map.put("status", "booked");
 
         FirebaseFirestore.getInstance().collection("ScheduledRides")
@@ -866,7 +877,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         rideModel.userId = getUserId();
 
-        rideModel.price = ""+amount;
+        rideModel.price = "" + amount;
 
         rideModel.status = "booked";
 
@@ -1051,11 +1062,11 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
                     ) {
 
 
-                        if(isCommunicating)
+                        if (isCommunicating)
                             hideLoader();
                         else
                             showLoader();
-                        Log.d("TAG", "onCommunicatingStateChanged: "+isCommunicating);
+                        Log.d("TAG", "onCommunicatingStateChanged: " + isCommunicating);
                     }
 
                     @Override
