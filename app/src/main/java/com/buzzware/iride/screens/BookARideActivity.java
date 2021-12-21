@@ -322,6 +322,7 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
                     OnTextChangedEvent event = new OnTextChangedEvent();
 
                     event.data = s.toString();
+                    event.latLng = location.getLatitude()+"%2C"+location.getLongitude();
 
                     EventBus.getDefault().post(event);
                 }
@@ -349,6 +350,8 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
                     currentSelection = CurrentSelection.whereTo;
 
                     OnTextChangedEvent event = new OnTextChangedEvent();
+
+                    event.latLng = location.getLatitude()+"%2C"+location.getLongitude();
 
                     event.data = s.toString();
 
@@ -378,6 +381,8 @@ public class BookARideActivity extends BaseNavDrawer implements OnMapReadyCallba
                     currentSelection = CurrentSelection.secondDropOff;
 
                     OnTextChangedEvent event = new OnTextChangedEvent();
+
+                    event.latLng = location.getLatitude()+"%2C"+location.getLongitude();
 
                     event.data = s.toString();
 

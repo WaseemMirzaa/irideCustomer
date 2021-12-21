@@ -87,6 +87,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_45sdp"
+                    android:visibility="invisible"
                     android:layout_marginLeft="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:layout_marginRight="@dimen/_20sdp"
@@ -119,6 +120,7 @@
                     android:layout_below="@+id/headerLay"
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/_20sdp"
+                    android:visibility="invisible"
                     android:layout_marginLeft="@dimen/_12sdp"
                     android:layout_marginRight="@dimen/_12sdp"
                     android:fontFamily="@font/gibson_semibd"

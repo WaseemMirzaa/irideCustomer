@@ -86,53 +86,9 @@ public class SignUpFragment extends BaseFragment {
             return false;
         }
 
-        if (mBinding.cityET.getText().toString().isEmpty()) {
-
-            showErrorAlert("City Required");
-
-            return false;
-        }
-
-        if (mBinding.stateET.getText().toString().isEmpty()) {
-
-            showErrorAlert("State Required");
-
-            return false;
-        }
-
-        if (mBinding.zipET.getText().toString().isEmpty()) {
-
-            showErrorAlert("Zip Code Required");
-
-            return false;
-        }
-
         if (mBinding.phoneET.getText().toString().isEmpty()) {
 
             showErrorAlert("Phone Required");
-
-            return false;
-        }
-
-        if (mBinding.cityET.getText().toString().isEmpty()) {
-
-            showErrorAlert("City Required");
-
-            return false;
-        }
-
-
-        if (mBinding.homeAddressET.getText().toString().isEmpty()) {
-
-            showErrorAlert("Home Address Required");
-
-            return false;
-        }
-
-
-        if (mBinding.workAddressET.getText().toString().isEmpty()) {
-
-            showErrorAlert("Work Address Required");
 
             return false;
         }
@@ -152,15 +108,15 @@ public class SignUpFragment extends BaseFragment {
         if (task.isSuccessful()) {
 
             User user = new User();
-            user.homeAddress = mBinding.homeAddressET.getText().toString();
-            user.workAddress = mBinding.workAddressET.getText().toString();
+            user.homeAddress = "";
+            user.workAddress = "";
             user.email = mBinding.emailET.getText().toString();
             user.firstName = mBinding.fNameET.getText().toString();
             user.lastName = mBinding.lNameET.getText().toString();
             user.phoneNumber = mBinding.phoneET.getText().toString();
-            user.city = mBinding.cityET.getText().toString();
-            user.state = mBinding.stateET.getText().toString();
-            user.zipcode = mBinding.zipET.getText().toString();
+            user.city = "";
+            user.state = "";
+            user.zipcode = "";
 
             uploadDataToFirestore(user);
 

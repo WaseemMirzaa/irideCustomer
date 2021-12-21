@@ -47,7 +47,7 @@ public class ExpandablePlacesListFragment extends BottomSheetDialogFragment impl
     FragmentExpandablePlacesListBinding binding;
 
     @Override
-    public View onCreateView(@NonNull  LayoutInflater inflater, ViewGroup container,  Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentExpandablePlacesListBinding.inflate(inflater, container, false);
 
@@ -74,6 +74,7 @@ public class ExpandablePlacesListFragment extends BottomSheetDialogFragment impl
     public float dpFromPx(final Context context, final float px) {
         return px / context.getResources().getDisplayMetrics().density;
     }
+
     private void setSheetBehaviour() {
 
         BottomSheetBehavior sheetBehavior = BottomSheetBehavior.from(binding.bottomSheetLayout);
@@ -84,10 +85,9 @@ public class ExpandablePlacesListFragment extends BottomSheetDialogFragment impl
 
         sheetBehavior.setHideable(true);
 
-        sheetBehavior.setPeekHeight(new Float(pxFromDp(getActivity(),150)).intValue());
+        sheetBehavior.setPeekHeight(new Float(pxFromDp(getActivity(), 150)).intValue());
 
     }
-
 
 
     @Override
@@ -105,8 +105,10 @@ public class ExpandablePlacesListFragment extends BottomSheetDialogFragment impl
     @org.greenrobot.eventbus.Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(OnTextChangedEvent event) {
 
-        getData(event.data);
-    };
+        getData(event.data, event.latLng);
+    }
+
+    ;
 
     @org.greenrobot.eventbus.Subscribe(threadMode = ThreadMode.MAIN)
     public void showBottomSheet(ShowBottomSheetMsg showBottomSheet) {
@@ -115,7 +117,9 @@ public class ExpandablePlacesListFragment extends BottomSheetDialogFragment impl
 
         sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
-    };
+    }
+
+    ;
 
 
     @org.greenrobot.eventbus.Subscribe(threadMode = ThreadMode.MAIN)
@@ -125,45 +129,56 @@ public class ExpandablePlacesListFragment extends BottomSheetDialogFragment impl
 
         sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
-    };
+    }
 
+    Call<String> retrofitCallback;
 
     @Subscribe
 
-    private void getData(String data) {
+    private void getData(String data, String latLng) {
 
-        String url = "/maps/api/place/autocomplete/json?input=" + data + "&key=" + AppConstants.GOOGLE_PLACES_API_KEY;
+        if (retrofitCallback != null) {
 
-        if(data == null) {
+            retrofitCallback.cancel();
 
-            url = "/maps/api/place/autocomplete/json?input=" + data + "&key=" + AppConstants.GOOGLE_PLACES_API_KEY;
+            retrofitCallback = null;
         }
 
-        Controller.getApi(Base_Url).getPlaces(url, "asdasd")
-                .enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
+        String url = "/maps/api/place/autocomplete/json?input=" + data + "&key=" + AppConstants.GOOGLE_PLACES_API_KEY + "&location=" + latLng + "&radius=50000&strictbounds=true";
 
-                        Gson gson = new Gson();
+        if (data == null) {
 
-                        if (response.body() != null && response.isSuccessful()) {
+            url = "/maps/api/place/autocomplete/json?input=" + data + "&key=" + AppConstants.GOOGLE_PLACES_API_KEY + "&location=" + latLng + "&radius=50000&strictbounds=true";
+        }
 
-                            AutoCompleteResponse autoCompleteResponse = gson.fromJson(response.body(), AutoCompleteResponse.class);
+        retrofitCallback = Controller.getApi(Base_Url).getPlaces(url, "asdasd");
 
-                            locationModelList = new ArrayList<>();
+        retrofitCallback.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
 
-                            locationModelList.addAll(autoCompleteResponse.predictions);
+                retrofitCallback = null;
 
-                            setAdapter();
-                        }
+                Gson gson = new Gson();
 
-                    }
+                if (response.body() != null && response.isSuccessful()) {
 
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
+                    AutoCompleteResponse autoCompleteResponse = gson.fromJson(response.body(), AutoCompleteResponse.class);
 
-                    }
-                });
+                    locationModelList = new ArrayList<>();
+
+                    locationModelList.addAll(autoCompleteResponse.predictions);
+
+                    setAdapter();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
 
     }
 
@@ -181,8 +196,9 @@ public class ExpandablePlacesListFragment extends BottomSheetDialogFragment impl
     public float pxFromDp(final Context context, final float dp) {
         return dp * context.getResources().getDisplayMetrics().density;
     }
+
     @Override
-    public void onViewCreated(@NonNull View view,  Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
 
