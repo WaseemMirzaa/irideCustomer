@@ -123,18 +123,18 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
 
                 TextView nameTV = headerLayout.findViewById(R.id.nameTV);
 
-                nameTV.setText(user.firstName + " " + user.lastName);
-
-                if (BaseNavDrawer.this != null)
-
-                    try {
-
-                        Glide.with(this).load(user.image).apply(new RequestOptions().centerCrop().placeholder(R.drawable.dummy_girl)).into(picIV);
-
-                    }catch (Exception e) {
-
-
-                    }
+//                nameTV.setText(user.firstName + " " + user.lastName);
+//
+//                if (BaseNavDrawer.this != null)
+//
+//                    try {
+//
+//                        Glide.with(this).load(user.image).apply(new RequestOptions().centerCrop().placeholder(R.drawable.dummy_girl)).into(picIV);
+//
+//                    }catch (Exception e) {
+//
+//
+//                    }
 
             }
 

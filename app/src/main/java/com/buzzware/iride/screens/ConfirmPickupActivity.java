@@ -77,6 +77,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.MultipartBody;
@@ -830,18 +832,21 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         }
 
+        String id = getAlphaNumericString(15);
+
         tripDetail.pickUp = pickUpLocation;
 
         map.put("tripDetail", tripDetail);
         map.put("scheduledDate", dateString);
         map.put("scheduledTime", timeString);
         map.put("scheduleTimeStamp", time);
+        map.put("id", id);
         map.put("userId", getUserId());
         map.put("price", "" + amount);
         map.put("status", "booked");
 
         FirebaseFirestore.getInstance().collection("ScheduledRides")
-                .document().set(map);
+                .document(id).set(map);
 
         Toast.makeText(this, "Successfully Scheduled", Toast.LENGTH_LONG).show();
 
@@ -855,9 +860,38 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
     }
 
+    static String getAlphaNumericString(int n)
+    {
+
+        // chose a Character random from this String
+        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                + "0123456789"
+                + "abcdefghijklmnopqrstuvxyz";
+
+        // create StringBuffer size of AlphaNumericString
+        StringBuilder sb = new StringBuilder(n);
+
+        for (int i = 0; i < n; i++) {
+
+            // generate a random number between
+            // 0 to AlphaNumericString variable length
+            int index
+                    = (int)(AlphaNumericString.length()
+                    * Math.random());
+
+            // add Character one by one in end of sb
+            sb.append(AlphaNumericString
+                    .charAt(index));
+        }
+
+        return sb.toString();
+    }
+
     private void placeOrder() {
 
         RideModel rideModel = new RideModel();
+
+        rideModel.id = getAlphaNumericString(15);
 
         rideModel.bookingDate = new Date().getTime();
 
@@ -882,7 +916,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
         rideModel.status = "booked";
 
         FirebaseFirestore.getInstance().collection("Bookings")
-                .document().set(rideModel);
+                .document(rideModel.id).set(rideModel);
 
         Toast.makeText(this, "Successfully Booked", Toast.LENGTH_LONG).show();
 

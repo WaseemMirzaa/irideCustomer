@@ -34,14 +34,14 @@
 
         <RelativeLayout
             android:layout_gravity="start"
-            android:layout_width="60dp"
-            android:layout_height="60dp">
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
 
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/picCIV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/dummy_girl"
+                android:src="@drawable/logo"
                 app:riv_corner_radius="@dimen/_10sdp" />
 
             <RelativeLayout
@@ -64,6 +64,7 @@
         </RelativeLayout>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/nameTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

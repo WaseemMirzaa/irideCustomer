@@ -72,6 +72,8 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
     FragmentHomeBinding mBinding;
 
+    String previousStatus;
+
     Context context;
 
     public GoogleMap mMap;
@@ -267,7 +269,16 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
                         if (rideModel != null) {
 
                             rideModel.id = r.id;
+
                             mBinding.whereToTV.setText(rideModel.tripDetail.pickUp.address);
+
+                            if(((previousStatus != null && previousStatus.equalsIgnoreCase(AppConstants.RideStatus.DRIVER_ACCEPTED)) && rideModel.status.equalsIgnoreCase(AppConstants.RideStatus.DRIVER_REACHED)) || (previousStatus == null && rideModel.status.equalsIgnoreCase(AppConstants.RideStatus.DRIVER_REACHED))) {
+
+                                showErrorAlert("Your Driver has arrived");
+
+                            }
+
+                            previousStatus = rideModel.status;
 
                         }
 
