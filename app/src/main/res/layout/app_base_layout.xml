@@ -23,12 +23,11 @@
             app:headerLayout="@layout/nav_header_home"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
-            android:layout_marginTop="@dimen/_65sdp"
-            android:layout_marginBottom="@dimen/_65sdp"
             app:itemIconTint="@color/white">
 
             <ScrollView
-                android:layout_marginTop="@dimen/_156sdp"
+                android:layout_marginTop="@dimen/_160sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:fillViewport="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -78,7 +77,7 @@
                                 android:layout_gravity="center"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                android:src="@drawable/home_white_"/>
+                                android:src="@drawable/pick_me_up"/>
 
                             <TextView
                                 android:layout_marginLeft="@dimen/_15sdp"
@@ -103,7 +102,7 @@
                                 android:layout_gravity="center"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                android:src="@drawable/booking"/>
+                                android:src="@drawable/bookings"/>
 
                             <TextView
                                 android:layout_marginLeft="@dimen/_15sdp"
@@ -128,7 +127,7 @@
                                 android:layout_gravity="center"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                android:src="@drawable/booking"/>
+                                android:src="@drawable/scheduled"/>
 
                             <TextView
                                 android:layout_marginLeft="@dimen/_15sdp"
@@ -217,6 +216,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:visibility="gone"
                             android:id="@+id/notificationLay"
                             android:orientation="horizontal"
                             android:layout_width="match_parent"
@@ -276,10 +276,9 @@
                             <ImageView
                                 android:layout_gravity="center"
                                 android:layout_width="20dp"
-                                android:visibility="gone"
                                 android:layout_height="20dp"
                                 android:layout_marginEnd="@dimen/_15sdp"
-                                android:src="@drawable/customer_service"/>
+                                android:src="@drawable/vehicle"/>
 
                             <TextView
                                 android:layout_gravity="center"
@@ -295,19 +294,25 @@
 
                         <LinearLayout
                             android:id="@+id/aboutUsLay"
-                            android:layout_marginTop="@dimen/_40sdp"
                             android:orientation="horizontal"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_35sdp">
+
+                            <ImageView
+                                android:layout_gravity="center"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginEnd="@dimen/_15sdp"
+                                android:src="@drawable/about"/>
+
 
                             <TextView
                                 android:layout_gravity="center"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="About Us"
-                                android:textColor="@color/white_O_60"
+                                android:textColor="@color/white"
                                 android:textSize="@dimen/_12sdp"
-                                android:textStyle="normal"
                                 android:fontFamily="@font/gibson_regular"/>
 
                         </LinearLayout>
@@ -318,12 +323,20 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_35sdp">
 
+                            <ImageView
+                                android:layout_gravity="center"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginEnd="@dimen/_15sdp"
+                                android:src="@drawable/customer_service"/>
+
+
                             <TextView
                                 android:layout_gravity="center"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Privacy Policy"
-                                android:textColor="@color/white_O_60"
+                                android:textColor="@color/white"
                                 android:textSize="@dimen/_12sdp"
                                 android:textStyle="normal"
                                 android:fontFamily="@font/gibson_regular"/>
@@ -332,10 +345,17 @@
 
                         <LinearLayout
                             android:id="@+id/logoutLay"
-                            android:layout_marginTop="@dimen/_40sdp"
                             android:orientation="horizontal"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_35sdp">
+
+                            <ImageView
+                                android:layout_gravity="center"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginEnd="@dimen/_15sdp"
+                                android:src="@drawable/logout"/>
+
 
                             <TextView
                                 android:layout_gravity="center"

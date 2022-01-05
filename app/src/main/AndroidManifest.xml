@@ -94,6 +94,14 @@
             </intent-filter>
         </service>
 
+        <activity
+            android:name=".screens.NotificationDetail"
+            android:exported="true" />
+
+        <activity
+            android:name=".screens.AboutUs"
+            android:exported="true" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

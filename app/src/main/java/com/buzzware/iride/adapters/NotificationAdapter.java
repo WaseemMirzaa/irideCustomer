@@ -10,14 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.buzzware.iride.Firebase.FirebaseInstances;
+import com.buzzware.iride.R;
 import com.buzzware.iride.databinding.NotificationReadItemBinding;
 import com.buzzware.iride.models.NotificationModel;
-import com.buzzware.iride.models.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
-
-import org.jetbrains.annotations.NotNull;
+import com.buzzware.iride.screens.NotificationDetail;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -55,33 +53,21 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         viewHolder.binding.messageTV.setText(notificationModel.getMessage());
 
-        getProfilePic(notificationModel, viewHolder);
+        Glide.with(mContext).load(R.drawable.logo).apply(new RequestOptions().centerCrop())
+                .into(viewHolder.binding.picCIV);
 
+        viewHolder.binding.getRoot().setOnClickListener(v -> {
+
+            notificationModel.isRead.put(FirebaseAuth.getInstance().getCurrentUser().getUid(), true);
+
+            FirebaseFirestore.getInstance().collection("Notification")
+                    .document(notificationModel.getId())
+                    .set(notificationModel);
+
+            NotificationDetail.startNotificationDetail(mContext, notificationModel.getTitle(), notificationModel.getMessage());
+
+        });
     }
-
-    private void getProfilePic(NotificationModel notificationModel, ViewHolder viewHolder) {
-
-        FirebaseInstances.
-                usersCollection.document(notificationModel.getFromId())
-                .get()
-                .addOnCompleteListener(task -> {
-
-                    if(task.isSuccessful()) {
-
-                        User user = task.getResult().toObject(User.class);
-
-                        if (user != null) {
-
-                            Glide.with(mContext).load(user.image).apply(new RequestOptions().centerCrop())
-                                    .into(viewHolder.binding.picCIV);
-                        }
-
-                    }
-
-                });
-
-    }
-
 
     @Override
     public int getItemCount() {

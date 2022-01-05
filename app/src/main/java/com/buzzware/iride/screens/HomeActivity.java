@@ -290,7 +290,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
                         if (AppConstants.RideStatus.isRideInProgress(rideModel.status)) {
 
-                            mBinding.searchingForDrivers.setText("Have safe trip");
+                            mBinding.searchingForDrivers.setText("Have a nice trip");
 
                             //User is in car moving towards destination
 
@@ -424,7 +424,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
             //ride completed show rating popup
 
-            mBinding.searchingForDrivers.setText("Have safe trip");
+            mBinding.searchingForDrivers.setText("Have a nice trip");
 
 
             setDriverListener();
@@ -1108,8 +1108,31 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
         mBinding.nameTV.setText(user.firstName + " " + user.lastName);
 
-        //Todo make rating hardcoded
-        mBinding.ratingTV.setText("4.5");
+        mBinding.nameTV.setText(user.firstName + " " + user.lastName);
+
+        Glide.with(HomeActivity.this)
+                .load(user.image)
+                .into(mBinding.userPic);
+
+        double rating = 0;
+
+        if (user.ratings != null){
+
+            for(Double r: user.ratings)
+
+                rating = rating + r;
+
+        }
+
+        if(rating > 0) {
+
+            rating = rating / user.ratings.size();
+
+            mBinding.ratingTV.setText(rating+"");
+
+        }
+
+        mBinding.ratingTV.setText("N/A");
 
 
         mBinding.msgIV.setOnClickListener(v -> startChat(user));

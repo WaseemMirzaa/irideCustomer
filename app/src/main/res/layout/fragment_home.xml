@@ -382,7 +382,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="start"
                                     android:fontFamily="@font/gibson_semibd"
-                                    android:text="On Trip"
+                                    android:text="Have a nice trip"
                                     android:id="@+id/searchingForDrivers"
                                     android:textColor="@color/black"
                                     android:textSize="@dimen/_10sdp"

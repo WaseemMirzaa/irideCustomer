@@ -1,7 +1,12 @@
 package com.buzzware.iride.models;
 
+import java.util.Map;
+
 public class NotificationModel {
-    String id, message, title, toId, fromId;
+
+    public Map<String, Boolean> isRead;
+
+    String id, message, title, type;
 
     public String getId() {
         return id;
@@ -27,19 +32,4 @@ public class NotificationModel {
         this.title = title;
     }
 
-    public String getToId() {
-        return toId;
-    }
-
-    public void setToId(String toId) {
-        this.toId = toId;
-    }
-
-    public String getFromId() {
-        return fromId;
-    }
-
-    public void setFromId(String fromId) {
-        this.fromId = fromId;
-    }
-}
+ }

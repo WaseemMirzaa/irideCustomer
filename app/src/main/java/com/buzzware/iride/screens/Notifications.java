@@ -27,7 +27,7 @@ public class Notifications extends BaseNavDrawer {
 
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
-    List<NotificationModel> notificationList=new ArrayList<>();
+    List<NotificationModel> notificationList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,16 +61,31 @@ public class Notifications extends BaseNavDrawer {
 
                     for (QueryDocumentSnapshot document : task.getResult()) {
 
-                        NotificationModel notification = document.toObject(NotificationModel.class);
+                        try {
 
-                        notification.setId(document.getId());
+                            NotificationModel notification = document.toObject(NotificationModel.class);
 
-                        if(notification.getToId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                            notification.setId(document.getId());
 
-                            notificationList.add(notification);
+                            if (notification.isRead != null) {
+
+                                if (notification.isRead.containsKey(getUserId())) {
+
+                                    notificationList.add(notification);
+
+                                }
+
+                            }
+
+                        } catch (Exception e) {
+
+                            e.printStackTrace();
 
                         }
+
+
                     }
+
                     setRecycler();
                 }
             }
