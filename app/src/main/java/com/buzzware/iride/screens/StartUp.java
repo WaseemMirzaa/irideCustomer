@@ -3,6 +3,7 @@ package com.buzzware.iride.screens;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +11,9 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.buzzware.iride.R;
+import com.buzzware.iride.classes.SessionManager;
 import com.buzzware.iride.databinding.ActivityStartupBinding;
+import com.buzzware.iride.databinding.AlertDialogPermissionBinding;
 import com.buzzware.iride.models.RideModel;
 import com.buzzware.iride.utils.AppConstants;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -47,9 +50,59 @@ public class StartUp extends BaseActivity {
 
         } else {
 
-            startActivity(new Intent(this, Authentication.class));
+            if (SessionManager.getInstance().getPermission(StartUp.this)!=null){
+
+                if (SessionManager.getInstance().getPermission(StartUp.this).equals("Allow")){
+
+                    startActivity(new Intent(this, Authentication.class));
+
+                } else {
+
+                    showPermissionDialog();
+
+                }
+
+            } else {
+
+                showPermissionDialog();
+
+            }
+
+
         }
     }
+
+    private void showPermissionDialog() {
+
+        final Dialog dialog = new Dialog(this,R.style.DialogTheme);
+
+        dialog.setCancelable(false);
+
+        AlertDialogPermissionBinding permissionDialogBinding = AlertDialogPermissionBinding.inflate(getLayoutInflater());
+
+        dialog.setContentView(permissionDialogBinding.getRoot());
+
+        permissionDialogBinding.acceptBtn.setOnClickListener(v->{
+
+            SessionManager.getInstance().setPermission(StartUp.this,"Allow");
+
+            dialog.dismiss();
+
+            startActivity(new Intent(this, Authentication.class));
+
+        });
+        permissionDialogBinding.cancelBtn.setOnClickListener(v->{
+
+            SessionManager.getInstance().setPermission(StartUp.this,"Denied");
+
+            dialog.dismiss();
+        });
+
+        dialog.show();
+
+    }
+
+
 
     void getActiveRide() {
 

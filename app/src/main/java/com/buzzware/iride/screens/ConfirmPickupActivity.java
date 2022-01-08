@@ -423,9 +423,13 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         Date currentDate = new Date();
 
-        this.time = date.getTime();
 
-        if (date.getTime() < currentDate.getTime()) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        this.time = calendar.getTimeInMillis();
+        calendar = Calendar.getInstance();
+
+        if (time < calendar.getTimeInMillis()) {
 
             dateString = "";
 
@@ -439,6 +443,33 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         getScheduledRides(time);
     }
+//    private void validateDateTime() throws ParseException {
+//
+//        String tsString = dateString + " " + timeString;
+//
+//        String inputFormat = "dd-MM-yyyy hh:mm";
+//
+//        Date date = new SimpleDateFormat(inputFormat).parse(tsString);
+//
+//        Date currentDate = new Date();
+//
+//        this.time = date.getTime();
+//
+//
+//        if (date.getTime() < currentDate.getTime()) {
+//
+//            dateString = "";
+//
+//            timeString = "";
+//
+//            showErrorAlert("Invalid date time entered. Please select future date and time.");
+//
+//            return;
+//
+//        }
+//
+//        getScheduledRides(time);
+//    }
 
     private void setListeners() {
 
@@ -978,7 +1009,6 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         myDialog.show();
     }
-
     //Stripe
 
     void getCurrentUserData() {

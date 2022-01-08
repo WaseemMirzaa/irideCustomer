@@ -155,6 +155,7 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
         binding.navView.findViewById(R.id.notificationLay).setOnClickListener(this);
         binding.navView.findViewById(R.id.activeRide).setOnClickListener(this);
         binding.navView.findViewById(R.id.schedulesLay).setOnClickListener(this);
+        binding.navView.findViewById(R.id.privacyPolicyLay).setOnClickListener(this);
         binding.navView.findViewById(R.id.aboutUsLay).setOnClickListener(this);
 
     }
@@ -263,6 +264,11 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
             openCloseDrawer();
             startActivity(new Intent(BaseNavDrawer.this, ScheduledRides.class));
             finish();
+        }else if (v == binding.navView.findViewById(R.id.privacyPolicyLay)) {
+
+            openCloseDrawer();
+            startActivity(new Intent(BaseNavDrawer.this, PrivacyPolicyActivity.class));
+
         }
     }
 

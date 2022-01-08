@@ -20,6 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Iride">
         <activity
+            android:name=".screens.PrivacyPolicyActivity"
+            android:exported="false" />
+        <activity
             android:name=".screens.CustomerRequestsActivity"
             android:exported="true" />
         <activity
@@ -97,7 +100,6 @@
         <activity
             android:name=".screens.NotificationDetail"
             android:exported="true" />
-
         <activity
             android:name=".screens.AboutUs"
             android:exported="true" />

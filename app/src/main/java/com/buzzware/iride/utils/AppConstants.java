@@ -3,7 +3,7 @@ package com.buzzware.iride.utils;
 public class AppConstants {
 
     public static final String GOOGLE_PLACES_API_KEY = "AIzaSyAKhmWBB8YzvlrFUGPBt5pluE4pN3RFNHk";
-    public static final String stripeKey ="pk_test_51J95M5Cn3y9OejYq75nSq8nNwYNgfj2G5BkreK8dWxjvvv3ZSOSsXsEecRNdtOvfNFw6118AtXIROcJ7A4cZ7ykb003PrVt3SM";
+    public static final String stripeKey ="pk_live_51J0sDpAipe2se0swrVvnvAWGcmfTXzHadKGaqHLqPOsnZZq3KrVMtC1icZp1hQYtnu3RAMQuvvtq5wlBgYDebSdc00ul8uXRrQ";
 
     public static class RideStatus {
 
