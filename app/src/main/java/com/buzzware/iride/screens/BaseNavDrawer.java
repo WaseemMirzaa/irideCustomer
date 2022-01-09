@@ -1,6 +1,7 @@
 package com.buzzware.iride.screens;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -156,7 +157,21 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
         binding.navView.findViewById(R.id.activeRide).setOnClickListener(this);
         binding.navView.findViewById(R.id.schedulesLay).setOnClickListener(this);
         binding.navView.findViewById(R.id.aboutUsLay).setOnClickListener(this);
+        binding.navView.findViewById(R.id.privacyPolicyLay).setOnClickListener(v -> {
 
+            openCloseDrawer();
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.irideshareusa.com")));
+
+        });
+        binding.navView.findViewById(R.id.driveWithIride).setOnClickListener(v -> openDriveWithIrideIntent());
+
+    }
+
+    private void openDriveWithIrideIntent() {
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("market://details?id=com.buzzware.iridedriver"));
+        startActivity(intent);
     }
 
     private void logout() {
@@ -250,7 +265,7 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
         } else if (v == binding.navView.findViewById(R.id.csLay)) {
 
             openCloseDrawer();
-            startActivity(new Intent(BaseNavDrawer.this, CustomerRequestsActivity.class));
+            startActivity(new Intent(BaseNavDrawer.this, CreateNewRequestActivity.class));
             finish();
 
         } else if (v == binding.navView.findViewById(R.id.activeRide)) {

@@ -2,6 +2,7 @@ package com.buzzware.iride.screens;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
@@ -20,7 +21,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerRequestsActivity extends BaseNavDrawer implements RequestCallback {
+public class CustomerRequestsActivity extends BaseActivity implements RequestCallback {
 
     ActivityCustomerRequestsBinding binding;
 
@@ -91,10 +92,9 @@ public class CustomerRequestsActivity extends BaseNavDrawer implements RequestCa
 
     private void setListener() {
 
-        binding.drawerIcon.setOnClickListener(v -> openCloseDrawer());
+        binding.drawerIcon.setOnClickListener(v -> finish());
 
-        binding.createNewRequestBtn.setOnClickListener(v -> startActivity(new Intent(CustomerRequestsActivity.this, CreateNewRequestActivity.class)));
-
+        binding.createNewRequestBtn.setVisibility(View.GONE);
     }
 
     @Override

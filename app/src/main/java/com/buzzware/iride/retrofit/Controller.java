@@ -12,6 +12,7 @@ public class Controller {
 
     public static final String Base_Url = "https://maps.googleapis.com";
     public static final String Base_Url_Payments = "https://buzzwaretech.com";
+    public static final String Base_Url_Stripe = "https://api.stripe.com";
 
     public static Retrofit retrofit = null;
 

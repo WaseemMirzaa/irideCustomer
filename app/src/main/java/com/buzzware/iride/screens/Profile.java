@@ -78,7 +78,7 @@ public class Profile extends BaseNavDrawer implements View.OnClickListener {
 
         if (user.image != null && !user.image.isEmpty()) {
 
-            Glide.with(getApplicationContext()).load(user.image).apply(new RequestOptions().centerCrop()).into(binding.userImageIV);
+            Glide.with(Profile.this).load(user.image).apply(new RequestOptions().centerCrop()).into(binding.userImageIV);
 
         }
 
@@ -118,7 +118,7 @@ public class Profile extends BaseNavDrawer implements View.OnClickListener {
 
         } else if (v == binding.btnChat) {
 
-            startActivity(new Intent(Profile.this, Chat.class));
+            startActivity(new Intent(getApplicationContext(), Chat.class));
 
         }
     }

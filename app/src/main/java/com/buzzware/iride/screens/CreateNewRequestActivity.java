@@ -43,11 +43,15 @@ public class CreateNewRequestActivity extends BaseActivity {
 
     private void setListeners() {
 
+        binding.requestsList.setOnClickListener(v -> {
+
+            startActivity(new Intent(CreateNewRequestActivity.this, CustomerRequestsActivity.class));
+
+        });
+
         binding.btnContinue.setOnClickListener(v -> validateAndSendMessage());
 
         binding.drawerIcon.setOnClickListener(v-> finish());
-
-
     }
 
     private void createRequest(String cId) {
@@ -84,7 +88,7 @@ public class CreateNewRequestActivity extends BaseActivity {
 
                         startActivity(intent);
 
-                        finish();
+//                        finish();
 
                     });
 

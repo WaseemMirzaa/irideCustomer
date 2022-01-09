@@ -12,4 +12,7 @@
     <string name="camera_permissions_denied_string">Please enable and storage camera permissions from setting in order to proceed to the app.</string>
     <string name="profilePic">Profile Pic</string>
     <string name="our_mission_is_to_provide_affordable_top_of_the_line_transportation_services_package_delivery_and_scooter_rental_for_everyone_everywhere_we_are_all_going_somewhere_with_iride_we_ll_get_there_together">Our mission is to provide affordable top of the line transportation services, package delivery, and scooter rental- for everyone, everywhere. \n \n“We are all going somewhere, with iRide, we’ll get there together”</string>
+    <string name="about">
+
+    </string>
 </resources>
