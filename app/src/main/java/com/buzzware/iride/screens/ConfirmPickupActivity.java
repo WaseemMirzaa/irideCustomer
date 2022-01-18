@@ -42,6 +42,8 @@ import com.buzzware.iride.response.distanceMatrix.Element;
 import com.buzzware.iride.response.distanceMatrix.Row;
 import com.buzzware.iride.retrofit.Controller;
 import com.buzzware.iride.utils.AppConstants;
+import com.firebase.geofire.GeoFireUtils;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -425,6 +427,20 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         this.time = date.getTime();
 
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(currentDate);
+//        Calendar d1 = Calendar.getInstance();
+//        calendar.setTime(date);
+//        int currSec = calendar.get(Calendar.MILLISECOND);
+//        int currSec = calendar.get(Calendar.MILLISECOND);
+        long difference = currentDate.getTime() - date.getTime();
+
+        int days = (int) (difference / (1000*60*60*24));
+        int hours = (int) ((difference - (1000*60*60*24*days)) / (1000*60*60));
+        int min = (int) (difference - (1000*60*60*24*days) - (1000*60*60*hours)) / (1000*60);
+
+
+
         if (date.getTime() < currentDate.getTime()) {
 
             dateString = "";
@@ -432,6 +448,16 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
             timeString = "";
 
             showErrorAlert("Invalid date time entered. Please select future date and time.");
+
+            return;
+
+        } else  if (min < 60) {
+
+            dateString = "";
+
+            timeString = "";
+
+            showErrorAlert("You can't schedule a ride. Ride should be at least 1 hour ahead of current time.");
 
             return;
 
@@ -834,6 +860,10 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         String id = getAlphaNumericString(15);
 
+        String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(pickUpLocation.lat, pickUpLocation.lng));
+
+        pickUpLocation.hash = hash;
+
         tripDetail.pickUp = pickUpLocation;
 
         map.put("tripDetail", tripDetail);
@@ -907,6 +937,10 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         }
 
+        String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(pickUpLocation.lat, pickUpLocation.lng));
+
+        pickUpLocation.hash = hash;
+
         rideModel.tripDetail.pickUp = pickUpLocation;
 
         rideModel.userId = getUserId();
@@ -948,16 +982,16 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         myDialog.show();
 
-        mBinding.cardItem.setOnClickListener(v -> {
+//        mBinding.cardItem.setOnClickListener(v -> {
 
-            myDialog.dismiss();
+//            myDialog.dismiss();
 
-        });
+//        });
 
-        mBinding.btnAddPayment.setOnClickListener(v -> {
-            myDialog.dismiss();
-            ShowAddPaymentDialog();
-        });
+//        mBinding.btnAddPayment.setOnClickListener(v -> {
+//            myDialog.dismiss();
+//            ShowAddPaymentDialog();
+//        });
     }
 
     private void ShowAddPaymentDialog() {
@@ -993,9 +1027,9 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
                 if (user != null) {
 
-                    if (user.cusId != null && user.clientSecret != null) {
+                    if (user.stripeCustid != null && user.clientSecret != null) {
 
-                        customerId = user.cusId;
+                        customerId = user.stripeCustid;
                         clientSecret = user.clientSecret;
                         MyEphemeralKeyProvider.cusId = customerId;
 
@@ -1013,17 +1047,23 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
     }
 
+    String cus = "";
+
     private void createCustomer(User user) {
 
         MyEphemeralKeyProvider.cusId = "1";
 
         showLoader();
 
+        if(user.stripeCustid != null)
+
+            cus = user.stripeCustid;
+
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("name", user.firstName + user.lastName)
                 .addFormDataPart("email", user.email)
-                .addFormDataPart("cus_id", "")
+                .addFormDataPart("cus_id", cus)
                 .build();
 
         Controller.getApi(Base_Url_Payments).createCustomer(requestBody)
@@ -1037,13 +1077,21 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
                             try {
                                 JSONObject jsonObject = new JSONObject(response.body());
-                                customerId = jsonObject.getString("cus_id");
+
+                                if(cus.isEmpty()) {
+
+                                    cus = jsonObject.getString("cus_id");
+
+                                }
+
+                                customerId = cus;
+
                                 String clientSecret = jsonObject.getString("key");
 
                                 MyEphemeralKeyProvider.cusId = customerId;
 
                                 user.clientSecret = clientSecret;
-                                user.cusId = customerId;
+                                user.stripeCustid = customerId;
 
 
                                 FirebaseFirestore.getInstance().collection("Users")
@@ -1186,7 +1234,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
                                             AppConstants.stripeKey
                                     );
 
-                                    stripe.confirmPayment((Activity) ConfirmPickupActivity.this, confirmParams);
+                                    stripe.confirmPayment(ConfirmPickupActivity.this, confirmParams);
 
                                 } else {
 

@@ -4,7 +4,7 @@ plugins {
 
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     defaultConfig {
@@ -35,6 +35,8 @@ android {
 }
 
 dependencies {
+
+    implementation 'com.firebase:geofire-android-common:3.1.0'
 
     def lottieVersion = "3.4.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"
@@ -107,8 +109,10 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    
+
+    implementation 'com.stripe:stripe-android:19.1.0'
+
     //Stripe Android SDK
-    implementation 'com.stripe:stripe-android:16.1.1'
 }
+
 apply plugin: 'com.google.gms.google-services'

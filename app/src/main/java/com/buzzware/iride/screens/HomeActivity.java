@@ -1034,6 +1034,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
                 Element element = row.elements.get(0);
 
                 if (element.distance != null) {
+                   
                     this.distance = this.distance + element.distance.value;
 
                     distance = element.distance.text;
@@ -1041,7 +1042,9 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
                 }
 
                 if (element.duration != null) {
+                   
                     minutes = element.duration.value + minutes;
+                   
                     time = element.duration.text;
 
                 }

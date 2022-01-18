@@ -120,9 +120,9 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
 
                     return;
 
-                ImageView picIV = headerLayout.findViewById(R.id.picCIV);
+//                ImageView picIV = headerLayout.findViewById(R.id.picCIV);
 
-                TextView nameTV = headerLayout.findViewById(R.id.nameTV);
+//                TextView nameTV = headerLayout.findViewById(R.id.nameTV);
 
 //                nameTV.setText(user.firstName + " " + user.lastName);
 //
@@ -155,12 +155,20 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
         binding.navView.findViewById(R.id.csLay).setOnClickListener(this);
         binding.navView.findViewById(R.id.notificationLay).setOnClickListener(this);
         binding.navView.findViewById(R.id.activeRide).setOnClickListener(this);
+        binding.navView.findViewById(R.id.covidLay).setOnClickListener(v -> {
+
+            openCloseDrawer();
+
+            startActivity(new Intent(BaseNavDrawer.this, Covid.class));
+
+        });
         binding.navView.findViewById(R.id.schedulesLay).setOnClickListener(this);
         binding.navView.findViewById(R.id.aboutUsLay).setOnClickListener(this);
         binding.navView.findViewById(R.id.privacyPolicyLay).setOnClickListener(v -> {
 
             openCloseDrawer();
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.irideshareusa.com")));
+
+            startActivity(new Intent(BaseNavDrawer.this, PrivacyPolicyActivity.class));
 
         });
         binding.navView.findViewById(R.id.driveWithIride).setOnClickListener(v -> openDriveWithIrideIntent());
@@ -179,7 +187,8 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
         FirebaseAuth.getInstance().signOut();
 
         startActivity(new Intent(BaseNavDrawer.this, Authentication.class)
-        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
         finish();
 

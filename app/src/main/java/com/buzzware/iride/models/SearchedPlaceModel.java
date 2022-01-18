@@ -8,6 +8,7 @@ public class SearchedPlaceModel implements Parcelable {
     public String id;
 
     public double lat;
+    public String hash;
     public double lng;
 
     public String status;
@@ -22,6 +23,7 @@ public class SearchedPlaceModel implements Parcelable {
         lat = in.readDouble();
         lng = in.readDouble();
         status = in.readString();
+        hash = in.readString();
         address = in.readString();
     }
 
@@ -48,6 +50,7 @@ public class SearchedPlaceModel implements Parcelable {
         dest.writeDouble(lat);
         dest.writeDouble(lng);
         dest.writeString(status);
+        dest.writeString(hash);
         dest.writeString(address);
     }
 }

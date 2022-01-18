@@ -1,5 +1,6 @@
 package com.buzzware.iride.screens;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -47,6 +48,12 @@ public class Wallet extends BaseNavDrawer implements View.OnClickListener {
     }
 
     private void setListeners() {
+
+        mBinding.myCardsBt.setOnClickListener(v -> {
+
+            startActivity(new Intent(Wallet.this, MyCards.class));
+
+        });
 
         mBinding.menuAppBar.drawerIcon.setOnClickListener(v -> openCloseDrawer());
 
@@ -144,6 +151,5 @@ public class Wallet extends BaseNavDrawer implements View.OnClickListener {
         mBinding.paymentsRV.setAdapter(new PaymentsAdapter(this, ridesList));
 
     }
-
 
 }

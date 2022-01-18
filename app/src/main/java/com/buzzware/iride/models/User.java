@@ -7,7 +7,6 @@ import java.util.ArrayList;
 public class User {
 
     public String id;
-    public String cusId;
     public String clientSecret;
     public String firstName;
     public String lastName;
@@ -18,7 +17,7 @@ public class User {
     public String state;
 
     @SerializedName("stripeCustid")
-    public String customerId;
+    public String stripeCustid;
 
     public String city;
 

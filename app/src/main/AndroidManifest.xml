@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.buzzware.iride">
 
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -19,6 +22,10 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.Iride">
+
+        <activity android:name=".screens.MyCards"
+            android:exported="true"/>
+
         <activity
             android:name=".screens.CustomerRequestsActivity"
             android:exported="true" />
@@ -77,6 +84,9 @@
         <activity
             android:name=".screens.Authentication"
             android:theme="@style/Theme.white" />
+        <activity
+            android:name=".screens.PrivacyPolicyActivity"
+            android:theme="@style/Theme.white" />
         <activity android:name=".screens.StartUp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -93,6 +103,10 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <activity
+            android:name=".screens.Covid"
+            android:exported="true" />
 
         <activity
             android:name=".screens.NotificationDetail"

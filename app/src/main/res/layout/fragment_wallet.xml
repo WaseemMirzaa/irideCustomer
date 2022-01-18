@@ -37,5 +37,16 @@
         <include layout="@layout/menu_app_bar"
             android:id="@+id/menuAppBar"/>
 
+        <Button
+            android:id="@+id/myCardsBt"
+            android:textColor="@color/white"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Cards"
+            app:layout_constraintBottom_toBottomOf="@+id/menuAppBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/image" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
