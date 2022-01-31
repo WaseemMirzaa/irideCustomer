@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import com.buzzware.iride.R;
-import com.buzzware.iride.models.RideModel;
 import com.buzzware.iride.models.ScheduleModel;
 
 import java.text.SimpleDateFormat;
@@ -73,17 +73,28 @@ public class ScheduledRidesAdapter extends RecyclerView.Adapter<ScheduledRidesAd
 
         }
 
-        holder.timeTV.setText("Date: " + ride.scheduledDate + "\nTime: " + ride.scheduledTime);
+        holder.timeTV.setText("Date: " + getDate(ride.bookingDate) + "\nTime: " + getTime(ride.scheduleTimeStamp));
 
 //        holder.acceptNowBt.setVisibility(View.GONE);
 
     }
 
-    private String getDateTime(long bookingDate) {
+    private String getTime(long bookingDate) {
 
         Date date = new Date(bookingDate);
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy HH:MM");
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:MM");
+
+        return formatter.format(date);
+
+    }
+
+
+    private String getDate(long bookingDate) {
+
+        Date date = new Date(bookingDate);
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
         return formatter.format(date);
 
@@ -144,7 +155,6 @@ public class ScheduledRidesAdapter extends RecyclerView.Adapter<ScheduledRidesAd
 
             acceptNowBt = itemView.findViewById(R.id.acceptNowBt);
 
-//            acceptTV = itemView.findViewById(R.id.acceptTV);
             relativeLayout = (RelativeLayout) itemView.findViewById(R.id.relativeLayout);
             dropOffVw = (View) itemView.findViewById(R.id.dropOffVw);
             dropOffLL = (RelativeLayout) itemView.findViewById(R.id.dropOffLL);

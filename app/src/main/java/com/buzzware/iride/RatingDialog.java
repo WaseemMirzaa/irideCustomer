@@ -2,8 +2,6 @@ package com.buzzware.iride;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -14,14 +12,11 @@ import com.bumptech.glide.request.RequestOptions;
 import com.buzzware.iride.models.RideModel;
 import com.buzzware.iride.models.User;
 import com.buzzware.iride.models.VehicleModel;
-import com.buzzware.iride.screens.BookARideActivity;
 import com.buzzware.iride.utils.AppConstants;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
@@ -72,21 +67,15 @@ public class RatingDialog extends Dialog {
 
         user.ratings.add(Float.valueOf(userRating.getRating()).doubleValue());
 
-        FirebaseFirestore.getInstance().collection("Users").document(ride.driverId)
-                .update("ratings", user.ratings);
-
         FirebaseFirestore.getInstance().collection("Bookings").document(ride.id)
                 .update("status", AppConstants.RideStatus.RATED);
 
 
-        c.startActivity(new Intent(c, BookARideActivity.class)
-        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        FirebaseFirestore.getInstance().collection("Users").document(ride.driverId)
+                .update("ratings", user.ratings);
+
 
         dismiss();
-
-        c.finish();
-
-
 
     }
 

@@ -149,7 +149,7 @@ public class FirebaseRequests {
 
             } else {
 
-                callback.onResponse(messageModels, true, error.getMessage());
+                callback.onResponse(messageModels, true, "RideCompleted");
 
             }
         });

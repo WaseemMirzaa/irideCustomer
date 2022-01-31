@@ -1,7 +1,6 @@
 package com.buzzware.iride.screens;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -12,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -79,8 +77,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.MultipartBody;
@@ -157,6 +153,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
         min = 0;
 
         showLoader();
+
         //todo destination also calculate for destination 2
 
         String url = "/maps/api/distancematrix/json?departure_time&origins=" + pickUpLocation.lat + "," + pickUpLocation.lng + "&destinations=" + destinationLocation.lat + "," + destinationLocation.lng + "&key=" + AppConstants.GOOGLE_PLACES_API_KEY;
@@ -279,6 +276,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
                         distance = convertKmsToMiles(distance / 1000);
 
                         min = min / 60;
+
                         calculateLuxPrice(settings);
 
                         calculateIRidePrice(settings);
@@ -433,13 +431,13 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 //        calendar.setTime(date);
 //        int currSec = calendar.get(Calendar.MILLISECOND);
 //        int currSec = calendar.get(Calendar.MILLISECOND);
-        long difference = currentDate.getTime() - date.getTime();
+        long difference = date.getTime() - currentDate.getTime();
 
-        int days = (int) (difference / (1000*60*60*24));
-        int hours = (int) ((difference - (1000*60*60*24*days)) / (1000*60*60));
-        int min = (int) (difference - (1000*60*60*24*days) - (1000*60*60*hours)) / (1000*60);
+        float diffHour = (int) (difference / (1000 * 60 * 60));
+//        float hours = (int) ((difference - (1000*60*60*24*days)) / (1000*60*60));
+//        float min = (int) (difference - (1000*60*60*24*days) - (1000*60*60*hours)) / (1000*60);
 
-
+//        if(difference)
 
         if (date.getTime() < currentDate.getTime()) {
 
@@ -451,7 +449,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
             return;
 
-        } else  if (min < 60) {
+        } else if (diffHour < 1) {
 
             dateString = "";
 
@@ -840,6 +838,8 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
     }
 
+    String pm_id;
+
     void scheduleRide(long time) {
 
         Map<String, Object> map = new HashMap<>();
@@ -870,6 +870,8 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
         map.put("scheduledDate", dateString);
         map.put("scheduledTime", timeString);
         map.put("scheduleTimeStamp", time);
+        if (pm_id != null)
+            map.put("pm_id", pm_id);
         map.put("id", id);
         map.put("userId", getUserId());
         map.put("price", "" + amount);
@@ -890,8 +892,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
     }
 
-    static String getAlphaNumericString(int n)
-    {
+    static String getAlphaNumericString(int n) {
 
         // chose a Character random from this String
         String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -906,7 +907,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
             // generate a random number between
             // 0 to AlphaNumericString variable length
             int index
-                    = (int)(AlphaNumericString.length()
+                    = (int) (AlphaNumericString.length()
                     * Math.random());
 
             // add Character one by one in end of sb
@@ -929,6 +930,8 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         rideModel.tripDetail.destinations = new ArrayList<>();
 
+        if (pm_id != null)
+           rideModel.pm_id = pm_id;
         rideModel.tripDetail.destinations.add(destinationLocation);
 
         if (secondDropOff != null) {
@@ -954,7 +957,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         Toast.makeText(this, "Successfully Booked", Toast.LENGTH_LONG).show();
 
-        startActivity(new Intent(this, HomeActivity.class)
+        startActivity(new Intent(this, BookARideActivity.class)
                 .addFlags(
                         Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP
                 )
@@ -1055,7 +1058,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
 
         showLoader();
 
-        if(user.stripeCustid != null)
+        if (user.stripeCustid != null)
 
             cus = user.stripeCustid;
 
@@ -1078,7 +1081,7 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
                             try {
                                 JSONObject jsonObject = new JSONObject(response.body());
 
-                                if(cus.isEmpty()) {
+                                if (cus.isEmpty()) {
 
                                     cus = jsonObject.getString("cus_id");
 
@@ -1223,6 +1226,8 @@ public class ConfirmPickupActivity extends BaseNavDrawer implements OnMapReadyCa
                                 JSONObject jsonObject = new JSONObject(response.body());
 
                                 orderClientSecret = jsonObject.getJSONObject("return_data").getString("key");
+
+                                pm_id = orderClientSecret;
 
                                 if (jsonObject.getJSONObject("return_data").getInt("error") == 0) {
 

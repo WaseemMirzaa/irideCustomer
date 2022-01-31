@@ -84,7 +84,7 @@ public class BaseNavDrawer extends BaseActivity implements View.OnClickListener 
                 rideModel.id = document.getId();
 
 
-                startActivity(new Intent(BaseNavDrawer.this, HomeActivity.class)
+                startActivity(new Intent(BaseNavDrawer.this, BookARideActivity.class)
                         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
                 finish();

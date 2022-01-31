@@ -36,6 +36,8 @@ android {
 
 dependencies {
 
+    implementation 'com.applandeo:material-calendar-view:1.7.0'
+
     implementation 'com.firebase:geofire-android-common:3.1.0'
 
     def lottieVersion = "3.4.0"

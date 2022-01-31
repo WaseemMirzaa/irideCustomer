@@ -15,9 +15,16 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import com.buzzware.iride.R;
+import com.buzzware.iride.screens.BookARideActivity;
+import com.buzzware.iride.screens.BookingsActivity;
+import com.buzzware.iride.screens.MessagesActivity;
 import com.buzzware.iride.screens.StartUp;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.Map;
 
 
 /**
@@ -42,21 +49,68 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        Map<String, String> map = remoteMessage.getData();
 
+        String status = null;
+
+        String id = null;
+        try {
+
+            if (map.keySet().toArray().length > 1) {
+
+                status = map.get(map.keySet().toArray()[0].toString());
+
+                id = map.get(map.keySet().toArray()[1].toString());
+
+            } else if (map.keySet().toArray().length == 1) {
+
+                id = map.get(map.keySet().toArray()[0].toString());
+
+            }
+
+        } catch (Exception e) {
+
+
+        }
         if (remoteMessage.getData().size() > 0) {
-            sendUserNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("text"));
+            sendUserNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("text"),status,id);
         }
 
     }
 
 
-    private void sendUserNotification(String title, String mess) {
+    private void sendUserNotification(String title, String message, String status, String id) {
         int notifyID = 1;
         Intent intent;
         NotificationChannel mChannel;
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        intent = new Intent(context, StartUp.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        if (status != null) {
+
+            if(status.contains("cancel")) {
+
+                intent = new Intent(context, BookingsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            } else {
+
+                intent = new Intent(context, BookARideActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            }
+
+        } else {
+
+            if (id != null) {
+                intent = new Intent(context, MessagesActivity.class);
+                intent.putExtra("conversationID",id);
+                intent.putExtra("checkFrom","false");
+            } else {
+
+                intent = new Intent(context, StartUp.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+            }
+
+        }
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         String CHANNEL_ID = context.getPackageName();// The id of the channel.
@@ -71,8 +125,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         notificationBuilder.setPriority(Notification.PRIORITY_HIGH);
         notificationBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
         notificationBuilder.setContentIntent(pendingIntent);
-        notificationBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(mess));
-        notificationBuilder.setContentText(mess);
+        notificationBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
+        notificationBuilder.setContentText(message);
         notificationBuilder.setDefaults(Notification.DEFAULT_VIBRATE);
         notificationBuilder.setSmallIcon(getNotificationIcon(notificationBuilder));
 
@@ -91,11 +145,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private int getNotificationIcon(NotificationCompat.Builder notificationBuilder) {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            int color = 0x036085;
-            notificationBuilder.setColor(color);
+        int color = 0x036085;
+        notificationBuilder.setColor(color);
 
-        }
         return R.mipmap.ic_launcher;
     }
 

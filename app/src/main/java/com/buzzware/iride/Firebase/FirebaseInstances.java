@@ -10,6 +10,8 @@ public class FirebaseInstances {
 
     public static CollectionReference bookingsCollection = firebaseFirestore.collection("Bookings");
     public static CollectionReference usersCollection = firebaseFirestore.collection("Users");
+    public static CollectionReference emergencyCollection = firebaseFirestore.collection("Emergency");
     public static CollectionReference scheduledRidesCollection = firebaseFirestore.collection("ScheduledRides");
+    public static CollectionReference chatCollection = firebaseFirestore.collection("Chat");
 
 }

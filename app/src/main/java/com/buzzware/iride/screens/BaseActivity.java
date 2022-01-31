@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import im.delight.android.location.SimpleLocation;
 
 public class BaseActivity extends AppCompatActivity {
-    
+
     AlertDialog alertDialog, locationPermissionsDialog;
 
     ProgressDialog progressDialog;
@@ -105,7 +105,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public void showLoader() {
 
-        if(BaseActivity.this.isFinishing() || BaseActivity.this.isDestroyed())
+        if (BaseActivity.this.isFinishing() || BaseActivity.this.isDestroyed())
 
             return;
 
@@ -123,7 +123,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public void hideLoader() {
 
-        if(BaseActivity.this.isDestroyed() || BaseActivity.this.isFinishing())
+        if (BaseActivity.this.isDestroyed() || BaseActivity.this.isFinishing())
 
             return;
 

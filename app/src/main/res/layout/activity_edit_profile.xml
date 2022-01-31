@@ -14,7 +14,7 @@
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:layout_gravity="center"
-            android:src="@drawable/dummy_two"
+            android:src="@drawable/logo"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 

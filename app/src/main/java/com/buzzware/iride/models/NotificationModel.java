@@ -8,6 +8,8 @@ public class NotificationModel {
 
     String id, message, title, type;
 
+    public long timestamp;
+
     public String getId() {
         return id;
     }

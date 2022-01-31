@@ -95,7 +95,9 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
     VehicleModel vehicleDetails;
 
     public HomeActivity() {
+
         // Required empty public constructor
+
     }
 
     @Override
@@ -178,8 +180,6 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
     private void setListeners() {
 
-//        mBinding.btnWhereGo.setOnClickListener(v -> onWhereToClicked());
-
         mBinding.btnSettings.setOnClickListener(v -> onSettingsClicked());
 
         mBinding.currentLocationIV.setOnClickListener(v -> onCurrentLocationClicked());
@@ -192,7 +192,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
     private void startChat(User user) {
 
         Intent intent = new Intent(HomeActivity.this, MessagesActivity.class);
-        intent.putExtra("conversationID", "no id");
+        intent.putExtra("conversationID", rideModel.id);
         intent.putExtra("selectedUserID", user.id);
         intent.putExtra("selectedUserName", user.firstName);
         intent.putExtra("checkFrom", "true");
@@ -426,7 +426,6 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
             mBinding.searchingForDrivers.setText("Have a nice trip");
 
-
             setDriverListener();
 
             return;
@@ -438,7 +437,7 @@ public class HomeActivity extends BaseNavDrawer implements OnMapReadyCallback {
 
             FirebaseFirestore.getInstance().collection("Bookings")
                     .document(ride.id)
-                    .update("status", AppConstants.RideStatus.CANCELLED);
+                    .update("status", AppConstants.RideStatus.DISPUTED);
 
             if (ride.driverId != null)
                 

@@ -6,6 +6,8 @@ public class RideModel {
 
     public String userId;
 
+    public String pm_id;
+
     public String driverId;
 
     public String vehicleId;

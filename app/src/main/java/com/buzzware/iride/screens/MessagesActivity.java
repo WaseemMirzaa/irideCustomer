@@ -1,28 +1,41 @@
 package com.buzzware.iride.screens;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-
+import com.buzzware.iride.Firebase.FirebaseInstances;
 import com.buzzware.iride.FirebaseRequest.ConversationResponseCallback;
 import com.buzzware.iride.FirebaseRequest.FirebaseRequests;
 import com.buzzware.iride.FirebaseRequest.MessagesResponseCallback;
 import com.buzzware.iride.adapters.MessagesAdapter;
+import com.buzzware.iride.adapters.RideType;
 import com.buzzware.iride.databinding.ActivityMessagesBinding;
+import com.buzzware.iride.models.LastMessageModel;
 import com.buzzware.iride.models.MessageModel;
+import com.buzzware.iride.models.RideModel;
 import com.buzzware.iride.models.SendConversationModel;
 import com.buzzware.iride.models.SendLastMessageModel;
 import com.buzzware.iride.models.User;
+import com.buzzware.iride.utils.AppConstants;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -50,7 +63,10 @@ public class MessagesActivity extends AppCompatActivity {
     String isFromNew = "false";
 
     String myImageUrl;
+
     String otherUserImageUrl;
+
+    String rideID;
 
     FirebaseRequests firebaseRequests;
 
@@ -68,6 +84,7 @@ public class MessagesActivity extends AppCompatActivity {
 
         setListener();
 
+        setListenerOnRide();
 
     }
 
@@ -102,7 +119,6 @@ public class MessagesActivity extends AppCompatActivity {
                     }
 
                     getOtherUserImage();
-
 
                 });
     }
@@ -162,21 +178,23 @@ public class MessagesActivity extends AppCompatActivity {
 
             isFromNew = getIntent().getStringExtra("checkFrom");
 
-            selectedUserId = getIntent().getStringExtra("selectedUserID");
-
-            selectedUserName = getIntent().getStringExtra("selectedUserName");
-
-            binding.tvTitle.setText(selectedUserName);
-
             currentUserId = mAuth.getCurrentUser().getUid();
 
             if (isFromNew.equals("false") || isFromNew.equals("admin")) {
 
                 conversationID = getIntent().getStringExtra("conversationID");
 
-                getMyImage();
+                getConversation(getIntent().getStringExtra("conversationID"));
 
             } else {
+
+                selectedUserId = getIntent().getStringExtra("selectedUserID");
+
+                selectedUserName = getIntent().getStringExtra("selectedUserName");
+
+                binding.tvTitle.setText(selectedUserName);
+
+                currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
                 conversationID = UUID.randomUUID().toString();
 
@@ -185,6 +203,43 @@ public class MessagesActivity extends AppCompatActivity {
             }
 
         }
+
+    }
+
+    private void getConversation(String conversationID) {
+
+        FirebaseInstances.chatCollection.document(conversationID)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.getResult() != null) {
+
+                        if (task.getResult() != null) {
+
+                            LastMessageModel lastMessageModel = task.getResult().get("lastMessage", LastMessageModel.class);
+
+                            if (lastMessageModel != null) {
+
+                                currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                                selectedUserId = lastMessageModel.fromID;
+
+                                if (currentUserId.equalsIgnoreCase(lastMessageModel.fromID)) {
+
+                                    selectedUserId = lastMessageModel.toID;
+
+                                }
+
+                                this.conversationID = conversationID;
+
+                                getMyImage();
+
+                            }
+
+                        }
+
+
+                    }
+                });
 
     }
 
@@ -245,12 +300,76 @@ public class MessagesActivity extends AppCompatActivity {
     }
 
     MessagesResponseCallback callback = (list, isError, message) -> {
+
+        if (list.size() == 0 || isError) {
+
+//            if (rideID != null) {
+//
+//                setListenerOnRide();
+//
+//                return;
+//
+//            }
+
+        }
         if (!isError) {
 
             Sorting(list);
 
         }
     };
+
+    ListenerRegistration eventListener;
+
+    AlertDialog messagesDeletedPopup;
+
+    private void setListenerOnRide() {
+
+        eventListener = FirebaseInstances.bookingsCollection.document(conversationID)
+                .addSnapshotListener((value, error) -> {
+
+                    if (value != null) {
+
+                        RideModel rideModel = value.toObject(RideModel.class);
+
+                        if (rideModel != null) {
+
+                            rideModel.id = value.getId();
+
+                            if (AppConstants.RideStatus.RE_BOOKED.equalsIgnoreCase(rideModel.status) ||
+                                    AppConstants.RideStatus.CANCELLED.equalsIgnoreCase(rideModel.status) ||
+                                    AppConstants.RideStatus.RIDE_COMPLETED.equalsIgnoreCase(rideModel.status) ||
+                                    AppConstants.RideStatus.RATED.equalsIgnoreCase(rideModel.status) ||
+                                    AppConstants.RideStatus.DISPUTE.equalsIgnoreCase(rideModel.status) ||
+                                    AppConstants.RideStatus.DISPUTED.equalsIgnoreCase(rideModel.status)
+                            ) {
+
+                                eventListener.remove();
+
+                                eventListener = null;
+
+                                if (messagesDeletedPopup != null && messagesDeletedPopup.isShowing())
+
+                                    return;
+//                        if(value.getData().to)
+                                messagesDeletedPopup = new AlertDialog.Builder(MessagesActivity.this)
+                                        .setCancelable(false)
+                                        .setTitle("Alert")
+                                        .setMessage("Ride is completed or cancelled. This chat has been deleted")
+                                        .setPositiveButton("OK", (dialogInterface, i) -> {
+
+                                            dialogInterface.dismiss();
+                                            finish();
+
+                                        }).create();
+                                messagesDeletedPopup.show();
+
+                            }
+                        }
+                    }
+                });
+
+    }
 
     private void Sorting(List<MessageModel> list) {
 

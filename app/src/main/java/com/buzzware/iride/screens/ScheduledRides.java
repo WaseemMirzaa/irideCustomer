@@ -40,8 +40,6 @@ public class ScheduledRides extends BaseNavDrawer implements View.OnClickListene
         showLoader();
 
         getRides();
-
-//        setListeners();
     }
 
 
@@ -97,9 +95,9 @@ public class ScheduledRides extends BaseNavDrawer implements View.OnClickListene
 
     private void setAdapter(ArrayList<ScheduleModel> rides) {
 
-        mBinding.rv.setLayoutManager(new LinearLayoutManager(ScheduledRides.this));
+        mBinding.ridesRV.setLayoutManager(new LinearLayoutManager(ScheduledRides.this));
 
-        mBinding.rv.setAdapter(new ScheduledRidesAdapter(ScheduledRides.this,
+        mBinding.ridesRV.setAdapter(new ScheduledRidesAdapter(ScheduledRides.this,
                 rides));
 
     }

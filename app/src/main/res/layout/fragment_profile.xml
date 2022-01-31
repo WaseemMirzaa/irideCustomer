@@ -12,7 +12,7 @@
             android:layout_height="@dimen/_250sdp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/dummy_two" />
+            android:src="@drawable/logo" />
 
         <LinearLayout
             android:orientation="vertical"

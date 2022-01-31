@@ -43,7 +43,10 @@ public class StartUp extends BaseActivity {
 
         if (getUserId() != null && !getUserId().isEmpty()) {
 
-            getActiveRide();
+            startActivity(new Intent(StartUp.this, BookARideActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+
+            finish();
 
         } else {
 
@@ -86,8 +89,8 @@ public class StartUp extends BaseActivity {
 
                 rideModel.id = document.getId();
 
-                startActivity(new Intent(StartUp.this, HomeActivity.class)
-                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+//                startActivity(new Intent(StartUp.this, HomeActivity.class)
+//                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
                 finish();
 

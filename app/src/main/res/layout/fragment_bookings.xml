@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -11,117 +12,90 @@
             android:id="@+id/headerLay"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_45sdp">
+
             <RelativeLayout
                 android:id="@+id/drawerIcon"
-                android:layout_marginLeft="@dimen/_12sdp"
-                android:layout_centerVertical="true"
                 android:layout_width="40dp"
-                android:layout_height="40dp">
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_12sdp">
+
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/menu_black"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/menu_black" />
             </RelativeLayout>
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_below="@+id/headerLay"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/headerLay">
+
             <TextView
                 android:id="@+id/tvTitle"
-                android:layout_marginLeft="@dimen/_12sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bookings"
+                android:layout_marginLeft="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
+                android:fontFamily="@font/gibson_regular"
+                android:text="Bookings"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
-                android:textStyle="bold"
-                android:fontFamily="@font/gibson_regular"
-                android:textSize="18dp"/>
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
             <RelativeLayout
                 android:id="@+id/customTabLay"
-                android:layout_below="@+id/tvTitle"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp">
+                android:layout_height="@dimen/_40sdp"
+                android:layout_below="@+id/tvTitle">
 
-                <View
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/blackOpacity_30"/>
+                    android:layout_height="match_parent"
+                    app:tabIndicatorColor="@color/purple_200"
+                    app:tabMode="auto" />
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:weightSum="2"
-                    android:id="@+id/schedulesTabLL"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
 
-                    <RelativeLayout
-                        android:id="@+id/firstTabLay"
-                        android:layout_weight="1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                        <TextView
-                            android:id="@+id/firstTabTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_10sdp"
-                            android:text="History"
-                            android:textStyle="bold"
-                            android:textColor="@color/black"
-                            android:layout_centerInParent="true"
-                            android:textAllCaps="true"
-                            android:fontFamily="@font/gibson_regular"/>
-
-                        <View
-                            android:id="@+id/firstTabLine"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_3sdp"
-                            android:background="@color/purple_200"
-                            android:layout_alignParentBottom="true"/>
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="0.5dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/blackOpacity_30"/>
-
-                    <RelativeLayout
-                        android:id="@+id/secondTabLay"
-                        android:layout_weight="1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                        <TextView
-                            android:id="@+id/seconfTabTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_10sdp"
-                            android:text="UPCOMMING"
-                            android:textStyle="bold"
-                            android:textColor="@color/gray_light"
-                            android:layout_centerInParent="true"
-                            android:textAllCaps="true"
-                            android:fontFamily="@font/gibson_regular"/>
-
-                        <View
-                            android:id="@+id/seccondTabLine"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_3sdp"
-                            android:layout_alignParentBottom="true"/>
-                    </RelativeLayout>
-                </LinearLayout>
             </RelativeLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_below="@+id/customTabLay"
+
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/rv"/>
+                android:layout_below="@+id/customTabLay">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <com.applandeo.materialcalendarview.CalendarView
+                        android:id="@+id/calendarCV"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        app:highlightedDaysLabelsColor="@color/red"
+                        app:selectionColor="@color/red"
+                        app:selectionLabelColor="@color/white"
+                        app:type="many_days_picker" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/ridesRV"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/ridesRL"
+                        android:layout_margin="@dimen/_15sdp"
+                        android:nestedScrollingEnabled="false" />
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
         </RelativeLayout>
     </RelativeLayout>
 </layout>
